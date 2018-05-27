@@ -47,12 +47,6 @@ Inductive prod (A : Type) (B : Type) : Type :=
 (** [pair] の型を確かめる。 *)
 Check pair : forall A B : Type, A -> B -> prod A B.
 
-(** 直積を表す。 もう一つの [prod] である。 *)
-Inductive prod' : Type -> Type -> Type :=
-| pair' : forall A B : Type, A -> B -> prod' A B
-.
-
-
 (** 直積の左右を入れ替える。 *)
 Definition swap : forall A B : Type, prod A B -> prod B A :=
   fun A B : Type =>
@@ -62,11 +56,11 @@ Definition swap : forall A B : Type, prod A B -> prod B A :=
       end
 .
 
-(** 直積の左右を入れ替える。 もう一つの [swap] である。 *)
-Definition swap : forall A B : Type, prod' A B -> prod' B A :=
+(** [swap] の間違った定義。 *)
+Fail Definition swap' : forall A B : Type, prod A B -> prod B A :=
   fun A B : Type =>
-    fun x : prod' A B =>
+    fun x : prod A B =>
       match x with
-      | pair' xA xB x1 x2 => pair xB xA x2 x1 (* この部分が異なる *)
+      | pair xB xA x1 x2 => pair B A
       end
 .

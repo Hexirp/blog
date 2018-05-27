@@ -92,13 +92,29 @@ Coqにもあるのだが、私は依存型が絡むときのパターンマッ�
   (** [pair] の型を確かめる。 *)
   Check pair : forall A B : Type, A -> B -> prod A B.
 
-また、このように定義された ``prod'`` も引数を持っている。
+このようにしてパターンマッチできる。
 
 ::
 
-  (** 直積を表す。 もう一つの [prod] である。 *)
-  Inductive prod' : Type -> Type -> Type :=
-  | pair' : forall A B : Type, A -> B -> prod' A B
+  (** 直積の左右を入れ替える。 *)
+  Definition swap : forall A B : Type, prod A B -> prod B A :=
+    fun A B : Type =>
+      fun x : prod A B =>
+        match x with
+        | pair _ _ x1 x2 => pair B A x2 x1
+        end
   .
 
-この二つの表記には、パターンマッチの際に関する違いがある。
+この場合、型の引数から引き継がれた構築子の引数、
+ここでは [pair A B x y] の [A] と [B] には名前を付けては **いけない** 。
+
+::
+
+  (** [swap] の間違った定義。 *)
+  Fail Definition swap' : forall A B : Type, prod A B -> prod B A :=
+    fun A B : Type :=
+      fun x : prod A B =>
+        match x with
+        | pair xB xA x1 x2 => pair B A
+        end
+  .
