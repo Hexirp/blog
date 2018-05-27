@@ -119,7 +119,7 @@ Coqの依存型に対するパターンマッチ
     fun A B : Type :=
       fun x : prod A B =>
         match x with
-        | pair xB xA x1 x2 => pair B A
+        | pair xB xA x1 x2 => pair B A x2 x1
         end
   .
 

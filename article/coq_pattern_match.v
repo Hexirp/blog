@@ -61,6 +61,6 @@ Fail Definition swap' : forall A B : Type, prod A B -> prod B A :=
   fun A B : Type =>
     fun x : prod A B =>
       match x with
-      | pair xB xA x1 x2 => pair B A
+      | pair xB xA x1 x2 => pair B A x2 x1
       end
 .
