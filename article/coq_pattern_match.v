@@ -51,3 +51,22 @@ Check pair : forall A B : Type, A -> B -> prod A B.
 Inductive prod' : Type -> Type -> Type :=
 | pair' : forall A B : Type, A -> B -> prod' A B
 .
+
+
+(** 直積の左右を入れ替える。 *)
+Definition swap : forall A B : Type, prod A B -> prod B A :=
+  fun A B : Type =>
+    fun x : prod A B =>
+      match x with
+      | pair _ _ x1 x2 => pair B A x2 x1
+      end
+.
+
+(** 直積の左右を入れ替える。 もう一つの [swap] である。 *)
+Definition swap : forall A B : Type, prod' A B -> prod' B A :=
+  fun A B : Type =>
+    fun x : prod' A B =>
+      match x with
+      | pair' xA xB x1 x2 => pair xB xA x2 x1 (* この部分が異なる *)
+      end
+.
