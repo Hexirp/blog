@@ -11,16 +11,16 @@ Inductive day : Type :=
 
 (** 次の平日を返す。 *)
 Definition next_weekday : day -> day :=
-  fun d : day =>
-    match d with
-    | monday => tuesday
-    | tuesday => wednesday
-    | wednesday => thursday
-    | thursday => friday
-    | friday => monday
-    | saturday => monday
-    | sunday => monday
-    end
+ fun d : day =>
+  match d with
+  | monday => tuesday
+  | tuesday => wednesday
+  | wednesday => thursday
+  | thursday => friday
+  | friday => monday
+  | saturday => monday
+  | sunday => monday
+  end
 .
 
 (** 自然数を表す。 *)
@@ -32,11 +32,11 @@ Inductive nat : Type :=
 
 (** 前の自然数を返す。 *)
 Definition pred : nat -> nat :=
-  fun n : nat =>
-    match n with
-    | O => O
-    | S np => np
-    end
+ fun n : nat =>
+  match n with
+  | O => O
+  | S np => np
+  end
 .
 
 (** 直積を表す。 *)
@@ -49,18 +49,18 @@ Check pair : forall A B : Type, A -> B -> prod A B.
 
 (** 直積の左右を入れ替える。 *)
 Definition swap : forall A B : Type, prod A B -> prod B A :=
-  fun A B : Type =>
-    fun x : prod A B =>
-      match x with
-      | pair _ _ x1 x2 => pair B A x2 x1
-      end
+ fun A B : Type =>
+  fun x : prod A B =>
+   match x with
+   | pair _ _ x1 x2 => pair B A x2 x1
+   end
 .
 
 (** [swap] の間違った定義。 *)
 Fail Definition swap' : forall A B : Type, prod A B -> prod B A :=
-  fun A B : Type =>
-    fun x : prod A B =>
-      match x with
-      | pair xB xA x1 x2 => pair B A x2 x1
-      end
+ fun A B : Type =>
+  fun x : prod A B =>
+   match x with
+   | pair xB xA x1 x2 => pair B A x2 x1
+   end
 .
