@@ -64,3 +64,26 @@ Fail Definition swap' : forall A B : Type, prod A B -> prod B A :=
    | pair xB xA x1 x2 => pair B A x2 x1
    end
 .
+
+Inductive ex (A : Type) (P : A -> Type) : Type :=
+| ex_pair : forall a : A, P a -> ex A P
+.
+
+Definition ex_swap : forall A B : Type, forall P : A -> B -> Type,
+  ex A (fun a : A => ex B (fun b : B => P a b)) ->
+  ex B (fun b : B => ex A (fun a : A => P a b))
+:=
+ fun
+   (A B : Type)
+   (P : A -> B -> Type)
+   (x : ex A (fun a : A => ex B (fun b : B => P a b)))
+ =>
+  match x with
+  | ex_pair _ _ a aH =>
+   match aH with
+   | ex_pair _ _ b bH =>
+    ex_pair B (fun b : B => ex A (fun a : A => P a b)) b (
+     ex_pair A (fun a : A => P a b) a bH)
+   end
+  end
+.
