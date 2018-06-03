@@ -200,3 +200,85 @@ Haskell使いの私には嬉しいことにCoqも代数的データ型を持っ�
    bH
   ).
  Defined.
+
+``refine`` の後にアンダースコア部を埋めていくとき、
+そこから見えるべき値が環境に追加されています。
+ここの時が分かりやすいでしょう。
+
+::
+
+ refine (
+  fun (A B : Type) => _
+ ).
+
+ここでは、最後に一つアンダースコアが含まれています。
+ここからは ``A : Type`` と ``B : Type`` が見えるべきです。
+そして、このアンダースコアが次に埋めていくべきもの、すなわちゴールです。
+ゴールはアンダースコアだということが分かり切っているので、
+その型だけが表示されます。
+
+前：
+
+.. code-block:: none
+
+ 1 subgoal
+ ______________________________________(1/1)
+ forall (A B : Type) (P : A -> B -> Type),
+ ex A (fun a : A => ex B (fun b : B => P a b)) ->
+ ex B (fun b : B => ex A (fun a : A => P a b))
+
+後：
+
+.. code-block:: none
+
+ 1 subgoal
+ A : Type
+ B : Type
+ ______________________________________(1/1)
+ forall P : A -> B -> Type,
+ ex A (fun a : A => ex B (fun b : B => P a b)) ->
+ ex B (fun b : B => ex A (fun a : A => P a b))
+
+また、パターンマッチの時も同じです。取り出した値は見えるべきです。
+
+::
+
+ refine (
+  match x with
+  | ex_pair _ _ a aH => _
+  end
+ ).
+
+ここでいえば、 ``a`` と ``aH`` は
+右側のアンダースコア部から見えるべきだということになります。
+名前が付けられないがゆえに置かれた左側のアンダースコアと混ざらないように
+気を付けてください。
+
+前：
+
+.. code-block:: none
+
+ 1 subgoal
+ A : Type
+ B : Type
+ P : A -> B -> Type
+ x : ex A (fun a : A => ex B (fun b : B => P a b))
+ ______________________________________(1/1)
+ ex B (fun b : B => ex A (fun a : A => P a b))
+
+後：
+
+.. code-block:: none
+
+ 1 subgoal
+ A : Type
+ B : Type
+ P : A -> B -> Type
+ x : ex A (fun a : A => ex B (fun b : B => P a b))
+ a : A
+ aH : ex B (fun b : B => P a b)
+ ______________________________________(1/1)
+ ex B (fun b : B => ex A (fun a0 : A => P a0 b))
+
+``x`` へのパターンマッチで ``a`` と ``aH`` が取り出されました。
+``aH`` の型は ``ex_pair`` の型通り ``a`` に依存しています。
