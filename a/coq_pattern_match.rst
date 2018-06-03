@@ -199,3 +199,4 @@ Haskell使いの私には嬉しいことにCoqも代数的データ型を持っ�
   refine (
    bH
   ).
+ Defined.
