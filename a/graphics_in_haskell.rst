@@ -4,9 +4,7 @@ Haskellでの絵
 
 HaskellでGraphics Libraryを探して苦労する話です。
 
-.. warning::
-
- この記事はイライラを昇華したものです。
+.. warning:: この記事はイライラを昇華したものです。
 
 **********
 事の始まり
@@ -54,12 +52,12 @@ gloss
 実行ファイルと同じところに置けといいます。
 
 それがいったい何なのか調べてみると、\ `OpenGL Utility Toolkit`_\ のことで、 
-\ `gloss`_\ が依存する\ `GLUT`_\ のバインディング先のようでした。
+\ `gloss`_\ が依存する\ `GLUT (hackage)`_\ のバインディング先のようでした。
 今は開発が止まっているので\ `GLUT`_\ もまた\ `freeglut`_\ という、
 後続？派生？ライブラリを使っています。
 
 .. _OpenGL Utility Toolkit: https://ja.wikipedia.org/wiki/OpenGL_Utility_Toolkit
-.. _GLUT: http://hackage.haskell.org/package/GLUT
+.. _GLUT (hackage): http://hackage.haskell.org/package/GLUT
 
 つまるところ、\ `freeglut`_\ をインストールすればいいわけです。
 しかし、そのインストールのために自分でビルドする必要がありました。
@@ -103,7 +101,7 @@ CMakeをインストールして、それをビルドする必要があり、
 疲れたので一回休み。
 
 \ `gloss`_\ のドキュメントをぶらぶらしているとこんな記述を見つけました。
-フラグ\ ``glfw``\ 、これを有効にすると\ `glut`_\ の代わりに\ `glfw`_ \を使う。
+フラグ\ ``glfw``\ 、これを有効にすると\ `glut`_\ の代わりに\ `glfw`_\ を使う。
 \ `glfw`_\ は\ `glut`_\ に取って代わっているというライブラリです。
 なんと、Windowsのためのプリコンパイルバイナリが配布されていました！
 そのフラグをセットしてさっそくビルドするとなんとコンパイルできない。
