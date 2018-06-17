@@ -92,7 +92,7 @@ CMakeをインストールして、それをビルドする必要があり、
 
 いろいろ調べていたら見つけたこんな如何にもというようなコマンド
 \ ``rm -rf $(stack path --stack-root)/precompiled``\ で直りました。
-（元ソース\ `完全なリビルド`_\ では三番目の手法にあたるもので、
+（元ソース（\ `完全なリビルド`_\ ）では三番目の手法にあたるもので、
 二つのコマンドなのですが一番最初が重要な雰囲気なので抜き出しました。
 もしこれでだめだったらもう一つのコマンドも試してみてください。）
 
@@ -107,11 +107,27 @@ CMakeをインストールして、それをビルドする必要があり、
 そのフラグをセットしてさっそくビルドするとなんとコンパイルできない。
 
 \ `修正版`_\ を使ってビルドを通すために色々した結果が\ `このエラー`_\ でした。
+TravisCIの設定でライブラリをインストールさせれば出来たんですが、
+もう、最初は\ ``gloss-glfw``\ と分けていたらしいからそのままでよかった。
 
 .. _修正版: https://github.com/benl23x5/gloss/pull/41
 .. _このエラー: https://travis-ci.org/Hexirp/hasga/builds/393054588
 
 疲れたので一回休み。
+
+この記事（\ `Fluxを再発明する`_\ ）を辿ると\ `sdl2`_\ を見つけました。
+READMEを見てみるとなんとstackだけで、
+使われているCライブラリをインストールできるといいます！
+（\ `Windows SDL2 is now almost painless via stack`_\ ）
+
+.. _sdl2: http://hackage.haskell.org/package/sdl2
+.. _Fluxを再発明する: https://myuon.github.io/posts/refluxible-library/
+.. _Windows SDL2 is now almost painless via stack:
+ https://www.reddit.com/r/haskellgamedev/comments/4jpthu/
+
+どうやらstackはここ（\ `Index of /mingw/x86_64/`_/ ）にあるものを
+インストールできるようです。（sandboxの中で！）
+ここにはSDL2だけではなくFreeGLUTもあります……。
 
 .. _gloss: http://hackage.haskell.org/package/gloss
 .. _glut: https://www.opengl.org/resources/libraries/glut/
