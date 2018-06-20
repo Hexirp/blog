@@ -169,8 +169,8 @@ READMEを見てみるとなんとstackだけで、
 \ `sdl2`_\ はコンパイル時にsdl2をインストールする必要がある。
 しかし、それはstackを使ってインストールできる。
 
-今はとりあえずsdl2を使うことにする。
-他のグラフィックスライブラリもいつか試したい。
+今はとりあえずsdl2を使うことにします。
+他のグラフィックスライブラリもいつか試したいと思います。
 
 .. _gloss: https://hackage.haskell.org/package/gloss
 .. _GLUT: https://hackage.haskell.org/package/GLUT
