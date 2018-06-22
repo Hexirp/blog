@@ -33,6 +33,7 @@ Haskellでの絵
 答えは\ `gloss`_\ でした。私も以前から知っていたライブラリです。
 
 簡単な特徴:
+
 * そこまで本格的ではなく真面目に使うには至らない
 * 簡単にシミュレーションやゲームをウィンドウに表示できる
 * 主にシミュレーションの結果を表示する用途が多いらしい
@@ -51,12 +52,13 @@ glossのサンプルが起こしたエラー
 ソースコードはこの状態（\ `ceaa10`_\ ）でした。
 
 .. code-block:: none
+
  hasga-exe.EXE: user error (unknown GLUT entry glutInit)
 
 調べてみると\ `glossのホームページ`_\ のQ&Aに対処法が載っていました。
 
- | **Q: On Windows, when I try to run a gloss program it says
-   ``user error (unknown GLUT entry glutInit)``.**
+ | **Q: On Windows, when I try to run a gloss program it says**
+   ``user error (unknown GLUT entry glutInit)``\ **.**
  | A1: You need to install ``glut32.dll``.
    Copy it into ``\Windows\System32`` (for 32-bit installs)
    or ``\Windows\SysWOW64`` (for 64-bit installs).
@@ -81,6 +83,7 @@ GLUT (haskell)もまたfreeglutを利用できます。
 しかし、そのインストールのために自分でコンパイルする必要がありました。
 
 必要な物:
+
 * `Microsoft Visual Studio`_
 * `CMake`_
 
@@ -106,6 +109,7 @@ CMakeを使ってビルドするだけです。
 他のプロジェクトをやろうとしたら、おかしなことにこんなエラーが出てきました。
 
 .. code-block:: none
+
  primitive-0.6.3.0: using precompiled package
  ghc-pkg: cannot find package microlens-0.4.8.3
  ghc-pkg: cannot find package mtl-2.2.2
@@ -133,6 +137,7 @@ CMakeを使ってビルドするだけです。
 それに記載されているこのようなコマンドを打ち込んだら直りました。
 
 .. code-block:: bash
+
  rm -rf $(stack path --stack-root)/precompiled
  rm -rf $(stack path --stack-root)/snapshots
 
@@ -140,6 +145,7 @@ CMakeを使ってビルドするだけです。
 これを入力した後のコンパイルはさらに時間がかかりますので注意してください。
 
 .. note::
+
  後で分かったことなのですが、私がびびっていただけでした。
  このエラーが出ていてもコンパイルは可能なようです。
  なので、特に直さないといけないという訳ではないようです。
@@ -156,13 +162,13 @@ CMakeを使ってビルドするだけです。
 \ `gloss`_\ のドキュメントを見ているとこんな記述を見つけました。
 
 +---------------------+----------------------------+----------+-----------+
-| Name	               | Description	               | Default	 | Type      |
+| Name                | Description                | Default  | Type      |
 +=====================+============================+==========+===========+
-| ``glut``	           | Enable the GLUT backend    | Enabled	 | Automatic |
+| ``glut``            | Enable the GLUT backend    | Enabled  | Automatic |
 +---------------------+----------------------------+----------+-----------+
-| ``glfw``	           | Enable the GLFW backend    | Disabled	| Automatic |
+| ``glfw``            | Enable the GLFW backend    | Disabled | Automatic |
 +---------------------+----------------------------+----------+-----------+
-| ``explicitbackend``	| Expose versions of display | Disabled | Automatic |
+| ``explicitbackend`` | Expose versions of display | Disabled | Automatic |
 |                     | and friends that allow you |          |           |
 |                     | to choose what window      |          |           |
 |                     | manager backend to use.    |          |           |
