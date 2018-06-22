@@ -2,93 +2,110 @@
 Haskellでの絵
 #############
 
-ただの、HaskellでGraphics Libraryを探して苦労する話です。
-
-.. warning:: この記事はイライラを昇華したものです。
-
-****
-要約
-****
-
-\ `gloss`_\ は、プログラミングするときに最も簡単である（らしい）が、
-Windows環境で使うのは他のプログラムをインストールする必要がある。
-Windowsでも楽々やりたいのならば\ `sdl2`_\ がおすすめ。
+ただの、HaskellでGraphicsをやってみる話です。
 
 **********
 事の始まり
 **********
 
-「そうだ、ライフゲームを作ろう。」
-
-まず、私自身いくら理論寄りを自負していたとしても、
+いくら理論寄りを自負していたとしても、
 ウィンドウを出すプログラムを一度も作ったことがないのは、
-一端のプログラマーとしてやばいかなと思っていたことが始まりです。
+一端のプログラマーとしてやばいかな？
 
-そこで、私はライフゲームに目を付けました。
-何よりもルールが単純。それでいて出来るものはとても複雑で豊か。
-初めてのグラフィックスとしては申し分ないのではという考えでした。
+そう思ってグラフィックスプログラムを始めることにしました。
 
-*****
-gloss
-*****
+何を作るかという問題もあります。私はライフゲームに目を付けました。
+何よりもルールが単純。それでいて出来るものはとても複雑で豊かかつ、視覚的。
+初めてのグラフィックスとしては申し分ないのではという考えです。
 
-まず、ライブラリに何を使おうか考える必要があります。
-これは普通にコミュニティに聞いてみることにしました。
+****************
+ライブラリの選択
+****************
 
-\ `Haskell-jp`_\ は日本でHaskellをする人のためのコミュニティで、
-自由に質問が出来できるSlackチーム、およびredditチャンネルを持っているのですが、
-今回は人が多い方のSlackを使いました。（議論になりそうなものはredditを推奨）
+初めにライブラリを選ばないといけないのですが、
+私はグラフィックスに関しては初心者なので、
+普通に他の人に聞いてみました。
+
+\ `Haskell-jp`_\ は日本でHaskellをする人のための集まりで、
+自由に質問が出来できるSlackチーム、およびredditチャンネルを持っています。
+今回は人が多いSlackを使いました。（議論になりそうなものはredditを推奨のこと）
+
+答えは\ `gloss`_\ でした。私も以前から知っていたライブラリです。
+
+簡単な特徴:
+* そこまで本格的ではなく真面目に使うには至らない
+* 簡単にシミュレーションやゲームをウィンドウに表示できる
+* 主にシミュレーションの結果を表示する用途が多いらしい
+
+さっそく使ってみることにします。
 
 .. _Haskell-jp: https://haskell.jp/
+.. _gloss: https://hackage.haskell.org/package/gloss
 
-答えは\ `gloss`_\ 、私も以前から知っていたライブラリです。
-そこまで本格的ではなく真面目に使うには至らない部分はあるものの、
-簡単にシミュレーションやゲームをウィンドウに表示できることを、
-私はよさそうに思っていて、回答者もまた推していました。
+*******************************
+glossのサンプルが起こしたエラー
+*******************************
 
-====================
-freeglutが必要だった
-====================
-
-さあ、さっそく使おうと円を表示するサンプルを入力してコンパイルすると、
-こんなエラーが……。ソースコードはこの状態（\ `ceaa10`_\ ）でした。
-
-.. _ceaa10: https://github.com/Hexirp/hasga/tree/ceaa10c76b078ab856b22c9f98a08dbef1c8c15a
+円を表示するサンプルを入力してコンパイルして実行すると、
+このようなエラーが出て何も表示されないまま終了しました。
+ソースコードはこの状態（\ `ceaa10`_\ ）でした。
 
 .. code-block:: none
-
  hasga-exe.EXE: user error (unknown GLUT entry glutInit)
 
-調べてみると公式のQ&Aに対処法が載っていました。
-\ ``glut32.dll``\ をインストールしてとあるフォルダに入れるか、
-実行ファイルと同じところに置けといいます。
+調べてみると\ `glossのホームページ`_\ のQ&Aに対処法が載っていました。
 
-それがいったい何なのか調べてみると、\ `OpenGL Utility Toolkit`_\ のことで、 
-\ `gloss`_\ が依存する\ `GLUT`_\ のバインディング先のようでした。
-今は開発が止まっているので\ `GLUT`_\ もまた\ `freeglut`_\ という、
-後続？派生？ライブラリを使っています。
+ | **Q: On Windows, when I try to run a gloss program it says
+   ``user error (unknown GLUT entry glutInit)``.**
+ | A1: You need to install ``glut32.dll``.
+   Copy it into ``\Windows\System32`` (for 32-bit installs)
+   or ``\Windows\SysWOW64`` (for 64-bit installs).
+   Alternatively, you can just copy it into the same directory
+   as the Main.exe executable you are trying to run.
 
-.. _OpenGL Utility Toolkit: https://ja.wikipedia.org/wiki/OpenGL_Utility_Toolkit
-.. _freeglut: http://freeglut.sourceforge.net/
+「\ ``glut32.dll``\ をインストールして、
+システムに関わっていそうな何某のフォルダに入れるか、
+実行ファイルと同じところに置かないといけない」
+
+まず、\ ``glut32.dll``\ がいったい何なのか調べてみると、
+\ `GLUT`_\ のものでした。
+
+どうしてこれが必要になるのか調べると、
+\ `gloss`_\ が依存する\ `GLUT (haskell)`_\ のせいでした。
+
+ならば、言う通りglutをインストールすればいいのかと思いましたが、
+今は開発が止まっていて\ `freeglut`_\ に引き継がれているようです。
+GLUT (haskell)もまたfreeglutを利用できます。
 
 つまるところ、freeglutをインストールすればいいわけです。
-しかし、そのインストールのために自分でビルドする必要がありました。
-Microsoft Visual Studioをインストールして、
-CMakeをインストールして、それをビルドする必要があり、
-もしかしたらこれが普通なのかもしれないのですが、
-私にはめんどくさく感じられました。
+しかし、そのインストールのために自分でコンパイルする必要がありました。
 
-疲れたので一回休み。
+必要な物:
+* `Microsoft Visual Studio`_
+* `CMake`_
 
-==========
-謎のエラー
-==========
+CMakeを使ってビルドするだけです。
 
-気分転換に他のプロジェクトをやろうとしたら、
-おかしなことにこんなエラーがたくさん出てきたのです。
+昔は全ての分野で、そして今でも一部の分野ではこれが普通なのでしょう。
+しかし、stackやgradleというぬるま湯で育った私にはめんどくさく感じられました。
+
+.. _ceaa10:
+ https://github.com/Hexirp/hasga/tree/ceaa10c76b078ab856b22c9f98a08dbef1c8c15a
+.. _glossのホームページ: http://gloss.ouroborus.net/
+.. _OpenGL Utility Toolkit: https://ja.wikipedia.org/wiki/OpenGL_Utility_Toolkit
+.. _GLUT: https://www.opengl.org/resources/libraries/glut/
+.. _GLUT (haskell): https://hackage.haskell.org/package/GLUT
+.. _freeglut: http://freeglut.sourceforge.net/
+.. _Microsoft Visual Studio: https://visualstudio.microsoft.com/
+.. _CMake: https://cmake.org/
+
+****************************
+他のプロジェクトで出たエラー
+****************************
+
+他のプロジェクトをやろうとしたら、おかしなことにこんなエラーが出てきました。
 
 .. code-block:: none
-
  primitive-0.6.3.0: using precompiled package
  ghc-pkg: cannot find package microlens-0.4.8.3
  ghc-pkg: cannot find package mtl-2.2.2
@@ -106,72 +123,92 @@ CMakeをインストールして、それをビルドする必要があり、
  typed-process-0.2.2.0: using precompiled package
  unliftio-0.2.7.0: using precompiled package
 
-いろいろ調べていたら見つけたこんな如何にもというようなコマンド
-\ ``rm -rf $(stack path --stack-root)/precompiled``\ で直りました。
-（元ソース（\ `完全なリビルド`_\ ）では三番目の手法にあたるもので、
-二つのコマンドなのですが一番最初が重要な雰囲気なので抜き出しました。
-もしこれでだめだったらもう一つのコマンドも試してみてください。）
+このエラーを解決するために色々調べました。
+キャッシュが壊れているんじゃないかと予想はついたので、
+最終手段はstackのルートフォルダを消してしまうことだと考えました。
+
+それはできるだけ取りたくないので、回避するためにいろいろ調べていたら、
+\ `完全なリビルド`_\ という記事を見つけました。
+
+それに記載されているこのようなコマンドを打ち込んだら直りました。
+
+.. code-block:: bash
+ rm -rf $(stack path --stack-root)/precompiled
+ rm -rf $(stack path --stack-root)/snapshots
+
+それ自体にかなりの時間がかかりますし、キャッシュがないため、
+これを入力した後のコンパイルはさらに時間がかかりますので注意してください。
+
+.. note::
+ 後で分かったことなのですが、私がびびっていただけでした。
+ このエラーが出ていてもコンパイルは可能なようです。
+ なので、特に直さないといけないという訳ではないようです。
+
+ また、TravisCIでも再現しているのでWindows固有の現象だったり、
+ アンチウイルスソフトによるものだという線はなくなっています。
 
 .. _完全なリビルド: https://haskell.e-bigmoon.com/stack/tips/full-rebuild.html
 
-疲れたので一回休み。
-
-========================
+************************
 バックエンドにglfwを使う
-========================
+************************
 
-\ `gloss`_\ のドキュメントをぶらぶらしているとこんな記述を見つけました。
-フラグ\ ``glfw``\ 、これを有効にするとglutの代わりに\ `glfw`_\ を使う。
-glfwはglutに取って代わっているというライブラリです。
-なんと、Windowsのためのプリコンパイルバイナリが配布されていました！
-そのフラグをセットしてさっそくビルドするとなんとコンパイルできない。
+\ `gloss`_\ のドキュメントを見ているとこんな記述を見つけました。
 
-.. _glfw: http://www.glfw.org/
++---------------------+----------------------------+----------+-----------+
+| Name	               | Description	               | Default	 | Type      |
++=====================+============================+==========+===========+
+| ``glut``	           | Enable the GLUT backend    | Enabled	 | Automatic |
++---------------------+----------------------------+----------+-----------+
+| ``glfw``	           | Enable the GLFW backend    | Disabled	| Automatic |
++---------------------+----------------------------+----------+-----------+
+| ``explicitbackend``	| Expose versions of display | Disabled | Automatic |
+|                     | and friends that allow you |          |           |
+|                     | to choose what window      |          |           |
+|                     | manager backend to use.    |          |           |
++---------------------+----------------------------+----------+-----------+
 
-\ `修正版`_\ を使ってビルドを通すために色々した結果が\ `このエラー`_\ でした。
-TravisCIの設定でライブラリをインストールさせれば出来たんですが、
-もう、最初は\ ``gloss-glfw``\ と分けていたらしいからそのままでよかった。
+\ ``glfw``\ フラグを有効にすると、
+\ `GLUT`_\ の代わりに\ `GLFW`_\ を使うということです。
+GLFWはGLUTの開発が止まった後の主流になったライブラリのようです。
 
-.. _修正版: https://github.com/benl23x5/gloss/pull/41
-.. _このエラー: https://travis-ci.org/Hexirp/hasga/builds/393054588
+なん、Windowsのためのプリコンパイルバイナリが配布されていました！
+つまり、自分でコンパイルする必要がないということです。
 
-疲れたので一回休み。
+さっそく、そのフラグをセットして、
+まずTravisCI上で、ということでプッシュしたら、
+なんとコンパイルできませんでした。
+\ `有志による修正版`_\ を使ったらビルドは通ったんですが、
+ここまで来るまでに気力をそがれました。
+
+どこかで、Cabalのフラグというシステムは使っていけないというのを見たんですが、
+ここで実例を見ることになると思いませんでした。
+最初は\ ``gloss-glfw``\ という風に分けていたらしいから
+そのままでよかったと思います。
+
+.. _GLFW: http://www.glfw.org/
+.. _有志による修正版: https://github.com/benl23x5/gloss/pull/41
 
 ****
 sdl2
 ****
 
-この記事（\ `Fluxを再発明する`_\ ）を辿ると\ `sdl2`_\ を見つけました。
-READMEを見てみるとなんとstackだけで、
-使われているCライブラリをインストールできるといいます！
+\ `とある記事`_\ で\ `sdl2`_\ を見つけました。
+READMEを見てみると、使われているCライブラリを、
+stackだけでインストールできるといいます！
 （\ `Windows SDL2 is now almost painless via stack`_\ ）
-
-.. _Fluxを再発明する: https://myuon.github.io/posts/refluxible-library/
-.. _Windows SDL2 is now almost painless via stack:
- https://www.reddit.com/r/haskellgamedev/comments/4jpthu/
 
 どうやらstackはここ（\ `Index of /mingw/x86_64/`_/ ）にあるものを
 インストールできるようです。（sandboxの中で！）
 そして、とうとうHaskellでウィンドウを表示させることが出来ました！
 （ソースコードは\ `27b3ce`_\ )
 
-.. _Index of /mingw/x86_64/: http://repo.msys2.org/mingw/x86_64/
-.. _27b3ce: https://github.com/Hexirp/hasga/tree/27b3cee11f149fb1191b50f285cf1ff0011c5fcb
+今までが嘘かのようにすんなりいったので感動するしかありませんでした。
 
-******
-まとめ
-******
-
-\ `gloss`_\ は実行時にfreeglutをインストールする必要がある。
-そのために、WindowsではVisual StudioとCMakeをインストールして
-ソースコードからビルドする必要がある。
-
-\ `sdl2`_\ はコンパイル時にsdl2をインストールする必要がある。
-しかし、それはstackを使ってインストールできる。
-
-今はとりあえずsdl2を使うことにします。
-他のグラフィックスライブラリもいつか試したいと思います。
-
-.. _gloss: https://hackage.haskell.org/package/gloss
-.. _GLUT: https://hackage.haskell.org/package/GLUT
 .. _sdl2: https://hackage.haskell.org/package/sdl2
+.. _とある記事: https://myuon.github.io/posts/refluxible-library/
+.. _Windows SDL2 is now almost painless via stack:
+ https://www.reddit.com/r/haskellgamedev/comments/4jpthu/
+.. _Index of /mingw/x86_64/: http://repo.msys2.org/mingw/x86_64/
+.. _27b3ce:
+ https://github.com/Hexirp/hasga/tree/27b3cee11f149fb1191b50f285cf1ff0011c5fcb
