@@ -237,7 +237,6 @@ glossでも同じようにできた
 参考にするのならば自己責任でお願いします。
 
 原理
-
  Windows版のstackは内部にMSYS2というソフトを持っている。
  Windowsでshellをやるためのソフトで、
  stackはこれをサンドボックス環境としている。
@@ -251,7 +250,6 @@ glossでも同じようにできた
  http://repo.msys2.org/mingw/x86_64/ にあるものだと思う。
 
 やり方
-
  最初にライブラリの更新をする。
  \ ``stack exec -- pacman -Syu``\ を実行する。
  私の場合はこれが失敗して何度か実行する必要があった。
@@ -260,7 +258,6 @@ glossでも同じようにできた
  \ ``stack exec -- pacman -S <library>``\ を実行する。
 
 注意点
-
  glossの場合はCライブラリが実行時に必要になるので\ ``stack install``\ しても、
  freeglutはサンドボックス環境にしかないため実行できないと思う。
 
