@@ -32,7 +32,7 @@ Haskellでの絵
 
 答えは\ `gloss`_\ でした。私も以前から知っていたライブラリです。
 
-簡単な特徴:
+簡単な特徴：
 
 * そこまで本格的ではなく真面目に使うには至らない
 * 簡単にシミュレーションやゲームをウィンドウに表示できる
@@ -51,7 +51,7 @@ glossのサンプルが起こしたエラー
 このようなエラーが出て何も表示されないまま終了しました。
 ソースコードはこの状態（\ `ceaa10`_\ ）でした。
 
-.. code-block:: none
+.. code-block:: text
 
  hasga-exe.EXE: user error (unknown GLUT entry glutInit)
 
@@ -82,7 +82,7 @@ GLUT (haskell)もまたfreeglutを利用できます。
 つまるところ、freeglutをインストールすればいいわけです。
 しかし、そのインストールのために自分でコンパイルする必要がありました。
 
-必要な物:
+必要な物：
 
 * `Microsoft Visual Studio`_
 * `CMake`_
@@ -108,7 +108,7 @@ CMakeを使ってビルドするだけです。
 
 他のプロジェクトをやろうとしたら、おかしなことにこんなエラーが出てきました。
 
-.. code-block:: none
+.. code-block:: text
 
  primitive-0.6.3.0: using precompiled package
  ghc-pkg: cannot find package microlens-0.4.8.3
