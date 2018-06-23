@@ -11,8 +11,8 @@ extra-source-files:
 - ChangeLog.md
 
 # Metadata used when publishing your package
-synopsis:            Hexirp's blog
-category:            Web
+# synopsis:            Short description of your package
+# category:            Other
 
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
@@ -22,6 +22,9 @@ description:         Please see the README on GitHub at <https://github.com/Hexi
 dependencies:
 - base >= 4.7 && < 5
 
+library:
+  source-dirs: src
+
 executables:
   hexirp-blog-exe:
     main:                Main.hs
@@ -30,6 +33,8 @@ executables:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    dependencies:
+    - hexirp-blog
 
 tests:
   hexirp-blog-test:
@@ -39,3 +44,5 @@ tests:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
+    dependencies:
+    - hexirp-blog
