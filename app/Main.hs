@@ -1,6 +1,12 @@
 module Main where
+ import Prelude
 
-import Lib
+ import Hakyll
 
 main :: IO ()
-main = someFunc
+main = return ()
+
+hakyllConfig :: Configuration
+hakyllConfig = def {
+ providerDirectory = "site",
+ destinationDirectory = "docs"}
