@@ -4,9 +4,9 @@ module Main where
  import Hakyll
 
  main :: IO ()
- main = return ()
+ main = hakyllWith config $ return ()
 
- hakyllConfig :: Configuration
- hakyllConfig = defaultConfiguration {
+ config :: Configuration
+ config = defaultConfiguration {
   providerDirectory = "docs-pre",
   destinationDirectory = "docs"}
