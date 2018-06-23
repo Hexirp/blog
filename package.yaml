@@ -9,7 +9,6 @@ copyright:           "2018 Hexirp"
 extra-source-files:
 - README.md
 - ChangeLog.md
-- docs-pre/articles/*.rst
 
 # Metadata used when publishing your package
 synopsis:            Hexirp's blog
