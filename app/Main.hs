@@ -7,6 +7,6 @@ module Main where
  main = return ()
 
  hakyllConfig :: Configuration
- hakyllConfig = def {
+ hakyllConfig = defaultConfiguration {
   providerDirectory = "docs-pre",
   destinationDirectory = "docs"}
