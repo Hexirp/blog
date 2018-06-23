@@ -8,5 +8,5 @@ main = return ()
 
 hakyllConfig :: Configuration
 hakyllConfig = def {
- providerDirectory = "site",
+ providerDirectory = "docs-pre",
  destinationDirectory = "docs"}
