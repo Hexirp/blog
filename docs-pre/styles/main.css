@@ -1,13 +1,25 @@
 body {
   display: grid;
-  grid-template-rows: 64px 1fr;
+  grid-template-rows: 96px 1fr;
+
+  margin: 0px;
 }
 
 header {
   display: grid;
-  grid-template-columns: 64px 1fr;
+  grid-template-columns: 96px 1fr;
 }
 
+main {
+  padding: 8px;
+}
+
+
+#icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 #nav {
   display: flex;
@@ -20,5 +32,5 @@ header {
 }
 
 #nav > li {
-  margin: 8px 24px;
+  padding: 8px 8px;
 }
