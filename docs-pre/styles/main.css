@@ -1,0 +1,32 @@
+body {
+  display: grid;
+  grid-template-rows: 64px 1fr;
+}
+
+header {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+
+  grid-row: 1;
+}
+
+header > #icon {
+  grid-column: 1;
+}
+
+header > #nav {
+  grid-column: 2;
+}
+
+main {
+  grid-row: 2;
+}
+
+
+#nav {
+  display: flex;
+}
+
+#nav > li {
+  padding: 8px; 24px;
+}
