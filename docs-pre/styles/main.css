@@ -11,8 +11,14 @@ header {
 
 #nav {
   display: flex;
+  align-items: center;
+
+  padding: 0px;
+  margin: 0px;
+
+  list-style: none;
 }
 
 #nav > li {
-  padding: 8px; 24px;
+  margin: 8px 24px;
 }
