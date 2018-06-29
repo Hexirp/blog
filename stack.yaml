@@ -38,7 +38,12 @@ packages:
 # Dependency packages to be pulled from upstream that are not in the resolver
 # using the same syntax as the packages field.
 # (e.g., acme-missiles-0.3)
-# extra-deps: []
+extra-deps:
+- github: Hexirp/hakyll
+  commit: 2487d2ca77606da20986165ee57b3de22e311a02
+  subdirs:
+  - hakyll-core
+  - hakyll
 
 # Override default flag values for local packages and extra-deps
 # flags: {}
