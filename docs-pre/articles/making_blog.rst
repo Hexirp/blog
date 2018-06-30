@@ -189,4 +189,60 @@ hakyll-coreとhakyllという二つのフォルダに二つのライブラリが
 
 そして、メモリを使いすぎて落ちることなく、ビルドが成功しました！
 
-ここまでの作業は\ https://github.com/jaspervdj/hakyll/compare/1abdeee743d65d96c6f469213ca6e7ea823340a7...2487d2ca77606da20986165ee57b3de22e311a02\ で見れます。
+ここまでの作業は\ `1abdee...2487d2`_\ で見れます。
+
+.. _1abdee...2487d2: https://github.com/jaspervdj/hakyll/compare/1abdeee743d65d96c6f469213ca6e7ea823340a7...2487d2ca77606da20986165ee57b3de22e311a02
+
+************
+Hakyllの修正
+************
+
+実行しようとしたらこのようなエラーが出てしまいました。
+
+.. code-block:: text
+
+ $ stack exec -- hexirp-blog-exe build
+ Initialising...
+   Creating store...
+   Creating provider...
+   Running rules...
+ Checking for out-of-date items
+ Compiling
+   [ERROR] docs-pre\articles/coq_pattern_match.rst: hGetContents: invalid argumen
+
+パスがおかしくなってファイルを取得できていません。直さないといけないですね。
+
+実行の流れを辿ってみました。最初の関数は\ ``hakyllWith``\ です。
+その後、色々なオプション付きの似たような関数を辿り、
+\ ``invokeCommands``\ にたどり着きました。
+ここで、渡したオプションに応じて関数が呼ばれているようです。
+渡したオプションはbuildだったので、それは\ ``Commands.build``\ だと考えます。
+\ ``build``\ は\ ``run``\ の簡単なラップで、
+\ ``run``\ はstoreの生成、providerの生成、ruleの設定DSLを走らせる、
+それらを\ ``build``\ （さっきとは別）で実行、結果に応じた後処理を行うようです。
+storeは途中ファイルのキャッシュを担い、providerはサイトのソースを表します。
+
+パスの問題に対処するには、おそらく、パスを読み込むときか、
+それを使って処理するときのどっちかを直さないといけないと考えました。
+私は本質的に直したいので、providerを生成する\ ``newProvider``\ を見てみます。
+それはinternalな方の\ ``newProvider``\ を呼び出して後処理をするだけで、
+それは生成するときに\ ``getRecursiveContent``\ でコンテンツを取得して、
+\ ``getResourceInfo``\ で日時情報を取得して色々しています。
+
+WindowsとLinuxはパスの区切りが違います。\ ``\``\ と\ ``/``\ ですね。
+もし、ファイルパスを文字列で直接書けばどちらかにしか対応できません。
+そこで、\ ``System.FilePath``\ は\ ``(<\>)``\ 演算子を用意しています。
+これは二つの文字列をパスの区切りを挟んで結合する単純な演算子ですが、
+WindowsかLinuxかのどっちでコンパイルするかでパスの区切りが変わります。
+よって、\ ``(<\>)``\ を使っている関数は安全ということになります。
+
+すぐ真下に定義があったため初めに目が留まったのは\ ``getResourceInfo``\ で、
+\ ``docs-pre\articles/coq_pattern_match.rst``\ というパスを生成する物でした。
+私はここまで\ ``providerDirectory``\ に設定した\ ``docs-pre``\ が使われている、
+そのことに着目して追ってきました。そのコードは問題はないように見え、
+行き詰ったように思えましたが、\ ``toFilePath``\ を見てひらめきました。
+
+hakyllは内部で\ ``Identifier``\ という型でファイルパスで扱っています。
+これは、きれいなファイルパスというようなもので、その変換時に問題がありました。
+つまり、\ ``fromFilePath``\ が直接\ ``/``\ をパス区切りに使っていました。
+（\ https://github.com/jaspervdj/hakyll/blob/1abdeee743d65d96c6f469213ca6e7ea823340a7/lib/Hakyll/Core/Identifier.hs#L67\ ）
