@@ -25,15 +25,15 @@ module Main where
   compile copyFileCompiler
 
  templatesRule :: Rules ()
- templatesRule = matchGlob ("templates" </> "*") $ compile templateCompiler
+ templatesRule = match "templates\\\\*" $ compile templateCompiler
 
  stylesRule :: Rules ()
- stylesRule = matchGlob ("styles" </> "*") $ do
+ stylesRule = match "styles\\\\*" $ do
   route idRoute
   compile $ compressCssCompiler
 
  articlesRule :: Rules ()
- articlesRule = matchGlob ("articles" </> "*") $ do
+ articlesRule = match "articles\\\\*" $ do
   route $ setExtension "html"
   compile pandocCompiler
 
