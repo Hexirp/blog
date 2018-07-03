@@ -9,6 +9,7 @@ module Main where
 
  main :: IO ()
  main = hakyllWith config $ do
+  iconRule
   templatesRule
   stylesRule
   articlesRule
@@ -17,6 +18,11 @@ module Main where
  config = defaultConfiguration {
   providerDirectory = "docs-pre",
   destinationDirectory = "docs"}
+
+ iconRule :: Rules ()
+ iconRule = match "icon.png" $ do
+  route idRoute
+  compile copyFileCompiler
 
  templatesRule :: Rules ()
  templatesRule = match "templates" </> "*" $ compile templateCompiler
