@@ -33,7 +33,7 @@ module Main where
   compile $ compressCssCompiler
 
  articlesRule :: Rules ()
- articlesRule = match "articles\\\\*" $ do
+ articlesRule = match "articles\\\\graphics_in_haskell.rst" $ do
   route $ setExtension "html"
   compile pandocCompiler
 
