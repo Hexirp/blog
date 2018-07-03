@@ -25,14 +25,19 @@ module Main where
   compile copyFileCompiler
 
  templatesRule :: Rules ()
- templatesRule = match ("templates" </> "*") $ compile templateCompiler
+ templatesRule = matchGlob ("templates" </> "*") $ compile templateCompiler
 
  stylesRule :: Rules ()
- stylesRule = match ("styles" </> "*") $ do
+ stylesRule = matchGlob ("styles" </> "*") $ do
   route idRoute
   compile $ compressCssCompiler
 
  articlesRule :: Rules ()
- articlesRule = match ("articles" </> "*") $ do
+ articlesRule = matchGlob ("articles" </> "*") $ do
   route $ setExtension "html"
   compile pandocCompiler
+
+ -------------------------------------------------------------------------------
+
+ matchGlob :: String -> Rules () -> Rules ()
+ matchGlob path rule = match (fromGlob path) rule
