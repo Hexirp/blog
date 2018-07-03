@@ -6,7 +6,10 @@ module Main where
  import Hakyll
 
  main :: IO ()
- main = hakyllWith config $ articlesRule
+ main = hakyllWith config $ do
+  templatesRule
+  stylesRule
+  articlesRule
 
  config :: Configuration
  config = defaultConfiguration {
