@@ -3,16 +3,20 @@
 module Main where
  import Prelude
 
+ import GHC.IO.Encoding (setLocaleEncoding, utf8)
+
  import System.FilePath ((</>))
 
  import Hakyll
 
  main :: IO ()
- main = hakyllWith config $ do
-  iconRule
-  templatesRule
-  stylesRule
-  articlesRule
+ main = do
+  setLocaleEncoding utf8
+  hakyllWith config $ do
+   iconRule
+   templatesRule
+   stylesRule
+   articlesRule
 
  config :: Configuration
  config = defaultConfiguration {
