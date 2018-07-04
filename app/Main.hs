@@ -41,7 +41,7 @@ module Main where
  articlesRule :: Rules ()
  articlesRule = match' ["articles", "*"] $ do
   route $ setExtension "html"
-  compile pandocCompiler >>= loapplyTmp "default.html" context
+  compile $ pandocCompiler >>= loapplyTmp "default.html" context
 
  context :: Context String
  context = field "body" $ return . itemBody
@@ -68,4 +68,4 @@ module Main where
 
  -- | templatesフォルダからテンプレートを探して適用する
  loapplyTmp :: String -> Context a -> Item a -> Compiler (Item String)
- loapplyTmp x = loadAndApplyTemplate (fromIdentifier $ "templates" </> x)
+ loapplyTmp x = loadAndApplyTemplate (fromFilePath $ "templates" </> x)
