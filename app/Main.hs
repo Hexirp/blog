@@ -3,9 +3,11 @@
 module Main where
  import Prelude
 
+ import Data.List (intercalate)
+
  import GHC.IO.Encoding (setLocaleEncoding, utf8)
 
- import System.FilePath ((</>))
+ import System.FilePath (pathSeparator)
 
  import Hakyll
 
@@ -43,5 +45,10 @@ module Main where
 
  -------------------------------------------------------------------------------
 
- matchGlob :: String -> Rules () -> Rules ()
- matchGlob path rule = match (fromGlob path) rule
+ -- | 区切られたGlob記法をマッチする
+ match' :: [String] -> Rules () -> Rules ()
+ match' x rule = match (fromGlob $ intercalate (escape pathSeparator) x) rule
+
+ -- | Glob記法での特殊文字をエスケープする
+ escape :: Char -> String
+ escape
