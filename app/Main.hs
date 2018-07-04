@@ -41,7 +41,7 @@ module Main where
  articlesRule :: Rules ()
  articlesRule = match' ["articles", "*"] $ do
   route $ setExtension "html"
-  compile $ pandocCompiler >>= loapplyTmp "default.html" context
+  compile $ pandocCompiler >>= loapplyTmp "default.html" defaultContext
 
  context :: Context String
  context = field "body" $ return . itemBody
