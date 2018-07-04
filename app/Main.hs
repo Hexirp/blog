@@ -7,13 +7,14 @@ module Main where
 
  import GHC.IO.Encoding (setLocaleEncoding, utf8)
 
- import System.FilePath (pathSeparator)
+ import System.FilePath (pathSeparator, (</>))
 
  import Hakyll
 
  main :: IO ()
  main = do
   setLocaleEncoding utf8
+
   hakyllWith config $ do
    iconRule
    templatesRule
@@ -41,7 +42,12 @@ module Main where
  articlesRule :: Rules ()
  articlesRule = match' ["articles", "*"] $ do
   route $ setExtension "html"
-  compile pandocCompiler
+
+  item <- compile pandocCompiler
+  loadAndApplyTemplate ("templates" </> "default.html") context item
+
+ context :: Context String
+ context = field "body" $ return . itemBody
 
  -------------------------------------------------------------------------------
 
