@@ -14,7 +14,6 @@ module Main where
  main :: IO ()
  main = do
   setLocaleEncoding utf8
-
   hakyllWith config $ do
    iconRule
    templatesRule
@@ -42,9 +41,7 @@ module Main where
  articlesRule :: Rules ()
  articlesRule = match' ["articles", "*"] $ do
   route $ setExtension "html"
-
-  item <- compile pandocCompiler
-  loadAndApplyTemplate ("templates" </> "default.html") context item
+  compile pandocCompiler >>= loapplyTmp "default.html" context
 
  context :: Context String
  context = field "body" $ return . itemBody
@@ -66,3 +63,9 @@ module Main where
  escapeGlob [] = []
  escapeGlob ('\\' : xs) = '\\' : '\\' : escapeGlob xs
  escapeGlob ('*' : xs) = '\\' : '*' : escapeGlob xs
+
+ -------------------------------------------------------------------------------
+
+ -- | templatesフォルダからテンプレートを探して適用する
+ loapplyTmp :: String -> Context a -> Item a -> Compiler (Item String)
+ loapplyTmp x = loadAndApplyTemplate (fromIdentifier $ "templates" </> x)
