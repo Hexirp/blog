@@ -185,7 +185,7 @@ hakyll-coreとhakyllという二つのフォルダに二つのライブラリが
 この時点で一回ビルドして、ファイルがないというエラーを見つけました。
 本来は必要なのに消しすぎたということなので戻そうとしたのですが、
 なぜか認識されませんでした。これはバグでした。
-（\ https://github.com/jaspervdj/hakyll/pull/645\ ）
+（ https://github.com/jaspervdj/hakyll/pull/645 ）
 
 そして、メモリを使いすぎて落ちることなく、ビルドが成功しました！
 
@@ -208,7 +208,7 @@ Hakyllの修正
    Running rules...
  Checking for out-of-date items
  Compiling
-   [ERROR] docs-pre\articles/coq_pattern_match.rst: hGetContents: invalid argumen
+   [ERROR] docs-pre\articles/coq_pattern_match.rst: hGetContents: invalid argument
 
 パスがおかしくなってファイルを取得できていません。直さないといけないですね。
 
@@ -245,10 +245,14 @@ WindowsかLinuxかのどっちでコンパイルするかでパスの区切り�
 hakyllは内部で\ ``Identifier``\ という型でファイルパスで扱っています。
 これは、きれいなファイルパスというようなもので、その変換時に問題がありました。
 つまり、\ ``fromFilePath``\ が直接\ ``/``\ をパス区切りに使っていたのです。
-（\ https://github.com/jaspervdj/hakyll/blob/1abdeee743d65d96c6f469213ca6e7ea823340a7/lib/Hakyll/Core/Identifier.hs#L67\ ）
+（ https://github.com/jaspervdj/hakyll/blob/1abdeee743d65d96c6f469213ca6e7ea823340a7/lib/Hakyll/Core/Identifier.hs#L67 ）
 
 直してやったのですが、エラーは出なくなった代わりに
 ファイルが認識されなくなってしまいました。
+
+.. note::
+ プルリクエストは送り終えています
+ （ https://github.com/jaspervdj/hakyll/pull/649 ）
 
 ************
 規則の書き方
@@ -275,3 +279,36 @@ Hakyllは規則をまとめて\ ``hakyll``\ 系関数に渡してやって実行
 
 修正したら無事ファイルが認識されてコンパイルできました。
 ただしテンプレートが適用されていないのでのっぺりでした。
+
+******************
+テンプレートの適用
+******************
+
+これも\ ``match``\ と同じような罠がありましたので、
+二つともまとめてヘルパー関数を作っておきました。
+
+さてコンパイルしようとしたところ、
+「テンプレートの穴が開いているところは埋められなければならない」
+このルールに引っかかって動作させることが出来ませんでした。
+穴は文脈から埋められるのですが、その文脈を作るのが難しい。
+というか、Pandocで定義される\ `yaml_metadata_block`_\ で文脈を定義して、
+それを取り出すのが定石なのですが、これが好きではない。
+とりあえず黙認値で埋めときました。
+
+.. _yaml_metadata_block: https://pandoc.org/MANUAL.html#extension-yaml_metadata_block
+
+*********************
+stackのresolverの更新
+*********************
+
+resolverは早め早めに更新しないと後で困ります。
+更新したら変なエラーが出てしまいました。
+（ https://travis-ci.org/Hexirp/blog/builds/400810238 ）
+
+* https://github.com/jaspervdj/hakyll/issues/629
+* https://github.com/commercialhaskell/stack/issues/4071
+* https://github.com/commercialhaskell/stack/pull/4111
+
+つまり、最後のプルリクエストでこのエラーは解決しています。
+しかし、それはまだリリースされたstackに含まれていません！
+しばらく待つ必要がありそうです。
