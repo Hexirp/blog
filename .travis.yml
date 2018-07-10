@@ -21,6 +21,13 @@ install:
 script:
   - stack --no-terminal build
 
+deploy:
+  provider: script
+  script: ./deploy.sh
+  on:
+    branch: source
+  skip_cleanup: true
+
 cache:
   directories:
     - $HOME/.stack
