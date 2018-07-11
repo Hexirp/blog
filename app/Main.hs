@@ -63,6 +63,7 @@ module Main where
  escapeGlob [] = []
  escapeGlob ('\\' : xs) = '\\' : '\\' : escapeGlob xs
  escapeGlob ('*' : xs) = '\\' : '*' : escapeGlob xs
+ escapeGlob (x : xs) = x : escapeGlob xs
 
  -------------------------------------------------------------------------------
 
