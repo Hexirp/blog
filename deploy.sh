@@ -2,13 +2,10 @@
 
 set -eu
 
-NAME=Hexirp
-EMAIL=Hexirp@users.noreply.github.com
+git remote add travis "https://Hexirp:${TOKEN}@github.com/Hexirp/blog.git" &> /dev/null
 
-git remote add travis "https://${TOKEN}@github.com/Hexirp/blog.git"
-
-git config --global user.name "${NAME}"
-git config --global user.email "${EMAIL}"
+git config --global user.name "Hexirp"
+git config --global user.email "Hexirp@users.noreply.github.com"
 
 stack exec -- hexirp-blog-exe build
 
@@ -22,4 +19,4 @@ git merge -s ours -m "Merge: by TravisCI (${TRAVIS_BUILD_NUMBER})" --no-ff maste
 git checkout master
 git merge now-source --ff-only
 
-git push travis master
+git push travis master &> /dev/null
