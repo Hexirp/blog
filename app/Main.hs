@@ -43,12 +43,9 @@ module Main where
   route $ setExtension "html"
   compile $ pandocCompiler >>= loapplyTmp "default.html" defaultContext
 
- context :: Context String
- context = field "body" $ return . itemBody
-
  -------------------------------------------------------------------------------
 
- -- | 区切られたGlob記法をマッチする
+ -- | 区切られたGlob記法でマッチする
  --
  -- WindowsとLinuxとの互換性に関して有用である。
  match' :: [String] -> Rules () -> Rules ()
