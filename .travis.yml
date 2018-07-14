@@ -10,6 +10,10 @@ addons:
     packages:
       - libgmp-dev
 
+env:
+  global:
+    - secure: "m90tzANN+iXpkwm5hM/BDq2HXEUH0wE687i1Qwpf4ee7GcfHuqI9yLrSBUp2Y1RR5RmSFJet7ZyoNJONZNPJbomqrwVGqk6dQe8l7khEao2r8Ajrmq/2uPjJEi1vCwScqShdWLMz+cnUc4PWMleVdXSv6KpKvERSIVF+1rWaQPwFGVHmqtGjMXyUwxYPRwVDJx70pZwegupiN+/p/vhOXlH1cFfKA5tu49nwzEu2qXX7sjQnix1MNUOY0eZDeSiOIsjR3cSf8sOm7s/LnsjLe4SMBYlARRefnbpNvUyCSsJSMRE/s3gfVZLZREBeb2MNZeAP2rFQFL4Ykh68o6+wiVLtSSzUH+JtlPJ9GXsEcDNh1rIeHGFaTxokogYyskwgI8U6rvyA9ZgO0FRlfF1wphjI6dQAfZ0c9I9HehQAgItdYL5Nn+4xUSrGix1I/3KLvvwvMe8gXQlNYI9k3dVEBRqJAOMlvKqpuz1j/tANd7okT4Jf1phGhR2J5PVqFOxO3BvrkG6y0wAdM8Eyj866F28xW79qZJBQEH0A4VFbkBy2S2CvNHNxLSBkDN7do93m4NzRk7PhVuVrl7FgD7uG4c3l1P/rXyxJEOeEB/wJUUUhaginLlabRDKYIGtSLGBuxXb31ZJXe3tH7ieJDToK9ygFHWSIK6CYQRYzA2MIis8="
+
 before_install:
   - mkdir -p ~/.local/bin
   - export PATH=$HOME/.local/bin:$PATH
@@ -20,6 +24,13 @@ install:
 
 script:
   - stack --no-terminal build
+
+deploy:
+  provider: script
+  script: ./deploy.sh
+  on:
+    branch: source
+  skip_cleanup: true
 
 cache:
   directories:
