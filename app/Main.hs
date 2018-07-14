@@ -43,6 +43,11 @@ module Main where
   route $ setExtension "html"
   compile $ pandocCompiler >>= loapplyTmp "default.html" defaultContext
 
+ indexRule :: Rules ()
+ indexRule = match "index.rst" $ do
+  route $ setExtension "html"
+  compile $ pandocCompiler >>= loapplyTmp "default.html" defaultContext
+
  -------------------------------------------------------------------------------
 
  -- | 区切られたGlob記法でマッチする
