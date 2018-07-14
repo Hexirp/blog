@@ -13,8 +13,8 @@ git add docs/
 git commit -m "Build: by TravisCI (${TRAVIS_BUILD_NUMBER})"
 git checkout -b now-source
 
-git pull origin master
-git merge -s ours -m "Merge: by TravisCI (${TRAVIS_BUILD_NUMBER})" --no-ff master
+git fetch origin master
+git merge -s ours -m "Merge: by TravisCI (${TRAVIS_BUILD_NUMBER})" --no-ff origin/master
 
 git checkout master
 git merge now-source --ff-only
