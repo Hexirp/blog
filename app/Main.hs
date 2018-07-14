@@ -19,6 +19,7 @@ module Main where
    templatesRule
    stylesRule
    articlesRule
+   indexRule
 
  config :: Configuration
  config = defaultConfiguration {
