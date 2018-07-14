@@ -19,6 +19,7 @@ git commit -m "Build: by TravisCI (${TRAVIS_BUILD_NUMBER})"
 git fetch origin master
 git merge -s ours -m "Merge: by TravisCI (${TRAVIS_BUILD_NUMBER})" --no-ff origin/master
 
+git stash
 git checkout -b master origin/master
 git merge now-source --ff-only
 
