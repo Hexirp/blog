@@ -219,51 +219,52 @@ sdl2
 .. _27b3ce:
  https://github.com/Hexirp/hasga/tree/27b3cee11f149fb1191b50f285cf1ff0011c5fcb
 
-*************************
-glossでも同じようにできた
-*************************
+**************************
+gloss でも同じようにできた
+**************************
 
-\ `sdl2`_\ で可能なCライブラリのインストール方法ですが、
-\ `Index of /mingw/x86_64/`_\ の中にfreeglutがあったので、
-こんな風にインストールしてみたらglossでも出来ちゃいました。
-（ソースコードは\ `e8fdcf`_\ ）
+上記のインストール方法ですが、\ `Index of /mingw/x86_64/`_ の中に freeglut が
+あったため、こんな風にインストールしてみたら gloss でも使えました。
+（ソースコードは `e8fdcf`_\ ）
 
 .. code-block:: bash
 
  stack exec -- pacman -S mingw-w64-x86_64-freeglut
 
-かなり有用であると思われますので、
-このインストール方法について詳しく書き留めておきます。
-参考にするのならば自己責任でお願いします。
+便利なのでこのインストール方法について知っていることを書き出しておきます。
 
 原理
- Windows版のstackは内部にMSYS2というソフトを持っている。
- Windowsでshellをやるためのソフトで、
- stackはこれをサンドボックス環境としている。
- おそらく、\ ``stack exec -- <command>``\ としたときに、
- この環境の中で実行されるのだと思う。
+ Windows 版の stack は内部に MSYS2 というソフトを持っている。
+ Windows で shell をやるためのソフトであり、
+ stack はこれをサンドボックス環境としている。
+ おそらく、\ ``stack exec -- <command>`` としたときに、
+ そのコマンドがこの環境の中で実行されるのだと思う。
 
- ここで、MSYS2はもっと深くshellの動作を模擬することが出来て、
- 例えば、ライブラリのインストールを行う\ ``pacman``\ が使える。
+ MSYS2 はもっと深く shell の動作を模擬することが出来て、
+ 例えば、ライブラリのインストールを行う ``pacman`` が使える。
  そして、実際にそのサンドボックス環境にライブラリがインストールされる。
- インストールできるライブラリは http://repo.msys2.org/msys/x86_64/ や
- http://repo.msys2.org/mingw/x86_64/ にあるものだと思う。
+ インストールできるライブラリは多分 http://repo.msys2.org/msys/x86_64/ や
+ http://repo.msys2.org/mingw/x86_64/ にあるもの。
 
 やり方
- 最初にライブラリの更新をする。
- \ ``stack exec -- pacman -Syu``\ を実行する。
- 最新の状態にしておくことは大切。
- 私の場合はこれが失敗して何度か実行する必要があった。
-
- 次に、欲しいライブラリをインストールする。
- \ ``stack exec -- pacman -S <library>``\ を実行する。
+ 最初に ``stack exec -- pacman -Syu`` を実行して既存のライブラリを更新する。
+ 失敗することがあるが、再実行すれば出来るはずである。
+ 次に欲しいライブラリをインストールする。
+ ``stack exec -- pacman -S <library>`` を実行する。
 
 注意点
- glossの場合はCライブラリが実行時に必要になるので\ ``stack install``\ しても、
- freeglutはサンドボックス環境にしかないため実行できないと思う。
+ gloss の場合は freeglut が実行時に必要になるため、
+ 作ったソフトウェアを ``stack install`` して実行しても
+ freeglut はサンドボックス環境にしかないためおそらくエラーになる。
+ つまり、この方法では ``stack exec`` を使ってしか実行できない。
+ また、gloss を使って作ったゲームは、exe を配布しても
+ それぞれのプレイヤーがfreeglut をインストールする必要がある。
 
- また、sdl2はこのインストール形式に対して特別に対応を行っているのに対して、
- glossが使うGLUTは対応していないので「エラーがあるけど一応動く」という状態に
- なってしまう。
+ さらに、sdl2 はこのインストール形式に対して特別に対応を行っているのに対して、
+ gloss が使う GLUT は対応していないので「エラーがあるけど一応動く」状態になり、
+ 下のようなメッセージが終了するたびに表示される。
 
-エラーが起きたらMSYS2について調べればよいと思います。
+ .. code-block:: text
+
+  freeglut (hasga-exe.EXE): fgPlatformInitialize: CreateDC failed, Screen size info may be incorrect
+  This is quite likely caused by a bad '-display' parameter
