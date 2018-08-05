@@ -200,17 +200,16 @@ GLFW は GLUT の開発が止まった後に主流になったライブラリで
 sdl2
 ****
 
-\ `とある記事`_\ で\ `sdl2`_\ を見つけました。
-READMEを見てみると、使われているCライブラリを、
-stackだけでインストールできるといいます！
+`とある記事`_ をきっかけとして `sdl2`_ を知りました。調べてみると
+使われているCライブラリを stack だけでインストールできるといいます！
 （\ `Windows SDL2 is now almost painless via stack`_\ ）
 
-どうやらstackはここ（\ `Index of /mingw/x86_64/`_\ ）にあるものを
-インストールできるようです。（sandboxの中で！）
+どうやら stack はここ（\ `Index of /mingw/x86_64/`_\ ）にあるものを
+インストールできるようです。（サンドボックスの中で！）初耳でした。
 そして、とうとうHaskellでウィンドウを表示させることが出来ました！
-（ソースコードは\ `27b3ce`_\ )
+ソースコードはこの状態 (`27b3ce`_\) でした。
 
-今までが嘘かのようにすんなりいったので感動するしかありませんでした。
+今までが嘘かのようにすんなりいったので感動しました。
 
 .. _sdl2: https://hackage.haskell.org/package/sdl2
 .. _とある記事: https://myuon.github.io/posts/refluxible-library/
