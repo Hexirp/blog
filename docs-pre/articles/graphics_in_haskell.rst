@@ -50,19 +50,19 @@ Haskellでの絵
 .. _Haskell-jp: https://haskell.jp/
 .. _gloss: https://hackage.haskell.org/package/gloss
 
-*******************************
-glossのサンプルが起こしたエラー
-*******************************
+********************************
+gloss のサンプルが起こしたエラー
+********************************
 
-円を表示するサンプルを入力してコンパイルして実行すると、
-このようなエラーが出て何も表示されないまま終了しました。
-ソースコードはこの状態（\ `ceaa10`_\ ）でした。
+gloss のチュートリアルにあった円を表示するサンプルをコンパイルして実行すると、
+このようなエラーが出て何も表示されないまま終了してしまいました。
+その時のソースコードはこのような状態 (`ceaa10`_) でした。
 
 .. code-block:: text
 
  hasga-exe.EXE: user error (unknown GLUT entry glutInit)
 
-調べてみると\ `glossのホームページ`_\ のQ&Aに対処法が載っていました。
+調べてみると `gloss のホームページ`_\ のQ&Aに対処法が載っていました。
 
  | **Q: On Windows, when I try to run a gloss program it says**
    ``user error (unknown GLUT entry glutInit)``\ **.**
@@ -72,36 +72,31 @@ glossのサンプルが起こしたエラー
    Alternatively, you can just copy it into the same directory
    as the Main.exe executable you are trying to run.
 
-「\ ``glut32.dll``\ をインストールして、
-システムに関わっていそうな何某のフォルダに入れるか、
-実行ファイルと同じところに置かないといけない」
+要約すると「 ``glut32.dll`` をインストールして何某のフォルダに入れるか
+実行ファイルと同じところに置かないといけない」という感じです。
 
-まず、\ ``glut32.dll``\ がいったい何なのか調べてみると、
-\ `GLUT`_\ のものでした。
+まず、\ ``glut32.dll`` がいったい何なのか調べてみると `GLUT`_ のものでした。
+さらに、どうしてこれが必要になるのか調べると、\ `gloss`_ が依存する
+`GLUT (haskell)`_ が GLUT を FFI で使っているためでした。
 
-どうしてこれが必要になるのか調べると、
-\ `gloss`_\ が依存する\ `GLUT (haskell)`_\ のせいでした。
+ならば、言う通り glut をインストールすればいいのかと思いましたが
+今は開発が止まっていて `freeglut`_ に引き継がれているようです。
+GLUT (haskell) もまた freeglut を使えるようになっていました。
 
-ならば、言う通りglutをインストールすればいいのかと思いましたが、
-今は開発が止まっていて\ `freeglut`_\ に引き継がれているようです。
-GLUT (haskell)もまたfreeglutを利用できます。
-
-つまるところ、freeglutをインストールすればいいわけです。
-しかし、そのインストールのために自分でコンパイルする必要がありました。
+つまるところ、freeglut をインストールすればいいわけです。
+しかし、そのインストール方法は自分でコンパイルすることでした。
 
 必要な物：
 
 * `Microsoft Visual Studio`_
 * `CMake`_
 
-CMakeを使ってビルドするだけです。
-
-昔は全ての分野で、そして今でも一部の分野ではこれが普通なのでしょう。
-しかし、stackやgradleというぬるま湯で育った私にはめんどくさく感じられました。
+CMake を使ってビルドするらしいです。一部の分野ではこれが普通なのでしょうか。
+しかし、stack や gradle というぬるま湯で育った私にはめんどくさく感じられました。
 
 .. _ceaa10:
  https://github.com/Hexirp/hasga/tree/ceaa10c76b078ab856b22c9f98a08dbef1c8c15a
-.. _glossのホームページ: http://gloss.ouroborus.net/
+.. _gloss のホームページ: http://gloss.ouroborus.net/
 .. _OpenGL Utility Toolkit: https://ja.wikipedia.org/wiki/OpenGL_Utility_Toolkit
 .. _GLUT: https://www.opengl.org/resources/libraries/glut/
 .. _GLUT (haskell): https://hackage.haskell.org/package/GLUT
