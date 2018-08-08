@@ -71,6 +71,14 @@ pre > code {
   border-radius: 0px;
 }
 
+div#note {
+  background-color: #00ffff;
+}
+
+div#note:first-child {
+  background-color: #0088ff;
+}
+
 
 #icon {
   display: flex;
