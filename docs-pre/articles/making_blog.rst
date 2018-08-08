@@ -20,7 +20,7 @@ Haskell で書かれた静的なウェブサイトのためのコンパイラ、
 Jekyll の Haskell版であり、markdown なんなりで書かれたものをHTMLへ変換し、
 テンプレートを使ってヘッダーなどを付け加え、一ページとしてコンパイルできます。
 
-最初の一歩、Hakyll を依存関係へ加えてやりました。何も関数は使いません。
+最初の一歩、Hakyll を依存関係へ加えてやりました。ただビルドさせるだけです。
 しかし、Hakyllの大量の依存関係のせいでビルドに約1時間かかってしまったあげく、
 最終的に Windows のみで発生するらしい GHC そのもののバグで失敗してしまいました。
 
@@ -157,7 +157,7 @@ GHCのメモリ使用量を減らす
  ``Limiting GHC Memory`` とかいうキーワードで検索したりしたのですが、
  ほとんど情報は見つかりません。どうやら無理なようです。
 
- Stack Overflowに投稿された「GHCのメモリ使用量を制限する方法は？」という質問に
+ Stack Overflow に投稿された「GHCのメモリ使用量を制限する方法は？」という質問に
  まったく回答が付いていないのが哀愁を感じさせました。
 
 分割コンパイル
@@ -211,7 +211,8 @@ hakyll-core と hakyll それぞれに一つのフォルダが割り当てられ
 
 ここまでの作業は `1abdee...2487d2`_ で見れます。
 
-.. _1abdee...2487d2: https://github.com/jaspervdj/hakyll/compare/1abdeee743d65d96c6f469213ca6e7ea823340a7...2487d2ca77606da20986165ee57b3de22e311a02
+.. _1abdee...2487d2:
+ https://github.com/jaspervdj/hakyll/compare/1abdeee743d65d96c6f469213ca6e7ea823340a7...2487d2ca77606da20986165ee57b3de22e311a02
 
 *************
 Hakyll の修正
@@ -325,7 +326,8 @@ Windows でも Linux でも同じように書いて使えます。
 
 仕方ないのでとりあえずデフォルト値で埋めときました。
 
-.. _yaml_metadata_block: https://pandoc.org/MANUAL.html#extension-yaml_metadata_block
+.. _yaml_metadata_block:
+ https://pandoc.org/MANUAL.html#extension-yaml_metadata_block
 
 ************************
 stack の resolver の更新
