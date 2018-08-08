@@ -1,7 +1,10 @@
 # hexirp-blog
 
-このリポジトリは、私のブログです。
-私のブログの記事とそれをHakyllによってコンパイルするプログラムからなります。
+ブログのソースコード。
+
+ブログの記事とそれをHakyllによってコンパイルするプログラムからなる。
+HakyllのバグがなければWindowsでもLinuxでもビルドできるはず。
+for-windowsブランチはWindows用で、独自にバグを直したHakyllを使う。
 
 ## LICENSE
 
