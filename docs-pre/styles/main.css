@@ -51,14 +51,14 @@ code {
   font-size: 90%;
   line-height: 1.5;
   background-color: rgba(27,31,35,0.05);
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 pre {
   padding: 16px;
   overflow: auto;
   background-color: #f6f8fa;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 pre > code {
