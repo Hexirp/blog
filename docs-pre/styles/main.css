@@ -46,6 +46,7 @@ h2 {
 
 code {
   padding: 0.2em 0.4em;
+  overflow: auto;
   font-family: "SFMono-Regular",Consolas,"Liberation Mono",Menlo,Courier,monospace;
   font-size: 85%;
   line-height: 1.45;
