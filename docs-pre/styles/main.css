@@ -46,7 +46,6 @@ h2 {
 
 code {
   padding: 0.2em 0.4em;
-  overflow: auto;
   font-family: "SFMono-Regular",Consolas,"Liberation Mono",Menlo,Courier,monospace;
   font-size: 85%;
   line-height: 1.45;
@@ -57,16 +56,12 @@ code {
 pre {
   padding: 16px;
   overflow: auto;
-  font-family: "SFMono-Regular",Consolas,"Liberation Mono",Menlo,Courier,monospace;
-  font-size: 85%;
-  line-height: 1.45;
   background-color: #f6f8fa;
   border-radius: 3px;
 }
 
 pre > code {
   padding: 0px;
-  font-size: 100%;
   background-color: transparent;
   border-radius: 0px;
 }
