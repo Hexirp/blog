@@ -47,7 +47,7 @@ h2 {
 code {
   padding: 0.2em 0.4em;
   overflow: auto;
-  font-family: "SFMono-Regular",Consolas,"Liberation Mono",Menlo,Courier,monospace;
+  font-family: "Ricty Diminished","SFMono-Regular",Consolas,"Liberation Mono",Menlo,Courier,monospace;
   font-size: 90%;
   line-height: 1.5;
   background-color: rgba(33,33,33,0.1);
@@ -95,4 +95,10 @@ th, td {
 
 #nav > li {
   padding: 8px;
+}
+
+
+@font-face {
+	font-family: 'Ricty Diminished';
+	src: url(https://raw.githubusercontent.com/edihbrandon/RictyDiminished/master/RictyDiminishedDiscord-Regular.ttf);
 }
