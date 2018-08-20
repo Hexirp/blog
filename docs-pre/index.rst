@@ -13,4 +13,4 @@ Hexirp's blog
 ****
 
 * `Haskellでの絵 </blog/articles/graphics_in_haskell.html>`_
-* `このブログの制作記録 </blog/articles/making_blog.html>`_
+* `このブログの制作記録 </blog/articles/making_the_blog.html>`_
