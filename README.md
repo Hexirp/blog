@@ -8,4 +8,4 @@ for-windowsブランチはWindows用で、独自にバグを直したHakyllを�
 
 ## LICENSE
 
-[LICENSE](LICENSE) applies to all files **except docs-pre/**.
+[LICENSE](LICENSE) applies to all files **except docs-pre/ and docs/**.

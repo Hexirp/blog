@@ -1,17 +1,17 @@
 ---
-title: Hexirp's blog
+title: Home
 ...
 
 #############
 Hexirp's blog
 #############
 
-初めまして。理論寄りのプログラマーです。
+初めまして。理論寄りのプログラマーです。好きなものは机上の空論です。
 
 ****
 記事
 ****
 
-* `Haskellでの絵 <articles/graphics_in_haskell.html>`_
-* `このブログの制作記録 <articles/making_blog.html>`_
+* `Haskellでの絵 </blog/articles/graphics_in_haskell.html>`_
+* `このブログの制作記録 </blog/articles/making_the_blog.html>`_
 * `モナドの意味 <articles/the_meaining_of_monad.html>`_
