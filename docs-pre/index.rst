@@ -14,3 +14,4 @@ Hexirp's blog
 
 * `Haskellでの絵 <articles/graphics_in_haskell.html>`_
 * `このブログの制作記録 <articles/making_blog.html>`_
+* `モナドの意味 <articles/the_meaining_of_monad.html>`_
