@@ -50,14 +50,14 @@ code {
   font-family: "SFMono-Regular",Consolas,"Liberation Mono",Menlo,Courier,monospace;
   font-size: 90%;
   line-height: 1.5;
-  background-color: rgba(33,33,33,0.05);
+  background-color: rgba(33,33,33,0.1);
   border-radius: 4px;
 }
 
 pre {
   padding: 16px;
   overflow: auto;
-  background-color: rgba(33,33,33,0.05);
+  background-color: rgba(33,33,33,0.1);
   border-radius: 4px;
 }
 
