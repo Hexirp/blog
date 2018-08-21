@@ -97,5 +97,16 @@ title: モナドの意味
 圏論の今は「モナド」と呼ばれる概念に、「モナド」という言葉が割り当てられたのは、
 圏論の上でモナドが果たす役割に絡んだもっと深い理由があるらしいです。
 
+********
+参考文献
+********
+
+論文では Wikipedia を参考文献としてはいけないらしいですね。
+この記事は参考文献が全て Wikipedia です。
+
+* https://ja.wikipedia.org/wiki/モナド_(哲学)
+* https://ja.wikipedia.org/wiki/モナド_(圏論)
+* https://ja.wikipedia.org/wiki/モナド_(プログラミング)
+
 .. _モナド: https://ja.wikipedia.org/wiki/モナド
 .. _モナド_(哲学): https://ja.wikipedia.org/wiki/モナド_(哲学)
