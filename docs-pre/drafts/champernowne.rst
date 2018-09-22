@@ -167,3 +167,59 @@ log n に比例して高さが大きくなるはずで、それが計算量が n
 集めているだけなので分配したらフラットになるのでは。
 
 これが正しければ線形時間になるのでは。
+
+****
+検証
+****
+
+実際に0から6個を取り出すものを計算してみる。
+
+.. code-block:: text
+
+ champernowne
+
+ concat cham_sep
+
+ build (\c n -> foldr (\x y -> foldr c y x) n cham_sep)
+
+ (\c n -> foldr (\x y -> foldr c y x) n cham_sep) (:) []
+
+ (\n -> foldr (\x y -> foldr (:) y x) n cham_sep) []
+
+ foldr (\x y -> foldr (:) y x) [] cham_sep
+
+ let
+  go []     = []
+  go (y:ys) = (\x y -> foldr (:) y x) y (go ys)
+ in
+  go cham_sep
+
+ let
+  go []     = []
+  go (y:ys) = (\y0 -> foldr (:) y0 y) (go ys)
+ in
+  go cham_sep
+
+ let
+  go []     = []
+  go (y:ys) = foldr (:) (go ys) y
+ in
+  go cham_sep
+
+ let
+  go []     = []
+  go (y:ys) = foldr (:) (go ys) y
+ in
+  case cham_sep of
+   []     -> []
+   (y:ys) -> foldr (:) (go ys) y
+
+ let
+  go []     = []
+  go (y:ys) = foldr (:) (go ys) y
+ in
+  case map cham_piece [0 :: Integer ..] of
+   []     -> []
+   (y:ys) -> foldr (:) (go ys) y
+
+無理ですね。
