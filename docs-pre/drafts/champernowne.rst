@@ -83,6 +83,53 @@
 ****
 
 あるn桁まで計算したとき、次の(n+1)桁を取り出すための計算量が log n であると
-予測します。これによって、n桁までの計算量は積分に従い n log n になるはずです。
+予測します。この予測に従うと、n桁までの計算量は積分で n log n になるはずです。
 
 Haskell の計測に関するデファクトスタンダードは criterion です。使いましょう。
+
+.. code-block:: haskell
+
+ import Criterion.Main
+
+ -- 上のコードスニペットをここに
+
+ main :: IO ()
+ main = do
+  x <- defaultMain [
+   bgroup "cham" [
+    bench "10000" $ nf cham 10000,
+    bench "100000" $ nf cham 100000,
+    bench "1000000" $ nf cham 1000000]
+   ]
+  return x
+
+ cham :: Int -> [Bool]
+ cham x = take x champernowne
+
+さて、他のプログラムをすべて終了させて計測してみます。
+
+.. code-block:: text
+
+ benchmarking cham/10000
+ time                 431.0 μs   (425.5 μs .. 436.3 μs)
+                      0.998 R²   (0.997 R² .. 0.999 R²)
+ mean                 434.3 μs   (429.6 μs .. 442.4 μs)
+ std dev              20.14 μs   (14.26 μs .. 32.38 μs)
+ variance introduced by outliers: 41% (moderately inflated)
+
+ benchmarking cham/100000
+ time                 3.885 ms   (3.811 ms .. 3.972 ms)
+                      0.996 R²   (0.993 R² .. 0.998 R²)
+ mean                 3.877 ms   (3.832 ms .. 3.931 ms)
+ std dev              159.0 μs   (126.5 μs .. 196.8 μs)
+ variance introduced by outliers: 23% (moderately inflated)
+
+ benchmarking cham/1000000
+ time                 41.30 ms   (40.05 ms .. 42.72 ms)
+                      0.995 R²   (0.985 R² .. 1.000 R²)
+ mean                 40.50 ms   (40.01 ms .. 41.66 ms)
+ std dev              1.394 ms   (656.2 μs .. 2.379 ms)
+
+はい、何もわかりませんね。ただ、時間を測るのには100000がちょうど良さそうです。
+解像度を上げてみます。100000から1000000まで10000刻みにして11のケースを作ります。
+ついでに ``--output FILE`` オプションを使ってHTMLファイルで結果を出力させます。
