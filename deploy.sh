@@ -15,12 +15,17 @@ stack exec -- hexirp-blog-exe build
 
 git add docs/
 git commit -m "Build: by TravisCI (${TRAVIS_BUILD_NUMBER})"
+git stash
 
 git fetch origin master
-git merge -s ours -m "Merge: by TravisCI (${TRAVIS_BUILD_NUMBER})" --no-ff origin/master
-
-git stash
 git checkout -b master origin/master
-git merge now-source --ff-only
+git merge -s ours -m "tmp" --no-ff now-source
+
+git branch tmp
+
+git reset --hard now-source
+git reset --soft tmp
+
+git commit --amend -m "Merge: by TravisCI (${TRAVIS_BUILD_NUMBER})"
 
 git push travis master &> /dev/null
