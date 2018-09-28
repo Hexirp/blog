@@ -48,25 +48,21 @@ code {
   padding: 0.2em 0.4em;
   overflow: auto;
   font-family: "SFMono-Regular",Consolas,"Liberation Mono",Menlo,Courier,monospace;
-  font-size: 85%;
-  line-height: 1.45;
-  background-color: rgba(27,31,35,0.05);
-  border-radius: 3px;
+  font-size: 90%;
+  line-height: 1.5;
+  background-color: rgba(33,33,33,0.1);
+  border-radius: 4px;
 }
 
 pre {
   padding: 16px;
   overflow: auto;
-  font-family: "SFMono-Regular",Consolas,"Liberation Mono",Menlo,Courier,monospace;
-  font-size: 85%;
-  line-height: 1.45;
-  background-color: #f6f8fa;
-  border-radius: 3px;
+  background-color: rgba(33,33,33,0.1);
+  border-radius: 4px;
 }
 
 pre > code {
   padding: 0px;
-  font-size: 100%;
   background-color: transparent;
   border-radius: 0px;
 }
