@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="author" content="Hexirp" />
+
+    <link rel="icon" href="/blog/small_icon.png" />
+
+    <title>モナドの意味 - Hexirp's Blog</title>
+
+    <link rel="stylesheet" href="/blog/styles/main.css" />
+  </head>
+
+  <body>
+    <header>
+      <div id="icon">
+        <img src="/blog/icon.png" alt="Hexirp's icon" width="64" height="64" />
+      </div>
+
+      <ul id="nav">
+        <li><a href="/blog/">Home</a></li>
+        <li><a href="https://twitter.com/hexirp_prixeh">Twitter</a></li>
+        <li><a href="https://github.com/Hexirp">GitHub</a></li>
+      </ul>
+    </header>
+
+    <main>
+<h1 id="モナドの意味">モナドの意味</h1>
+<p><strong>ふわっとした話です。</strong></p>
+<p>モナドは難しいとかいいます。</p>
+<p>色々なものに例えられて、色々なところで解説されていますが、それを横目に見ていた 私の所感は「モナドはモナドとして受け入れるしかない」というところです。</p>
+<p>しかし、モナドは何で分かりづらいのでしょうか。 なぜ、モナドは私がそうであったように人々を惹きつけるのでしょうか。</p>
+<p>モナドという言葉がいけない。</p>
+<p>「モナド」はかっこよくて、まったく意味が分からない言葉です。 もし、意味が分かったらモナドを理解しやすくなるのでしょうか？</p>
+<h2 id="日本語訳">日本語訳</h2>
+<p>関数型プログラミングの「モナド」という概念は、圏論の「モナド」に因むものです。 圏論の「モナド」という言葉は、哲学の「モナド」から名付けられました。</p>
+<p>ウィキペディアで見てみると<a href="https://ja.wikipedia.org/wiki/モナド">モナド</a>は曖昧さ回避になっていますが、 ここは大本である<a href="">モナド (哲学)</a> を見てみましょう。</p>
+<blockquote>
+<p>モナドは、ライプニッツが案出した空間を説明するための概念である。 ギリシア語 μονάς monas モナス（個、単一）、 μόνος monos モノス (単一の) に由来する。 <strong>単子</strong>と翻訳される場合もある。</p>
+<p>– 記事より</p>
+</blockquote>
+<p>「モナド」を日本語で訳すると「単子」ということですね。単一のもの、と言えます。</p>
+<h2 id="意味するところ">意味するところ</h2>
+<p>哲学的な説明がその後に続きますが、関数型プログラミングのモナドは圏論のものです。 そのため、圏論のモナドが、なぜ哲学のモナドという言葉を借用したのか考えます。</p>
+<p>圏論のモナドは、関手とそれに関する二つの自然変換の三つ組です。 この記事は気持ちの記事なので、Haskell で書き表します。このようになります。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">class</span> <span class="dt">Functor</span> m <span class="ot">=&gt;</span> <span class="dt">Monad</span> m <span class="kw">where</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="ot"> pure ::</span> a <span class="ot">-&gt;</span> m a</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="ot"> join ::</span> m (m a) <span class="ot">-&gt;</span> m a</a></code></pre></div>
+<p>これに加えてモナド則という条件がありますが、紹介しません。</p>
+<h3 id="ひとつ">ひとつ</h3>
+<p>どちらの関数も返り値の型は <code>m a</code> となっています。 <code>m</code> が <code>a</code> に一回だけ適用されています。</p>
+<p><code>join</code> が取る値の型は <code>m (m a)</code> です。<code>m</code> が二回適用されています。 <code>pure</code> が取る値の型は <code>a</code> です。これは <code>m</code> のゼロ回適用だと考えられます。</p>
+<p><code>m (m (m a)) -&gt; m a</code> という型を持つ関数は作れるでしょうか？ <code>join . join</code> とすれば簡単に作れます。 <code>m a -&gt; m a</code> という型を持つ関数は <code>id</code> で簡単に定義できます。 <code>fmap id</code> でもいいでしょうが、どちらも同じことです。そうでなければならない。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1">pure<span class="ot">               ::</span>            a    <span class="ot">-&gt;</span> m a</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">id<span class="ot">                 ::</span>          m a    <span class="ot">-&gt;</span> m a</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="ot">join               ::</span>       m (m a)   <span class="ot">-&gt;</span> m a</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">join <span class="fu">.</span><span class="ot"> join        ::</span>    m (m (m a))  <span class="ot">-&gt;</span> m a</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">join <span class="fu">.</span> join <span class="fu">.</span><span class="ot"> join ::</span> m (m (m (m a))) <span class="ot">-&gt;</span> m a</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="fu">:</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="fu">:</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="fu">:</span></a></code></pre></div>
+<p><code>m</code> が何回適用されていても、<code>m</code> が一回だけ適用された形に変換できる。</p>
+<p>０重でも、１重でも、２重でも、３重でも、１重へ変換できる。 とにかく一つになりたがるものということが出来るでしょう。</p>
+<p>「単子」は単一のもの、といった意味を持ちます。単一になりたがるもの。 こう考えれば、モナドの日本語訳が単子であることも納得できる気がしませんか？</p>
+<h3 id="本当のところは">本当のところは</h3>
+<p>圏論の今は「モナド」と呼ばれる概念に、「モナド」という言葉が割り当てられたのは、 圏論の上でモナドが果たす役割に絡んだもっと深い理由があるらしいです。</p>
+<h2 id="参考文献">参考文献</h2>
+<p>論文では Wikipedia を参考文献としてはいけないらしいですね。 この記事は参考文献が全て Wikipedia です。</p>
+<ul>
+<li><a href="https://ja.wikipedia.org/wiki/モナド_(哲学)" class="uri">https://ja.wikipedia.org/wiki/モナド_(哲学)</a></li>
+<li><a href="https://ja.wikipedia.org/wiki/モナド_(圏論)" class="uri">https://ja.wikipedia.org/wiki/モナド_(圏論)</a></li>
+<li><a href="https://ja.wikipedia.org/wiki/モナド_(プログラミング)" class="uri">https://ja.wikipedia.org/wiki/モナド_(プログラミング)</a></li>
+</ul>
+    </main>
+  </body>
+</html>
