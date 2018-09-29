@@ -14,5 +14,5 @@ Hexirp's blog
 
 * `Haskellでの絵 </blog/articles/graphics_in_haskell.html>`_
 * `このブログの制作記録 </blog/articles/making_the_blog.html>`_
-* `モナドの意味 <articles/the_meaning_of_monad.html>`_
+* `モナドの意味 </blog/articles/the_meaning_of_monad.html>`_
 * `チャンパーノウン定数を作ってみた </blog/articles/champernowne.html>`_
