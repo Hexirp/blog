@@ -27,9 +27,13 @@ module Main where
   destinationDirectory = "docs"}
 
  iconRule :: Rules ()
- iconRule = match "icon.png" $ do
-  route idRoute
-  compile copyFileCompiler
+ iconRule = do
+  match "icon.png" $ do
+   route idRoute
+   compile copyFileCompiler
+  match "small_icon.png" $ do
+   route idRoute
+   compile copyFileCompiler
 
  templatesRule :: Rules ()
  templatesRule = match' ["templates", "*"] $ compile templateCompiler
