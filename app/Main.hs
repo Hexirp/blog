@@ -44,9 +44,13 @@ module Main where
   compile $ compressCssCompiler
 
  articlesRule :: Rules ()
- articlesRule = match' ["articles", "*"] $ do
-  route $ setExtension "html"
-  compile $ pandocCompiler >>= loapplyTmp "default.html" defaultContext
+ articlesRule = do
+  match' ["articles", "*.rst"] $ do
+   route $ setExtension "html"
+   compile $ pandocCompiler >>= loapplyTmp "default.html" defaultContext
+  match' ["articles", "*", "*"] $ do
+   route idRoute
+   compile $ copyFileCompiler
 
  indexRule :: Rules ()
  indexRule = match "index.rst" $ do
