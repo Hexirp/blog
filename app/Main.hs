@@ -27,9 +27,13 @@ module Main where
   destinationDirectory = "docs"}
 
  iconRule :: Rules ()
- iconRule = match "icon.png" $ do
-  route idRoute
-  compile copyFileCompiler
+ iconRule = do
+  match "icon.png" $ do
+   route idRoute
+   compile copyFileCompiler
+  match "small_icon.png" $ do
+   route idRoute
+   compile copyFileCompiler
 
  templatesRule :: Rules ()
  templatesRule = match' ["templates", "*"] $ compile templateCompiler
@@ -40,9 +44,13 @@ module Main where
   compile $ compressCssCompiler
 
  articlesRule :: Rules ()
- articlesRule = match' ["articles", "*"] $ do
-  route $ setExtension "html"
-  compile $ pandocCompiler >>= loapplyTmp "default.html" defaultContext
+ articlesRule = do
+  match' ["articles", "*.rst"] $ do
+   route $ setExtension "html"
+   compile $ pandocCompiler >>= loapplyTmp "default.html" defaultContext
+  match' ["articles", "*", "*"] $ do
+   route idRoute
+   compile $ copyFileCompiler
 
  indexRule :: Rules ()
  indexRule = match "index.rst" $ do

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="author" content="Hexirp" />
 
-    <link rel="icon" href="/blog/icon.png" />
+    <link rel="icon" href="/blog/small_icon.png" />
 
     <title>Haskellでの絵 - Hexirp's Blog</title>
 
@@ -132,7 +132,7 @@ unliftio-0.2.7.0: using precompiled package</code></pre>
 </table>
 <p><code>glfw</code> フラグを有効にすると、GLUT の代わりに <a href="http://www.glfw.org/">GLFW</a> を使うということです。 GLFW は GLUT の開発が止まった後に主流になったライブラリであるようです。</p>
 <p>なんと、Windowsのためのプリコンパイルバイナリが配布されています！ つまり、自分でコンパイルする必要がないということです。</p>
-<p>さっそくそのフラグをセットしました。「まず TravisCI 上で」ということで ビルドさせてみたのですが、GLUT パッケージがコンパイルできませんでした。 <a href="https://github.com/benl23x5/gloss/pull/41">有志による修正版</a>を使ったらビルドは通ったんですが気力をそがれました。</p>
+<p>さっそくそのフラグをセットしました。「まず TravisCI 上で」ということで ビルドさせてみたのですが、GLUT パッケージがコンパイルできませんでした。 <a href="https://github.com/benl23x5/gloss/pull/41">有志による修正版</a>を使ったらビルドは通ったんですが気力をそがれました。 <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
 <p>どこかで、Cabal のフラグというシステムは使っていけないというのを見たんですが、 実際に体験することになるとは思いませんでした。フラグそれぞれの組み合わせ全てで テストすることは現実的に不可能であり、コンパイルできないコードが入り込みます。</p>
 <h2 id="sdl2">sdl2</h2>
 <p><a href="https://myuon.github.io/posts/refluxible-library/">とある記事</a>をきっかけとして <a href="https://hackage.haskell.org/package/sdl2">sdl2</a> を知りました。調べてみると 使われているCライブラリを stack だけでインストールできるといいます！ (<a href="https://www.reddit.com/r/haskellgamedev/comments/4jpthu/">Windows SDL2 is now almost painless via stack</a>)</p>
@@ -157,6 +157,12 @@ unliftio-0.2.7.0: using precompiled package</code></pre>
 This is quite likely caused by a bad &#39;-display&#39; parameter</code></pre>
 </dd>
 </dl>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>記事で使っているバージョン (gloss-1.12.0.0) は古く、 最新版 (gloss-1.13.0.0) では修正済<a href="#fnref1" class="footnote-back">↩</a></p></li>
+</ol>
+</section>
     </main>
   </body>
 </html>
