@@ -138,26 +138,26 @@ Haskell の計測に関するデファクトスタンダードは criterion で�
 解像度を上げてみます。100000から1000000まで10000刻みにして11のケースを作ります。
 ついでに ``--output FILE`` オプションを使ってHTMLファイルで結果を出力させます。
 
-`結果 (100000, 200000 .. 1000000) </blog/champernowne/result_1.html>`_
+`結果 (100000, 200000 .. 1000000) </blog/articles/champernowne/result_1.html>`_
 
 さらに調べる範囲を広げるとこのようになりました。
 
-`結果 (100000, 200000 .. 1900000) </blog/champernowne/result_2.html>`_
+`結果 (100000, 200000 .. 1900000) </blog/articles/champernowne/result_2.html>`_
 
 線形時間であるように見えます。log n の増加率はとても小さいからかもしれません。
 なんとか log n がはっきりわかるようなグラフが欲しいのでnを10倍にします。
 
-`結果 (1000000, 2000000 .. 19000000) </blog/champernowne/result_3.html>`_
+`結果 (1000000, 2000000 .. 19000000) </blog/articles/champernowne/result_3.html>`_
 
 まっすぐにしか見えません。log n の影響は小さくてほぼ線形ということでしょうか？
 ここで log n の影響は初めの方が大きくなることに気が付きました。
 つまり、二階微分、曲率っぽいものが大きくなることです。
 
-`結果 (10000, 20000, .. 190000) </blog/champernowne/result_4.html>`_
+`結果 (10000, 20000, .. 190000) </blog/articles/champernowne/result_4.html>`_
 
 まだよくわかりません。もういっちょ小さくしてみましょう。
 
-`結果 (1000, 2000, .. 19000) </blog/champernowne/result_5.html>`_
+`結果 (1000, 2000, .. 19000) </blog/articles/champernowne/result_5.html>`_
 
 諦めます。ほぼ線形時間ということでいいと思います。
 
