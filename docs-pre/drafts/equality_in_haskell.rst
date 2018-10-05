@@ -8,16 +8,15 @@ Haskell での等式に興味がわいたので調べてみただけの記事で
 概観
 ****
 
-==== ======== ======== ========== ====== =========
-名前 多型か？ 軽性     返り値     約振り 定義箇所
-==== ======== ======== ========== ====== =========
-(~#) hetero   unlifted #          nomial GHC.Prim
-(~~) hetero   lifted   Constriant nomial GHC.Types
-(~)  homo     lifted   Constriant nomial Data.Type.Equality
-(:~:) homo    lifted   *          nomial Data.Type.Equality
-. . . . . .
-(~R#) hetero unlifted # repr. GHC.Prim
-Coercible homo lifted Constriant repr. GHC.Types
-Coecion homo lifted * repr. Data.Type.Coercion
-. . . . . .
-(~P#) hetero unlifted phantom GHC.Prim
+         Type or  Lifted?  Hetero?  Role      Built in         Defining module
+         class?    L/U                        TyCon
+-----------------------------------------------------------------------------------------
+~#         T        U      hetero   nominal   eqPrimTyCon      GHC.Prim
+~~         C        L      hetero   nominal   hEqTyCon         GHC.Types
+~          C        L      homo     nominal   eqTyCon          Data.Type.Equality
+:~:        T        L      homo     nominal   (not built-in)   Data.Type.Equality
+:~~:       T        L      hetero   nominal   (not built-in)   Data.Type.Equality
+~R#        T        U      hetero   repr      eqReprPrimTy     GHC.Prim
+Coercible  C        L      homo     repr      coercibleTyCon   GHC.Types
+Coercion   T        L      homo     repr      (not built-in)   Data.Type.Coercion
+~P#        T        U      hetero   phantom   eqPhantPrimTyCon GHC.Prim
