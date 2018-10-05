@@ -13,3 +13,11 @@ Haskell での等式に興味がわいたので調べてみただけの記事で
 ==== ======== ======== ========== ====== =========
 (~#) hetero   unlifted #          nomial GHC.Prim
 (~~) hetero   lifted   Constriant nomial GHC.Types
+(~)  homo     lifted   Constriant nomial Data.Type.Equality
+(:~:) homo    lifted   *          nomial Data.Type.Equality
+. . . . . .
+(~R#) hetero unlifted # repr. GHC.Prim
+Coercible homo lifted Constriant repr. GHC.Types
+Coecion homo lifted * repr. Data.Type.Coercion
+. . . . . .
+(~P#) hetero unlifted phantom GHC.Prim
