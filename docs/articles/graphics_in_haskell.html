@@ -24,4 +24,167 @@
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@hexirp_prixeh" />
     <meta name="twitter:title" content="Haskellでの絵 - Hexirp's Blog" />
-    <meta name="twitter:description" content="
+    <meta name="twitter:description" content="ただの Haskell で Graphics をやろうとして起こったことを書き留める日記のような、 出来事や起こった問題とその解決方法を並べて書いていくものです。" />
+    <meta name="twitter:image" content="/blog/small_icon.png" />
+
+    <link rel="icon" href="/blog/small_icon.png" />
+
+    <link rel="apple-touch-icon" href="/blog/small_icon.png" />
+
+    <link rel="stylesheet" href="/blog/styles/main.css" />
+  </head>
+
+  <body>
+    <header>
+      <div id="icon">
+        <img src="/blog/icon.png" alt="Hexirp's icon" width="64" height="64" />
+      </div>
+
+      <ul id="nav">
+        <li><a href="/blog/">Home</a></li>
+        <li><a href="https://twitter.com/hexirp_prixeh">Twitter</a></li>
+        <li><a href="https://github.com/Hexirp">GitHub</a></li>
+      </ul>
+    </header>
+
+    <main>
+<h1 id="haskellでの絵">Haskellでの絵</h1>
+<p>ただの Haskell で Graphics をやろうとして起こったことを書き留める日記のような、 出来事や起こった問題とその解決方法を並べて書いていくものです。</p>
+<h2 id="事の始まり">事の始まり</h2>
+<p>いくら理論寄りを自負していたとしても「ウィンドウを出すプログラム」を 一度も作ったことがないのは一端のプログラマーとしてやばいのでは。 そう思ってグラフィックスプログラムを始めることにしました。</p>
+<p>何を作るか。私はライフゲームを作ることを目標にしました。 何よりもルールが単純。それでいて出来るものはとても複雑で豊かかつ、視覚的。 初めてのグラフィックスとしては申し分ないのではという考えです。</p>
+<h2 id="ライブラリの選択">ライブラリの選択</h2>
+<p>何のライブラリを使おうか。</p>
+<p>グラフィックスのライブラリは抽象化されていないラッパーがほとんどで 組み合わせることが出来ないため、どれか一つ選ばないといけません。 私はグラフィックスに関しては初心者で、信念とかないので他の人に聞いてみました。</p>
+<p><a href="https://haskell.jp/">Haskell-jp</a> は日本で Haskell をする人のための集まりです。 自由に質問が出来る Slackチーム、および redditチャンネルを持っています。 今回は人が多い Slack を使いました。（議論になりそうな質問は reddit を推奨）</p>
+<p>返ってきた答えは <a href="https://hackage.haskell.org/package/gloss">gloss</a> を薦めるものでした。私も以前から知っていました。 二重振り子のシミュレーションを表示するのに使われたりしているのを見ていたからで、 というか答えた人がそのシミュレーションを作った方でした。</p>
+<p>簡単な特徴：</p>
+<ul>
+<li>そこまで本格的ではなく真面目に使うには至らない</li>
+<li>簡単にシミュレーションやゲームをウィンドウに表示できる</li>
+<li>主にシミュレーションの結果を表示する用途が多いらしい</li>
+</ul>
+<p>さっそく使ってみることにします。</p>
+<h2 id="gloss-のサンプルが起こしたエラー">gloss のサンプルが起こしたエラー</h2>
+<p>gloss のチュートリアルにあった円を表示するサンプルをコンパイルして実行すると、 このようなエラーが出て何も表示されないまま終了してしまいました。 その時のソースコードはこのような状態 (<a href="https://github.com/Hexirp/hasga/tree/ceaa10c76b078ab856b22c9f98a08dbef1c8c15a">ceaa10</a>) でした。</p>
+<pre class="sourceCode text"><code>hasga-exe.EXE: user error (unknown GLUT entry glutInit)</code></pre>
+<p>調べてみると <a href="http://gloss.ouroborus.net/">gloss のホームページ</a>のQ&amp;Aに対処法が載っていました。</p>
+<blockquote>
+<div class="line-block"><strong>Q: On Windows, when I try to run a gloss program it says</strong> <code>user error (unknown GLUT entry glutInit)</code><strong>.</strong><br />
+A1: You need to install <code>glut32.dll</code>. Copy it into <code>\Windows\System32</code> (for 32-bit installs) or <code>\Windows\SysWOW64</code> (for 64-bit installs). Alternatively, you can just copy it into the same directory as the Main.exe executable you are trying to run.</div>
+</blockquote>
+<p>要約すると「 <code>glut32.dll</code> をインストールして何某のフォルダに入れるか 実行ファイルと同じところに置かないといけない」という感じです。</p>
+<p>まず、<code>glut32.dll</code> がいったい何なのか調べてみると <a href="https://www.opengl.org/resources/libraries/glut/">GLUT</a> のものでした。 さらに、どうしてこれが必要になるのか調べると、<a href="https://hackage.haskell.org/package/gloss">gloss</a> が依存する <a href="https://hackage.haskell.org/package/GLUT">GLUT (haskell)</a> が GLUT を FFI で使っているためでした。</p>
+<p>ならば、言う通り glut をインストールすればいいのかと思いましたが 今は開発が止まっていて <a href="http://freeglut.sourceforge.net/">freeglut</a> に引き継がれているようです。 GLUT (haskell) もまた freeglut を使えるようになっていました。</p>
+<p>つまるところ、freeglut をインストールすればいいわけです。 しかし、そのインストール方法は自分でコンパイルすることでした。</p>
+<p>必要な物：</p>
+<ul>
+<li><a href="https://visualstudio.microsoft.com/">Microsoft Visual Studio</a></li>
+<li><a href="https://cmake.org/">CMake</a></li>
+</ul>
+<p>CMake を使ってビルドするらしいです。一部の分野ではこれが普通なのでしょうか。 しかし、stack や gradle というぬるま湯で育った私にはめんどくさく感じられました。</p>
+<h2 id="他のプロジェクトで出たエラー">他のプロジェクトで出たエラー</h2>
+<p>頭を切り替えて他のプロジェクトをやろうとしたらこんなエラーが出てきました。</p>
+<pre class="sourceCode text"><code>primitive-0.6.3.0: using precompiled package
+ghc-pkg: cannot find package microlens-0.4.8.3
+ghc-pkg: cannot find package mtl-2.2.2
+ghc-pkg: cannot find package stm-2.4.5.0
+ghc-pkg: cannot find package text-1.2.3.0
+async-2.1.1.1: using precompiled package
+hashable-1.2.7.0: using precompiled package
+ghc-pkg: cannot find package transformers-compat-0.5.1.4
+ghc-pkg: cannot find package unliftio-core-0.1.1.0
+exceptions-0.8.3: using precompiled package
+ghc-pkg: cannot find package primitive-0.6.3.0
+ghc-pkg: cannot find package async-2.1.1.1
+vector-0.12.0.1: using precompiled package
+ghc-pkg: cannot find package hashable-1.2.7.0
+typed-process-0.2.2.0: using precompiled package
+unliftio-0.2.7.0: using precompiled package</code></pre>
+<p>stack の resolver を変更してのビルド時、今までのキャッシュはそのまま使えません。 パッケージの内容が変更されるためですが、キャッシュが再利用されるときがあります。 すなわち stack は、あるパッケージが依存するパッケージに変更がないのならば、 キャッシュに残っている古いそのパッケージのビルドをそのまま使います。 その時に起こるようです。このエラーを解決するために色々調べました。 起こる事象からキャッシュが壊れているんじゃないかと予想はつきました。 すると最終手段は stack のルートフォルダを消してしまうことだと考えられます。</p>
+<p>それはできるだけ取りたくないため、回避するためにいろいろ調べていると <a href="https://haskell.e-bigmoon.com/stack/tips/full-rebuild.html">完全なリビルド</a>という記事を見つけました。</p>
+<p>それに記載されているこのようなコマンドを打ち込んだら直りました。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="fu">rm</span> -rf <span class="va">$(</span><span class="ex">stack</span> path --stack-root<span class="va">)</span>/precompiled</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="fu">rm</span> -rf <span class="va">$(</span><span class="ex">stack</span> path --stack-root<span class="va">)</span>/snapshots</a></code></pre></div>
+<p>それ自体にかなりの時間がかかりますし、キャッシュが削除されるため これを入力した後のコンパイルはさらに時間がかかります。</p>
+<div class="note">
+<div class="admonition-title">
+<p>Note</p>
+</div>
+<p>後で分かったことなのですが、このエラーが出ていてもコンパイルは可能なようです。 なので、直さないといけないという訳ではありません。ビビっていただけでした……。</p>
+<p>また、TravisCI の上でも再現しているので Windows 固有の現象だったり、 アンチウイルスソフトによるものだという線はなくなっています。</p>
+</div>
+<h2 id="バックエンドに-glfw-を使う">バックエンドに glfw を使う</h2>
+<p><a href="https://hackage.haskell.org/package/gloss">gloss</a> のドキュメントを見ているとこんな記述を見つけました。</p>
+<table style="width:92%;">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 36%" />
+<col style="width: 13%" />
+<col style="width: 15%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+<th>Default</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>glut</code></td>
+<td>Enable the GLUT backend</td>
+<td>Enabled</td>
+<td>Automatic</td>
+</tr>
+<tr class="even">
+<td><code>glfw</code></td>
+<td>Enable the GLFW backend</td>
+<td>Disabled</td>
+<td>Automatic</td>
+</tr>
+<tr class="odd">
+<td><code>explicitbackend</code></td>
+<td>Expose versions of display and friends that allow you to choose what window manager backend to use.</td>
+<td>Disabled</td>
+<td>Automatic</td>
+</tr>
+</tbody>
+</table>
+<p><code>glfw</code> フラグを有効にすると、GLUT の代わりに <a href="http://www.glfw.org/">GLFW</a> を使うということです。 GLFW は GLUT の開発が止まった後に主流になったライブラリであるようです。</p>
+<p>なんと、Windowsのためのプリコンパイルバイナリが配布されています！ つまり、自分でコンパイルする必要がないということです。</p>
+<p>さっそくそのフラグをセットしました。「まず TravisCI 上で」ということで ビルドさせてみたのですが、GLUT パッケージがコンパイルできませんでした。 <a href="https://github.com/benl23x5/gloss/pull/41">有志による修正版</a>を使ったらビルドは通ったんですが気力をそがれました。 <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<p>どこかで、Cabal のフラグというシステムは使っていけないというのを見たんですが、 実際に体験することになるとは思いませんでした。フラグそれぞれの組み合わせ全てで テストすることは現実的に不可能であり、コンパイルできないコードが入り込みます。</p>
+<h2 id="sdl2">sdl2</h2>
+<p><a href="https://myuon.github.io/posts/refluxible-library/">とある記事</a>をきっかけとして <a href="https://hackage.haskell.org/package/sdl2">sdl2</a> を知りました。調べてみると 使われているCライブラリを stack だけでインストールできるといいます！ (<a href="https://www.reddit.com/r/haskellgamedev/comments/4jpthu/">Windows SDL2 is now almost painless via stack</a>)</p>
+<p>どうやら stack はここ (<a href="http://repo.msys2.org/mingw/x86_64/">Index of /mingw/x86_64/</a>) にあるものを インストールできるようです。（サンドボックスの中で！）初耳でした。 そして、とうとう Haskell でウィンドウを表示させることが出来ました！ ソースコードはこの状態 (<a href="https://github.com/Hexirp/hasga/tree/27b3cee11f149fb1191b50f285cf1ff0011c5fcb">27b3ce</a>) でした。</p>
+<p>今までが嘘かのようにすんなりいったので感動しました。</p>
+<h2 id="gloss-でも同じようにできた">gloss でも同じようにできた</h2>
+<p>上記のインストール方法ですが、<a href="http://repo.msys2.org/mingw/x86_64/">Index of /mingw/x86_64/</a> の中に freeglut が あったため、こんな風にインストールしてみたら gloss でも使えました。 （ソースコードは <a href="">e8fdcf</a> ）</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="ex">stack</span> exec -- pacman -S mingw-w64-x86_64-freeglut</a></code></pre></div>
+<p>便利なのでこのインストール方法について知っていることを書き出しておきます。</p>
+<dl>
+<dt>原理</dt>
+<dd><p>Windows版の stack は内部に MSYS2 というソフトを持っている。 Windows で shell をやるためのソフトであり、 stack はこれをサンドボックス環境としている。 おそらく、<code>stack exec -- &lt;command&gt;</code> としたときに、 そのコマンドがこの環境の中で実行されるのだと思う。</p>
+<p>MSYS2 はもっと深く shell の動作を模擬することが出来て、 例えば、ライブラリのインストールを行う <code>pacman</code> が使える。 そして、実際にそのサンドボックス環境にライブラリがインストールされる。 インストールできるライブラリは多分 <a href="http://repo.msys2.org/msys/x86_64/" class="uri">http://repo.msys2.org/msys/x86_64/</a> や <a href="http://repo.msys2.org/mingw/x86_64/" class="uri">http://repo.msys2.org/mingw/x86_64/</a> にあるもの。</p>
+</dd>
+<dt>やり方</dt>
+<dd><p>最初に <code>stack exec -- pacman -Syu</code> を実行して既存のライブラリを更新する。 失敗することがあるが、再実行すれば出来るはずである。 次に欲しいライブラリをインストールする。 <code>stack exec -- pacman -S &lt;library&gt;</code> を実行する。</p>
+</dd>
+<dt>注意点</dt>
+<dd><p>gloss の場合は freeglut が実行時に必要になるため、 作ったソフトウェアを <code>stack install</code> して実行しても freeglut はサンドボックス環境にしかないためおそらくエラーになる。 つまり、この方法では <code>stack exec</code> を使ってしか実行できない。 また、gloss を使って作ったゲームは、exe を配布しても それぞれのプレイヤーが freeglut をインストールする必要がある。</p>
+<p>さらに、sdl2 はこのインストール形式に対して特別に対応を行っているのに対して、 gloss が使う GLUT は対応していないので「エラーがあるけど一応動く」状態になり、 下のようなメッセージが終了するたびに表示される。</p>
+<pre class="sourceCode text"><code>freeglut (hasga-exe.EXE): fgPlatformInitialize: CreateDC failed, Screen size info may be incorrect
+This is quite likely caused by a bad &#39;-display&#39; parameter</code></pre>
+</dd>
+</dl>
+<section class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>記事で使っているバージョン (gloss-1.12.0.0) は古く、 最新版 (gloss-1.13.0.0) では修正済<a href="#fnref1" class="footnote-back">↩</a></p></li>
+</ol>
+</section>
+    </main>
+  </body>
+</html>
