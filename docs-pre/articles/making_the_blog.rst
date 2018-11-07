@@ -1,5 +1,8 @@
 ---
 title: このブログの制作記録
+description: このブログを作ったときに起こった出来事を書き留めていきます。
+canonical: https://hexirp.github.io/blog/articles/making_the_blog.html
+type: article
 ...
 
 ####################

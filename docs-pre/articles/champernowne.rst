@@ -1,5 +1,10 @@
 ---
 title: チャンパーノウン定数を作ってみた
+description: >-
+ 題の通りチャンパーノウン定数の桁を無限リストで表現したものを Haskell で実装し、
+ その効率を測って直感と合うかどうか確かめてみるだけの記事です。
+canonical: 'https://hexirp.github.io/blog/articles/champernowne.html'
+type: article
 ...
 
 ################################
