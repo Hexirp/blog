@@ -1,5 +1,9 @@
 ---
 title: Home
+description: >-
+ 初めまして。理論寄りのプログラマーです。好きなものは机上の空論です。
+canonical: https://hexirp.github.io/blog/
+type: website
 ...
 
 #############
