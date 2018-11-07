@@ -1,5 +1,10 @@
 ---
 title: Haskellでの絵
+description: >-
+ ただの Haskell で Graphics をやろうとして起こったことを書き留める日記のような、
+ 出来事や起こった問題とその解決方法を並べて書いていくものです。
+canonical: 'https://hexirp.github.io/blog/articles/graphics_in_haskell.rst'
+type: article
 ...
 
 #############
