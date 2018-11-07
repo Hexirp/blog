@@ -1,5 +1,11 @@
 ---
 title: モナドの意味
+description: >-
+ モナドは難しいとかいいます。
+ 色々なものに例えられて、色々なところで解説されていますが、それを横目に見ていた
+ 私の所感は「モナドはモナドとして受け入れるしかない」というところです。
+canonical: 'https://hexirp.github.io/blog/articles/meaning_of_monad.html'
+type: article
 ...
 
 ############
