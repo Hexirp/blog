@@ -2,7 +2,7 @@
 title: Mintty のフォントを変えた話
 description: >-
  Git についてくるコマンドを打ち込むやつのフォントを変えました
-canonical: 'https://hexirp.github.io/blog/articles/improve_git_bash_font.html'
+canonical: 'https://hexirp.github.io/blog/articles/improve_mintty_font.html'
 type: article
 ...
 
