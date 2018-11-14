@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <title>Mintty のフォントを変えた話 - Hexirp's Blog</title>
+
+    <meta name="keywords" content="" />
+    <meta name="description" content="Git についてくるコマンドを打ち込むやつのフォントを変えました" />
+    <meta name="author" content="Hexirp" />
+
+    <link rel="canonical" href="https://hexirp.github.io/blog/articles/improve_mintty_font.html" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Hexirp's Blog" />
+    <meta property="og:title" content="Mintty のフォントを変えた話 - Hexirp's Blog" />
+    <meta property="og:description" content="Git についてくるコマンドを打ち込むやつのフォントを変えました" />
+    <meta property="og:image" content="https://hexirp.github.io/blog/small_icon.png" />
+    <meta property="og:url" content="https://hexirp.github.io/blog/articles/improve_mintty_font.html" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@hexirp_prixeh" />
+    <meta name="twitter:title" content="Mintty のフォントを変えた話 - Hexirp's Blog" />
+    <meta name="twitter:description" content="Git についてくるコマンドを打ち込むやつのフォントを変えました" />
+    <meta name="twitter:image" content="https://hexirp.github.io/blog/small_icon.png" />
+
+    <link rel="icon" href="/blog/small_icon.png" />
+
+    <link rel="apple-touch-icon" href="/blog/small_icon.png" />
+
+    <link rel="stylesheet" href="/blog/styles/main.css" />
+  </head>
+
+  <body>
+    <header>
+      <div id="icon">
+        <img src="/blog/icon.png" alt="Hexirp's icon" width="64" height="64" />
+      </div>
+
+      <ul id="nav">
+        <li><a href="/blog/">Home</a></li>
+        <li><a href="https://twitter.com/hexirp_prixeh">Twitter</a></li>
+        <li><a href="https://github.com/Hexirp">GitHub</a></li>
+      </ul>
+    </header>
+
+    <main>
+<h1 id="mintty-のフォントを変えた話">Mintty のフォントを変えた話</h1>
+<p>Git についてくるコマンドを打ち込むやつのフォントを変えました。ええ、アバウト すぎますよね。ズバリと言えば、タイトル通りになります。</p>
+<h2 id="はじめに">はじめに</h2>
+<p>Git for Windows をインストールするとコマンドを打ち込むやつが付いてきて、 右クリックのメニューで Git Bush Here を押して git のコマンドを打ち込む、という ように使えます。今ここで名前が出ましたが、コマンドを打ち込むやつは Git Bush と いいます。</p>
+<p>めんどくさがりなので Git for Windows についてきた vim を、そのまま Haskell の ような単純な言語のエディタとして使っているんですが、さっきの Git Bush と画面が 共用といえばいいんでしょうか、とにかく同じです。その画面で日本語を表示すると とても見づらい。フォントが美しくないというレベルではなく、日本語の全角文字が、 半角文字へ圧縮されて、さらに前後のスペースで無理やり全角文字に変えられていると いう様相で見づらい。</p>
+<p>これは困ったなあ、ということで、なんとかしたい。</p>
+<h2 id="git-bush">Git Bush</h2>
+<p>Git Bush の設定ってどう変えればいいんでしょうか。とりあえず、ウィンドウの タイトルバーを右クリックするとメニューが出てきて Options… というのがあるのを たまたま見つけたので、見てみました。ウィンドウがさらに出てきて、さらに細かい メニューが表示され、そのうち一つに Text というものがありました。表示してみると Font という囲みがあり、どうやら Select… というその中のボタンから選べるよう でした。最初は Lucida Console, 9pt となっていました。試しに MS ゴシックにして みたら、いい感じになったのですが、<code>\</code> が <code>¥</code> と表示されてしまうのが 残念でした。念のために書きますが、バックスラッシュが円記号と表示されてしまったと いうことです。</p>
+<p>いろいろフォントを変わり種まで試していたところ、ふと Lucida Console が一覧に ないことに気が付き、元に戻せないのではと焦ってしまいました。調べてみると、 Windows の設定でフォントを検索して出てくるところで表示するかを切り替えられると いう情報が出てきたのですが、よくわからず。直接 <code>~/.mintty</code> で設定できると いう情報があり、探してみるも見つけられませんでした。頭を傾げていたところ、 <code>~/.minttyrc</code> というのがありました。設定を変えてやると Lucida Console に 戻ったので一安心でした。設定ファイルの名前からして Git Bush の中身は Mintty と いうソフトウェアのようです。オプションを設定するウィンドウのタイトルにも しっかり書いてありました。</p>
+<h2 id="フォント">フォント</h2>
+<p><a href="http://tanakh.jp/posts/2011-11-15-windows-terminal.html">Windowsで最高のターミナルを構築する方法</a> を参考にさせていただきました。</p>
+<p>フォントは上で紹介されている Iconsolata にしようかと思いました。もう一つの案で ある Ricty は「あまりきれいにレンダリングされない」そうなので、フォントを リンクするという未知の作業が必要だとしてもやってみたかったのです。リンクの 方法を調べてやったところ、英数字は美しく、日本語も美しかったのですが、サイズの 都合か、微妙に隙間が空いてしまっていました。</p>
+<p>結局 Ricty にしようかと思いましたが、これも自分で合成する必要があるらしく、 合成する必要ないフォントとして Ricty Diminished があるらしいことでした。 使ってみると、サイズを 12px へ調整してやれば非常に美しく表示されました。 このフォントを決定版としました。デメリットとしては収録されている漢字の数が 劣るとのことですが、プログラミングではそんなに使わないだろうと考えました。</p>
+<h2 id="おわりに">おわりに</h2>
+<p><a href="https://github.com/edihbrandon/RictyDiminished">Ricty Diminished</a> は今まで使い続けていますが、美しく統一感がある他にも 全角スペースが分かりやすいところも良いです。これで起きなかったエラーがどれほど あることでしょうか。ダウンロードして特定のファイルに放り込むだけで使えますので 一度試してみてはいかがでしょうか。</p>
+<pre class="sourceCode text"><code>$ cat ~/.minttyrc
+BoldAsFont=-1
+Font=Ricty Diminished
+FontHeight=12</code></pre>
+    </main>
+  </body>
+</html>
