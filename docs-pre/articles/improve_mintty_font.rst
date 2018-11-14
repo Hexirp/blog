@@ -79,8 +79,15 @@ Windows の設定でフォントを検索して出てくるところで表示す
 
 `Ricty Diminished`_ は今まで使い続けていますが、美しく統一感がある他にも
 全角スペースが分かりやすいところも良いです。これで起きなかったエラーがどれほど
-あることでしょうか。ダウンロードするだけで使えますので一度試してみてはいかが
-でしょうか。
+あることでしょうか。ダウンロードして特定のファイルに放り込むだけで使えますので
+一度試してみてはいかがでしょうか。
+
+.. code-block:: text
+
+ $ cat ~/.minttyrc
+ BoldAsFont=-1
+ Font=Ricty Diminished
+ FontHeight=12
 
 .. _Windowsで最高のターミナルを構築する方法:
  http://tanakh.jp/posts/2011-11-15-windows-terminal.html
