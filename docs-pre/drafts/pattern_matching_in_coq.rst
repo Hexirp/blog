@@ -327,3 +327,28 @@ inversion
 しかし ``simpl`` タクティックや ``intro`` タクティック、\ ``subst`` 
 タクティック、\ ``discriminate`` タクティックを勝手に適用することを除けば、
 基本的なアイデアは先ほど書いたものだけです。
+
+例えば ``forall m n, Vec A m -> Vec A n -> Vec A (m + n)`` を定義することを
+考えましょう。まずは "intro" しましょう。
+
+.. code-block:: none
+
+ A : Type
+ m : nat
+ n : nat
+ x : Vec A m
+ y : Vec A n
+ ------------------------
+ Vec A (m + n)
+
+この時 "inversion" によって以下の場合に分けることが出来ます。
+
+.. code-block:: none
+
+ A : Type
+ m : nat
+ n : nat
+ y : Vec A n
+ H : 0 = m
+ ------------------------
+ Vec A (m + n)
