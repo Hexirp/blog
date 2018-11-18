@@ -4,18 +4,21 @@ Coq でのパターンマッチング
 
 .. highlight:: coq
 
-Coq は代数的データ型のようにして新しい型を定義でき、
-さらに一般化代数的データ型 (GADTs) や依存型もモリモリ使える、という言語です。
+Coq は代数的データ型 (ADT / Algebraic data type) のようにして新しい型を定義
+でき、さらに一般化代数的データ型 (GADT / Generalized algebraic data type) や
+依存型もモリモリ使える、という言語です。
 
-それが複雑化して素朴に理解できないものになってしまっています。
-この記事は、それらを理解したいがための場合分けと帰納法についてのメモです。
+それが複雑化して、パターンマッチングの時に何が起こるのか素朴に理解できない
+ものになってしまっています。この記事は、それらを理解したいがためのメモです。
+
 自分に対して書いているのか他人に対して書いているのかよく分からないので注意を。
+Haskell を知っているが Coq はよくわからない人（＝自分）のために書いてあります。
 
-********************
-普通のパターンマッチ
-********************
+************************
+普通のパターンマッチング
+************************
 
-まずは、軽いジャブから行きましょう。これらは一般化データ型の範囲です。
+まずは、軽いジャブから行きましょう。これらは代数的データ型の範囲です。
 
 ::
 
@@ -59,7 +62,7 @@ Coq は代数的データ型のようにして新しい型を定義でき、
    end
  .
 
-Haskell に慣れている人なら、きっと何をやっているのか分かってくれるでしょう。
+Haskell でも同じようなことが出来ます。
 
 ::
 
@@ -91,177 +94,114 @@ Haskell に慣れている人なら、きっと何をやっているのか分か
 
 ここで、ちょっと変化が出ます。
 
-Haskell では型を明示的に渡すことはありませんが、
-Coq では型を普通の値と同じように扱うことが出来るので、
-パターンマッチングの時も型を気にかけないといけません。
-``pair _ _ x1 x2`` と長々と書かないといけないってことです。
+Haskell では型を明示的に渡すことはありません（通常は）が Coq では型を普通の値と
+同じように扱うことが出来るので、パターンマッチングの時も型を気にかけないと
+いけません。\ ``pair _ _ x1 x2`` と長々と書かないといけないってことです。
 
-組み立てるときも同じことで ``pair A B x1 x2`` と書かないといけません。
-もちろん Coq には Implicit arguments って仕組みがあって、
-ここでいう型の部分とかの省略したいところを省略できる仕組みがあります。
+組み立てるときも同じことで ``pair A B x1 x2`` と書かないといけません。もちろん
+Coq には Implicit arguments って仕組みがあって、ここでいう型の部分とかの
+省略したいところを省略できる仕組みがあります。
 
 要するに、Coq では型もパターンマッチングの時に取り出せる一つの値です。
-とはいえ、ここは ``A``, ``B`` が ``prod`` の引数として明示されてるので、
+とはいえ、ここは ``A``, ``B`` が ``prod`` の引数として「明示」されてるので、
 自明に ``xB = B``, ``xA = A`` と分かるため「いらないよ！」ってエラーになります。
 
-********
-存在量化
-********
+****
+GADT
+****
 
-型が取り出せることが分かったら次に示さないといけないのが存在量化でしょう。
+GADT は、今までの理解からもう一歩踏み出さないといけません。ADT の素朴な理解は
+型 ``A`` は ``X`` か ``Y`` のどちらかである、というぐらいでしょう。
 
-::
+.. code-block:: haskell
 
- Defnition enum (A : Type) : Type := A -> nat.
+ data A = X | Y
 
- Inductive enum_box : Type :=
- | mk_enum_box : forall A, enum A -> A -> enum_box
- .
+パラメータがあっても同じで ``List a`` は ``Nil`` か ``Cons`` のどちらかである、
+という考え方が出来るでしょう。
 
- Definition show : enum_box -> nat :=
-  fun (x : enum_box) =>
-   match x with
-   | mk_enum_box X enum_X x' => enum_X x'
-   end
- .
+.. code-block:: haskell
 
-末尾での型は ``X : Type``, ``enum_X : enum X``, ``x' : X`` のようになります。
-これは Haskell でよく知られた存在量化の例の書き直しです。
+ data List a = Nil | Cons a (List a)
 
-::
+じゃあ、こんな型は何なんでしょうか。
 
- Inductive ex (A : Type) (P : A -> Type) : Type :=
- | ex_pair : forall a : A, P a -> ex A P
- .
+.. code-block:: haskell
 
-ここまで一度もCoqのタクティックを使っていないことに気が付いていますか？
-それは今までやってきたことが定理証明よりも関数定義に近いからです。
-ある定理を証明したい時はその証明方法は問題にならないことが多いのですが、
-関数を定義したい場合は定義方法が問題になります。
-例えば ``inversion`` タクティックを使って定義した関数が
-どのような定義を持つのか予測できる人はほとんどいないでしょう。
-それでも、関数定義においても有用であるのが ``refine`` です。
+ data B a where
+  BB :: Bool           -> B Bool
+  BI :: Int            -> B Int
+  BE :: B Int -> B Int -> B Bool
 
-証明モードは ``Definition foo : Foo := _.`` のアンダースコア部を
-様々なタクティックを使って徐々に組み立てていくものです。
-``refine term`` は ``term`` をそのままアンダースコア部にあてはめます。
-ただし、 ``term`` にはアンダースコアが含まれていてもよく、
-その場合は次にそのアンダースコア部を組み立てていくことになります。
+``B a`` は ``BB`` か ``BI`` か ``BE`` のどちらかなのでしょうか。違います。
+なら何なのでしょうか。\ ``a`` の値によって異なるというのが答えです。
 
-::
+``B a`` というひとまとまりの型ではなくて ``B Bool``, ``B Int``, ``B Char`` と
+いうようにそれぞれの型で異なります。\ ``B Bool`` は ``BB`` か ``BE`` であり 
+``B Int`` は ``BI`` であり ``B Char`` は値が存在しません。
 
- Definition ex_swap : forall A B : Type, forall P : A -> B -> Type,
-   ex A (fun a : A => ex B (fun b : B => P a b)) ->
-   ex B (fun b : B => ex A (fun a : A => P a b)).
- Proof.
-  refine (
-   fun (A B : Type) => _
-  ).
-  refine (
-   fun (P : A -> B -> Type) => _
-  ).
-  refine (
-   fun (x : ex A (fun a : A => ex B (fun b : B => P a b))) => _
-  ).
-  refine (
-   match x with
-   | ex_pair _ _ a aH => _
-   end
-  ).
-  refine (
-   match aH with
-   | ex_pair _ _ b bH => _
-   end
-  ).
-  refine (
-   ex_pair B (fun b : B => ex A (fun a : A => P a b)) b _
-  ).
-  refine (
-   ex_pair A (fun a : A => P a b) a _
-  ).
-  refine (
-   bH
-  ).
- Defined.
+こんなのどうやって実装するんでしょうか。\ ``List a`` はどんな型に対しても
+同じだったから型消去すればそれだけで済むはずでしたが、これでは型消去したら
+たとえ Haskell のプログラムで書けなくとも ``B Char`` の型を持つ ``BB`` とかが
+内部表現で書けてしまうはずです。
 
-``refine`` の後にアンダースコア部を埋めていくとき、
-そこから見えるべき値が環境に追加されています。
-ここの時が分かりやすいでしょう。
+この質問に対する答えは「細かいことは気にしない」が一番良いでしょう。ただ世界に
+``B`` と ``BB`` とかが放り込まれて、それが世界の基盤でどう表現されるのかは
+考えない、というイメージで乗り切りました。
 
-::
+また、罠として、\ ``GADT`` 風の表記（これは ``GADTSyntax`` 拡張により単体で
+使える）では、上に書いてある型の引数の名前は何にも意味がない、というのも
+あります。
 
- refine (
-  fun (A B : Type) => _
- ).
+.. code-block:: haskell
 
-ここでは、最後に一つアンダースコアが含まれています。
-ここからは ``A : Type`` と ``B : Type`` が見えるべきです。
-そして、このアンダースコアが次に埋めていくべきもの、すなわちゴールです。
-ゴールはアンダースコアだということが分かり切っているので、
-その型だけが表示されます。
+ data List a where
+  Nil :: List a
+  Cons :: a -> List a -> List a
 
-前：
+ data List b where
+  Nil :: List a
+  Cons :: a -> List a -> List a
 
-.. code-block:: none
+ data List b where
+  Nil :: List a
+  Cons :: b -> List b -> List b
 
- 1 subgoal
- ______________________________________(1/1)
- forall (A B : Type) (P : A -> B -> Type),
- ex A (fun a : A => ex B (fun b : B => P a b)) ->
- ex B (fun b : B => ex A (fun a : A => P a b))
+ data List hoge where
+  Nil :: List huga
+  Cons :: piyo -> List piyo -> List piyo
 
-後：
+これらの定義はすべて等価です。
 
-.. code-block:: none
+さらに GADT がモジュールを使って再現できるという話もありました。私はそれを見て
+混乱しました。
 
- 1 subgoal
- A : Type
- B : Type
- ______________________________________(1/1)
- forall P : A -> B -> Type,
- ex A (fun a : A => ex B (fun b : B => P a b)) ->
- ex B (fun b : B => ex A (fun a : A => P a b))
+.. code-block:: haskell
 
-また、パターンマッチの時も同じです。取り出した値は見えるべきです。
+ module B (B, bb, bi, be) where
 
-::
+  data B a = BB Bool | BI Int | BE (B Int) (B Int)
 
- refine (
-  match x with
-  | ex_pair _ _ a aH => _
-  end
- ).
+  bb :: Bool -> B Bool
+  bb = BB
 
-ここでいえば、 ``a`` と ``aH`` は
-右側のアンダースコア部から見えるべきだということになります。
-名前が付けられないがゆえに置かれた左側のアンダースコアと混同しないように
-気を付けてください。
+  bi :: Int -> B Int
+  bi = BI
 
-前：
+  be :: B Int -> B Int -> B Bool
+  be = BE
 
-.. code-block:: none
+これが内部表現なのか、と混乱しましたが、この定義はパターンマッチングの際に
+破綻します。\ ``BB`` にマッチしたとき、\ ``a`` が ``Bool`` であることが
+分からないのです。
 
- 1 subgoal
- A : Type
- B : Type
- P : A -> B -> Type
- x : ex A (fun a : A => ex B (fun b : B => P a b))
- ______________________________________(1/1)
- ex B (fun b : B => ex A (fun a : A => P a b))
+結局、正しい ADT での表現はこういうものになります。
 
-後：
+.. code-block:: haskell
 
-.. code-block:: none
+ data B a = BB (a :~: Bool) Bool
+          | BI (a :~: Int) Int
+          | BE (a :~: Bool) (B Int) (B Int)
 
- 1 subgoal
- A : Type
- B : Type
- P : A -> B -> Type
- x : ex A (fun a : A => ex B (fun b : B => P a b))
- a : A
- aH : ex B (fun b : B => P a b)
- ______________________________________(1/1)
- ex B (fun b : B => ex A (fun a0 : A => P a0 b))
-
-``x`` へのパターンマッチで ``a`` と ``aH`` が取り出されました。
-``aH`` の型は ``ex_pair`` の型通り ``a`` に依存しています。
+``(:~:)`` は両辺の型が等しいことを表す型です。つまり「 GADT は ADT に全称量化、
+存在量化、等式を加えたもの」です。

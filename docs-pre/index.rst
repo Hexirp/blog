@@ -20,3 +20,4 @@ Hexirp's blog
 * `このブログの制作記録 </blog/articles/making_the_blog.html>`_
 * `モナドの意味 </blog/articles/meaning_of_monad.html>`_
 * `チャンパーノウン定数を作ってみた </blog/articles/champernowne.html>`_
+* `Mintty のフォントを変えた話 </blog/articles/improve_mintty_font.html>`_
