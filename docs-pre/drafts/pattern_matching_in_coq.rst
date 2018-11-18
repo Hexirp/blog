@@ -129,8 +129,8 @@ GADT は、今までの理解からもう一歩踏み出さないといけませ
 .. code-block:: haskell
 
  data B a where
-  BB :: Bool -> B Bool
-  BI :: Int -> B Int
+  BB :: Bool           -> B Bool
+  BI :: Int            -> B Int
   BE :: B Int -> B Int -> B Bool
 
 ``B a`` は ``BB`` か ``BI`` か ``BE`` のどちらかなのでしょうか。違います。
