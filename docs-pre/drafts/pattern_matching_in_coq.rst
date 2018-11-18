@@ -148,3 +148,60 @@ GADT は、今までの理解からもう一歩踏み出さないといけませ
 この質問に対する答えは「細かいことは気にしない」が一番良いでしょう。ただ世界に
 ``B`` と ``BB`` とかが放り込まれて、それが世界の基盤でどう表現されるのかは
 考えない、というイメージで乗り切りました。
+
+また、罠として、\ ``GADT`` 風の表記（これは ``GADTSyntax`` 拡張により単体で
+使える）では、上に書いてある型の引数の名前は何にも意味がない、というのも
+あります。
+
+.. code-block:: haskell
+
+ data List a where
+  Nil :: List a
+  Cons :: a -> List a -> List a
+
+ data List b where
+  Nil :: List a
+  Cons :: a -> List a -> List a
+
+ data List b where
+  Nil :: List a
+  Cons :: b -> List b -> List b
+
+ data List hoge where
+  Nil :: List huga
+  Cons :: piyo -> List piyo -> List piyo
+
+これらの定義はすべて等価です。
+
+さらに GADT がモジュールを使って再現できるという話もありました。私はそれを見て
+混乱しました。
+
+.. code-block:: haskell
+
+ module B (B, bb, bi, be) where
+
+  data B a = BB Bool | BI Int | BE (B Int) (B Int)
+
+  bb :: Bool -> B Bool
+  bb = BB
+
+  bi :: Int -> B Int
+  bi = BI
+
+  be :: B Int -> B Int -> B Bool
+  be = BE
+
+これが内部表現なのか、と混乱しましたが、この定義はパターンマッチングの際に
+破綻します。\ ``BB`` にマッチしたとき、\ ``a`` が ``Bool`` であることが
+分からないのです。
+
+結局、正しい ADT での表現はこういうものになります。
+
+.. code-block:: haskell
+
+ data B a = BB (a :~: Bool) Bool
+          | BI (a :~: Int) Int
+          | BE (a :~: Bool) (B Int) (B Int)
+
+``(:~:)`` は両辺の型が等しいことを表す型です。つまり「 GADT は ADT に全称量化、
+存在量化、等式を加えたもの」です。
