@@ -332,6 +332,37 @@ Coq ではそれだけではなく依存型も書くことが出来ます。つ�
 変換した後にパターンマッチングすればオーケーです。上でのパターンマッチングで
 いう ``B n`` は、この時 ``n = 1 -> B`` です。
 
+実のところ ``Vec A n -> B`` でパターンマッチしたとき、それぞれの枝での ``n`` は
+``0`` とか ``S np`` とかに置き換えられますが、それらは ``n`` と切り離されていて
+なにも関係がないように振る舞います。
+
+::
+
+ Definition Vec_match
+   (A : Type)
+   (B : forall n : nat, Vec A n -> Type)
+   (o : B 0 (Nil A))
+   (s : forall (np : nat) (x : A) (xs : Vec A np),
+           B (S np) (Cons A np x xs))
+   (n : nat)
+   (x : Vec A n)
+   : B n x
+   :=
+     match x as x' in Vec _ n' return B n' x' with
+     | Nil _ => o
+     | Cons _ np x xs => s np x xs
+     end
+   .
+
+パターンマッチングの部分だけ取り出した関数はこれです。上で ``Vec A n`` に当たる
+``n`` が、その直前で全称量化により導入された引数であればうれしいといった訳は、
+ゴールが ``forall n, Vec A n -> B n`` という形で、この関数がそのまま適用できる
+形 (``Vec_match A (fun n _ => B n) o s``) になっているからです。
+
+この場合のような ``n`` が決まっているときも、上の関数だけで表せます。つまり
+``Vec_match A (fun _ _ => B) o s 0`` とするのです。しかし、これでは ``n`` で
+あるという情報が消えてしまう、というのがポイントです。
+
 なら ``forall m n, Vec A (m + n) -> B m n`` は？新しい引数 ``o`` を取って、
 ``forall o, Vec A o -> forall m n, o = m + n -> B m n`` とすればいいのです。
 上でのパターンマッチングでいう ``B o`` ( ``o`` は上での ``n`` と考える）は、
