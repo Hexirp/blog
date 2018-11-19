@@ -310,8 +310,8 @@ Coq ではそれだけではなく依存型も書くことが出来ます。つ�
 
  fun (n : nat) (H : P n) (x : Vec A n) =>
   match x in Vec a n' return B n' with
-  | Nil => _ (* 1 *)
-  | Cons a xs => _ (* 1 *)
+  | Nil _ => _ (* 1 *)
+  | Cons _ np a xs => _ (* 1 *)
   end
 
 この時 ``_1 : B 0``, ``_2 : B (S np)`` です。いざ、条件 ``H : P n`` を使って
@@ -322,8 +322,8 @@ Coq ではそれだけではなく依存型も書くことが出来ます。つ�
 
  fun (n : nat) (H' : P n) (x : Vec A n) =>
   match x in Vec a n' return P n' -> B n' with
-  | Nil => fun (H : P 0) => _ (* 1 *)
-  | Cons a xs => fun (H : P (S np)) => _ (* 2 *)
+  | Nil _ => fun (H : P 0) => _ (* 1 *)
+  | Cons _ np a xs => fun (H : P (S np)) => _ (* 2 *)
   end H'
 
 このように ``H`` をパターンマッチングに巻き込むことでできます。
@@ -368,8 +368,8 @@ Coq ではそれだけではなく依存型も書くことが出来ます。つ�
 ::
 
  match x in Vec _ n' return n' = 1 -> B with
- | Nil => _
- | Cons => _
+ | Nil _ => _
+ | Cons _ np x xs => _
  end
 
 Coq のパターンマッチングの式は ``as`` や ``in`` キーワードで新しい引数を
