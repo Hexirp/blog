@@ -63,7 +63,12 @@ parsing only
 
 .. code-block:: coq
 
- Notation "plus" := add (parsing only) .
+ Notation plus := add (parsing only) .
+
+別名
+====
+
+別名は二つの関数名を ``:=`` でつなげるだけで、引用符は不要です。
 
 文字を使う
 ==========
