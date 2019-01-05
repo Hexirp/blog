@@ -18,7 +18,7 @@
 #
 # resolver: ./custom-snapshot.yaml
 # resolver: https://example.com/snapshots/2018-01-01.yaml
-resolver: lts-12.0
+resolver: lts-12.20
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -40,7 +40,7 @@ packages:
 # (e.g., acme-missiles-0.3)
 extra-deps:
 - github: Hexirp/hakyll
-  commit: a1d46999405e44e8fe8c7c1c98c8b6a4ff02079a
+  commit: 663162b93ea7d81e0fcaa7ef24fd26b45e1e0d33
 
 # Override default flag values for local packages and extra-deps
 # flags: {}
