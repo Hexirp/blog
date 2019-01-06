@@ -17,6 +17,7 @@ Ghosts of Departed Proofs
 コンパイラに主張します。
 
 "Ghosts of Departed Proof" は Haskell 2010 に対する簡易な拡張のみを使って、
-依存型 (dependent type) や篩型 (refinement type) の多くの利点を得られます。
-この記事では、リストやマップや共有メモリ領域やその他へ不変条件を課する例を
-紹介することで "Ghosts of Departed Proofs" を説明します。
+依存型 (dependent type) や篩型 (refinement type) のいくつかの利点を得られると
+いう点で、他の方法よりも優位性を持っています。この記事では、リストやマップや
+共有メモリ領域やその他へ不変条件を課する例を紹介することで "Ghosts of Departed
+Proofs" を段階的に説明していきたいと思います。
