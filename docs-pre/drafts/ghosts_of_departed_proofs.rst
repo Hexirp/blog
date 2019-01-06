@@ -66,3 +66,16 @@ Proofs" を段階的に説明していきたいと思います。
 このとき、ユーザーは ``mergeBy`` がソートされたリストだけを受け付けること、
 そして二つのリストが渡された比較関数によってソートされていなければならない
 ことに注意しないといけません。そうすることはかなり大変なことです。
+
+.. code-block:: Haskell
+
+ module Named (Named, type (~~), name) where
+
+ import Data.Coerce
+
+ newtype Named name a = Named a
+ type a ~~ name = Named name a
+
+ --      a -> (exists name. (a ~~ name))
+ name :: a -> (forall name. (a ~~ name) -> t) -> t
+ name x k = k (coerce x)
