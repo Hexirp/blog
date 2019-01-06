@@ -11,5 +11,12 @@ Ghosts of Departed Proofs
 理想的ではありません。
 
 この問題を解決する方法の一つが "Ghosts of Departed Proofs" です。核となる発想は
-newtype ラッパーに付け加えられている幽霊型引数によって、高度な事前条件を
-オーバーヘッドなしに Haskell の型システムで表現できることです。
+幽霊型の newtype ラッパーを使うことで、余分な型引数によって高度な事前条件を
+オーバーヘッドなしに Haskell の型システムで表現できることであり、ユーザーは
+幽霊型によって表現された事前条件を証明することで、引数が正しいものであると
+コンパイラに主張します。
+
+"Ghosts of Departed Proof" は Haskell 2010 に対する簡易な拡張のみを使って、
+依存型 (dependent type) や篩型 (refinement type) の多くの利点を得られます。
+この記事では、リストやマップや共有メモリ領域やその他へ不変条件を課する例を
+紹介することで "Ghosts of Departed Proofs" を説明します。
