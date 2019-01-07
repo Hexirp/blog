@@ -13,3 +13,21 @@ Categories of Optics を読んでみた。上層を掠め取ることしかで�
 .. code-block:: haskell
 
  type Lens s t a b = exists m, (s -> (m, a), (m, b) -> t)
+
+*****
+Prism
+*****
+
+...
+
+***
+Iso
+***
+
+...
+
+*********
+Traversal
+*********
+
+...
