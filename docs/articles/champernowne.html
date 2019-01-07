@@ -63,20 +63,20 @@ concatMap (1 :) [[0], [1]] ++
 concatMap (1 :) [[0, 0], [0, 1], [1, 0], [1, 1]] ++
 ...</code></pre>
 <p>これをそのまま実装してみたのがこれ。</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="ot">champernowne ::</span> [<span class="dt">Bool</span>]</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">champernowne <span class="fu">=</span> concat cham_sep</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">-- champernowne + separated</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="ot">cham_sep ::</span> [[<span class="dt">Bool</span>]]</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">cham_sep <span class="fu">=</span> map cham_piece [<span class="dv">0</span><span class="ot"> ::</span> <span class="dt">Integer</span> <span class="fu">..</span>]</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">-- champernowne + piece</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="ot">cham_piece ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [<span class="dt">Bool</span>]</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">cham_piece <span class="fu">=</span> concat <span class="fu">.</span> map (<span class="dt">True</span> <span class="fu">:</span>) <span class="fu">.</span> pows</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="ot">pows ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [[<span class="dt">Bool</span>]]</a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">pows <span class="dv">0</span> <span class="fu">=</span> [[]]</a>
-<a class="sourceLine" id="cb2-14" data-line-number="14">pows n <span class="fu">=</span> (<span class="fu">:</span>) <span class="fu">&lt;$&gt;</span> [<span class="dt">False</span>, <span class="dt">True</span>] <span class="fu">&lt;*&gt;</span> pows (n <span class="fu">-</span> <span class="dv">1</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" title="1"><span class="ot">champernowne ::</span> [<span class="dt">Bool</span>]</a>
+<a class="sourceLine" id="cb2-2" title="2">champernowne <span class="fu">=</span> <span class="fu">concat</span> cham_sep</a>
+<a class="sourceLine" id="cb2-3" title="3"></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="co">-- champernowne + separated</span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="ot">cham_sep ::</span> [[<span class="dt">Bool</span>]]</a>
+<a class="sourceLine" id="cb2-6" title="6">cham_sep <span class="fu">=</span> <span class="fu">map</span> cham_piece [<span class="dv">0</span><span class="ot"> ::</span> <span class="dt">Integer</span> <span class="fu">..</span>]</a>
+<a class="sourceLine" id="cb2-7" title="7"></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="co">-- champernowne + piece</span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="ot">cham_piece ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [<span class="dt">Bool</span>]</a>
+<a class="sourceLine" id="cb2-10" title="10">cham_piece <span class="fu">=</span> <span class="fu">concat</span> <span class="fu">.</span> <span class="fu">map</span> (<span class="dt">True</span> <span class="fu">:</span>) <span class="fu">.</span> pows</a>
+<a class="sourceLine" id="cb2-11" title="11"></a>
+<a class="sourceLine" id="cb2-12" title="12"><span class="ot">pows ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [[<span class="dt">Bool</span>]]</a>
+<a class="sourceLine" id="cb2-13" title="13">pows <span class="dv">0</span> <span class="fu">=</span> [[]]</a>
+<a class="sourceLine" id="cb2-14" title="14">pows n <span class="fu">=</span> (<span class="fu">:</span>) <span class="fu">&lt;$&gt;</span> [<span class="dt">False</span>, <span class="dt">True</span>] <span class="fu">&lt;*&gt;</span> pows (n <span class="fu">-</span> <span class="dv">1</span>)</a></code></pre></div>
 <p><code>pows</code> が非直感的かもしれませんが、n桁のビット列全てのリストを返します。</p>
 <h2 id="予測">予測</h2>
 <p>ざっくり考えるとこんな感じになると思います。</p>
@@ -107,22 +107,22 @@ concatMap (1 :) [[0, 0], [0, 1], [1, 0], [1, 1]] ++
 <h2 id="実験">実験</h2>
 <p>あるn桁まで計算したとき、次の(n+1)桁を取り出すための計算量が log n であると 予測します。この予測に従うと、n桁までの計算量は積分で n log n になるはずです。 これを確認します。次の桁を取り出すのにかかる時間を直接測定しない理由は それぞれの断片 (<code>cham_piece</code>) を結合した境目などでむらがあると考えられるため です。</p>
 <p>Haskell の計測に関するデファクトスタンダードは criterion です。使いましょう。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw">import</span> <span class="dt">Criterion.Main</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">-- 上のコードスニペットをここに</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="ot">main ::</span> <span class="dt">IO</span> ()</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">main <span class="fu">=</span> <span class="kw">do</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"> x <span class="ot">&lt;-</span> defaultMain [</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">  bgroup <span class="st">&quot;cham&quot;</span> [</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">   bench <span class="st">&quot;10000&quot;</span> <span class="fu">$</span> nf cham <span class="dv">10000</span>,</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10">   bench <span class="st">&quot;100000&quot;</span> <span class="fu">$</span> nf cham <span class="dv">100000</span>,</a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">   bench <span class="st">&quot;1000000&quot;</span> <span class="fu">$</span> nf cham <span class="dv">1000000</span>]</a>
-<a class="sourceLine" id="cb3-12" data-line-number="12">  ]</a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"> return x</a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="ot">cham ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> [<span class="dt">Bool</span>]</a>
-<a class="sourceLine" id="cb3-16" data-line-number="16">cham x <span class="fu">=</span> take x champernowne</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">import</span> <span class="dt">Criterion.Main</span></a>
+<a class="sourceLine" id="cb3-2" title="2"></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co">-- 上のコードスニペットをここに</span></a>
+<a class="sourceLine" id="cb3-4" title="4"></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="ot">main ::</span> <span class="dt">IO</span> ()</a>
+<a class="sourceLine" id="cb3-6" title="6">main <span class="fu">=</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb3-7" title="7"> x <span class="ot">&lt;-</span> defaultMain [</a>
+<a class="sourceLine" id="cb3-8" title="8">  bgroup <span class="st">&quot;cham&quot;</span> [</a>
+<a class="sourceLine" id="cb3-9" title="9">   bench <span class="st">&quot;10000&quot;</span> <span class="fu">$</span> nf cham <span class="dv">10000</span>,</a>
+<a class="sourceLine" id="cb3-10" title="10">   bench <span class="st">&quot;100000&quot;</span> <span class="fu">$</span> nf cham <span class="dv">100000</span>,</a>
+<a class="sourceLine" id="cb3-11" title="11">   bench <span class="st">&quot;1000000&quot;</span> <span class="fu">$</span> nf cham <span class="dv">1000000</span>]</a>
+<a class="sourceLine" id="cb3-12" title="12">  ]</a>
+<a class="sourceLine" id="cb3-13" title="13"> <span class="fu">return</span> x</a>
+<a class="sourceLine" id="cb3-14" title="14"></a>
+<a class="sourceLine" id="cb3-15" title="15"><span class="ot">cham ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> [<span class="dt">Bool</span>]</a>
+<a class="sourceLine" id="cb3-16" title="16">cham x <span class="fu">=</span> <span class="fu">take</span> x champernowne</a></code></pre></div>
 <p>さて、他のプログラムをすべて終了させて計測してみます。</p>
 <pre class="sourceCode text"><code>benchmarking cham/10000
 time                 431.0 μs   (425.5 μs .. 436.3 μs)

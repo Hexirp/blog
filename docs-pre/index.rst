@@ -1,7 +1,8 @@
 ---
 title: Home
 description: >-
- 初めまして。理論寄りのプログラマーです。好きなものは机上の空論です。
+ Minecraft の MOD を作ろうとしてプログラミングを始めたら
+ Haskell を経由して数学へと吸われていった人です。
 canonical: https://hexirp.github.io/blog/
 type: website
 ...
@@ -10,7 +11,8 @@ type: website
 Hexirp's blog
 #############
 
-初めまして。理論寄りのプログラマーです。好きなものは机上の空論です。
+Minecraft の MOD を作ろうとしてプログラミングを始めたら
+Haskell を経由して数学へと吸われていった人です。
 
 ****
 記事

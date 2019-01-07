@@ -66,22 +66,22 @@
 <h2 id="意味するところ">意味するところ</h2>
 <p>哲学的な説明がその後に続きますが、関数型プログラミングのモナドは圏論のものです。 そのため、圏論のモナドが、なぜ哲学のモナドという言葉を借用したのか考えます。</p>
 <p>圏論のモナドは、関手とそれに関する二つの自然変換の三つ組です。 この記事は気持ちの記事なので、Haskell で書き表します。このようになります。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">class</span> <span class="dt">Functor</span> m <span class="ot">=&gt;</span> <span class="dt">Monad</span> m <span class="kw">where</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="ot"> pure ::</span> a <span class="ot">-&gt;</span> m a</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="ot"> join ::</span> m (m a) <span class="ot">-&gt;</span> m a</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">class</span> <span class="dt">Functor</span> m <span class="ot">=&gt;</span> <span class="dt">Monad</span> m <span class="kw">where</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="ot"> pure ::</span> a <span class="ot">-&gt;</span> m a</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="ot"> join ::</span> m (m a) <span class="ot">-&gt;</span> m a</a></code></pre></div>
 <p>これに加えてモナド則という条件がありますが、紹介しません。</p>
 <h3 id="ひとつ">ひとつ</h3>
 <p>どちらの関数も返り値の型は <code>m a</code> となっています。 <code>m</code> が <code>a</code> に一回だけ適用されています。</p>
 <p><code>join</code> が取る値の型は <code>m (m a)</code> です。<code>m</code> が二回適用されています。 <code>pure</code> が取る値の型は <code>a</code> です。これは <code>m</code> のゼロ回適用だと考えられます。</p>
 <p><code>m (m (m a)) -&gt; m a</code> という型を持つ関数は作れるでしょうか？ <code>join . join</code> とすれば簡単に作れます。 <code>m a -&gt; m a</code> という型を持つ関数は <code>id</code> で簡単に定義できます。 <code>fmap id</code> でもいいでしょうが、どちらも同じことです。そうでなければならない。</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" data-line-number="1">pure<span class="ot">               ::</span>            a    <span class="ot">-&gt;</span> m a</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">id<span class="ot">                 ::</span>          m a    <span class="ot">-&gt;</span> m a</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="ot">join               ::</span>       m (m a)   <span class="ot">-&gt;</span> m a</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">join <span class="fu">.</span><span class="ot"> join        ::</span>    m (m (m a))  <span class="ot">-&gt;</span> m a</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">join <span class="fu">.</span> join <span class="fu">.</span><span class="ot"> join ::</span> m (m (m (m a))) <span class="ot">-&gt;</span> m a</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="fu">:</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="fu">:</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="fu">:</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">pure</span><span class="ot">               ::</span>            a    <span class="ot">-&gt;</span> m a</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="fu">id</span><span class="ot">                 ::</span>          m a    <span class="ot">-&gt;</span> m a</a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="ot">join               ::</span>       m (m a)   <span class="ot">-&gt;</span> m a</a>
+<a class="sourceLine" id="cb2-4" title="4">join <span class="fu">.</span><span class="ot"> join        ::</span>    m (m (m a))  <span class="ot">-&gt;</span> m a</a>
+<a class="sourceLine" id="cb2-5" title="5">join <span class="fu">.</span> join <span class="fu">.</span><span class="ot"> join ::</span> m (m (m (m a))) <span class="ot">-&gt;</span> m a</a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="fu">:</span></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="fu">:</span></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="fu">:</span></a></code></pre></div>
 <p><code>m</code> が何回適用されていても、<code>m</code> が一回だけ適用された形に変換できる。</p>
 <p>０重でも、１重でも、２重でも、３重でも、１重へ変換できる。 とにかく一つになりたがるものということが出来るでしょう。</p>
 <p>「単子」は単一のもの、といった意味を持ちます。単一になりたがるもの。 こう考えれば、モナドの日本語訳が単子であることも納得できる気がしませんか？</p>

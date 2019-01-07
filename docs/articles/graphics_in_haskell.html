@@ -104,8 +104,8 @@ unliftio-0.2.7.0: using precompiled package</code></pre>
 <p>stack の resolver を変更してのビルド時、今までのキャッシュはそのまま使えません。 パッケージの内容が変更されるためですが、キャッシュが再利用されるときがあります。 すなわち stack は、あるパッケージが依存するパッケージに変更がないのならば、 キャッシュに残っている古いそのパッケージのビルドをそのまま使います。 その時に起こるようです。このエラーを解決するために色々調べました。 起こる事象からキャッシュが壊れているんじゃないかと予想はつきました。 すると最終手段は stack のルートフォルダを消してしまうことだと考えられます。</p>
 <p>それはできるだけ取りたくないため、回避するためにいろいろ調べていると <a href="https://haskell.e-bigmoon.com/stack/tips/full-rebuild.html">完全なリビルド</a>という記事を見つけました。</p>
 <p>それに記載されているこのようなコマンドを打ち込んだら直りました。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="fu">rm</span> -rf <span class="va">$(</span><span class="ex">stack</span> path --stack-root<span class="va">)</span>/precompiled</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="fu">rm</span> -rf <span class="va">$(</span><span class="ex">stack</span> path --stack-root<span class="va">)</span>/snapshots</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="fu">rm</span> -rf <span class="va">$(</span><span class="ex">stack</span> path --stack-root<span class="va">)</span>/precompiled</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="fu">rm</span> -rf <span class="va">$(</span><span class="ex">stack</span> path --stack-root<span class="va">)</span>/snapshots</a></code></pre></div>
 <p>それ自体にかなりの時間がかかりますし、キャッシュが削除されるため これを入力した後のコンパイルはさらに時間がかかります。</p>
 <div class="note">
 <div class="admonition-title">
@@ -162,7 +162,7 @@ unliftio-0.2.7.0: using precompiled package</code></pre>
 <p>今までが嘘かのようにすんなりいったので感動しました。</p>
 <h2 id="gloss-でも同じようにできた">gloss でも同じようにできた</h2>
 <p>上記のインストール方法ですが、<a href="http://repo.msys2.org/mingw/x86_64/">Index of /mingw/x86_64/</a> の中に freeglut が あったため、こんな風にインストールしてみたら gloss でも使えました。 （ソースコードは <a href="">e8fdcf</a> ）</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="ex">stack</span> exec -- pacman -S mingw-w64-x86_64-freeglut</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="ex">stack</span> exec -- pacman -S mingw-w64-x86_64-freeglut</a></code></pre></div>
 <p>便利なのでこのインストール方法について知っていることを書き出しておきます。</p>
 <dl>
 <dt>原理</dt>
