@@ -19,3 +19,40 @@ Haskell で圏論を表現するのと反対に、圏論で Haskell の型クラ
 
 ``Traversable`` は ``Functor`` です。さらに ``sequenceA :: Applicative f => t
 (f a) -> f (t a)`` を考えます。
+
+Applicative transformer は Applicative の間の自然変換です。Functor では
+任意の ``f :: forall a. F a -> G a`` が自然変換になりましたが、Applicative では
+そうでありません。List から ZipList へそのまま変換するものが例外です。
+``a`` を Applicative transformation とします。
+
+.. code-block:: haskell
+
+ a . sequenceA === sequenceA . fmap a
+ fmap sequenceA . sequenceA === sequenceA
+ sequenceA === fmap sequenceA
+
+****************
+ある圏の自己関手
+****************
+
+圏 ``C`` を考えましょう。
+
+* 対象: カインドが ``*`` である型
+* 射: `a, b :: *`` に対して、任意の ``Applicative`` である ``F`` を取って、
+  ``a -> F a``
+
+恒等射と合成はこのように実装されます。
+
+.. code-block:: haskell
+
+ id :: Applicative f => a -> f a
+ id = pure
+
+ (.)
+   :: (Applicative f, Applicative g)
+   => (b -> g c)
+   -> (a -> f b)
+   -> (a -> Compose f g c)
+ g . f = Compose . fmap g . f
+
+``Traversable`` は、この圏の自己関手です。
