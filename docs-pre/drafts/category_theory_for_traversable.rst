@@ -245,14 +245,15 @@ Applicative と圏論
 か。
 
 核になるのは ``sequenceA`` です。つまり、\ ``sequenceA`` が任意の
-applicative な関手に対しての自然変換として見れることを使います。
+applicative な関手に対しての applicative trasformation として見れることを
+使います。
 
 関手 T が、traversable であるとは、
  任意の applicative な関手 F に対して d という TF から FT の自然変換が存在し、
  ほにゃららという条件を満たすことである。
 
-この「ほにゃらら」は、上の Traversable のソースコードにあるコメントそのまま
-です。
+この「ほにゃらら」は、上の Traversable のソースコードにあるコメントを圏論的に
+書き表したものです。
 
 naturality
  ``t . d = d . fmap t`` for every applicative transformation ``t``
@@ -263,8 +264,12 @@ identity
 composition
  ``d . fmap Compose = Compose . fmap d . d``
 
-本当にこれそのままなんです。そのままなんですが、風情がないので可換図式を
-載せます。
+まず、これは何と何が等しいと言っているのでしょうか？ 関数と関数が等しいことを
+表すと考えてもいいかもしれませんが、両辺とも applicative transformer になって
+います。二つの applicative transformer が等しいと書く方が筋がいいでしょう。
+
+さらに言えば、applicative な関手と applicative transformer の圏 App の上で
+考えた方がいいでしょう。可換図式が書けるのです。
 
 .. code-block:: text
 
