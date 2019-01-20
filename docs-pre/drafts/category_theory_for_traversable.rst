@@ -150,6 +150,11 @@ Traversable の定義
      {-# INLINE sequence #-}  -- See Note [Inline default methods]
      sequence = sequenceA
 
+必要な関数は ``traversal`` または ``sequenceA`` で、どっちにもいくつかの条件が
+必要になるという一般的な型クラスですね。条件を読み解くと ``Functor`` とは違い
+条件を記述するために新しい定義をしています——Applicative transformer と
+Identity と Compose です。これが必要なわけは圏論で考えることで分かります。
+
 ******************
 Applicative と圏論
 ******************
