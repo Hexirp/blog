@@ -233,8 +233,8 @@ Applicative と圏論
 特殊な自然変換を持った関手
 **************************
 
-``Traversable`` は ``Functor`` です。さらに ``sequenceA :: Applicative f => t
-(f a) -> f (t a)`` を考えます。
+``Traversable`` は ``Functor`` のうち特殊な条件を満たすものでしたから、
+圏論でも特殊な関手として表現できるでしょう。
 
 Applicative transformer は Applicative の間の自然変換です。Functor では
 任意の ``f :: forall a. F a -> G a`` が自然変換になりましたが、Applicative では
