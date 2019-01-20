@@ -245,8 +245,7 @@ Applicative と圏論
 か。
 
 核になるのは ``sequenceA`` です。つまり、\ ``sequenceA`` が任意の
-applicative な関手に対しての applicative trasformation として見れることを
-使います。
+applicative な関手に対しての自然変換として見れることを使います。
 
 関手 T が、traversable であるとは、
  任意の applicative な関手 F に対して d という TF から FT の自然変換が存在し、
@@ -265,11 +264,14 @@ composition
  ``d . fmap Compose = Compose . fmap d . d``
 
 まず、これは何と何が等しいと言っているのでしょうか？ 関数と関数が等しいことを
-表すと考えてもいいかもしれませんが、両辺とも applicative transformer になって
-います。二つの applicative transformer が等しいと書く方が筋がいいでしょう。
+表すと考えてもいいかもしれませんが、両辺とも自然変換になっています（applicative
+transfomation ではありません）。さらに言えば関手と自然変換の圏の上で考えた方が
+いいでしょう。可換図式が書けます！
 
-さらに言えば、applicative な関手と applicative transformer の圏 App の上で
-考えた方がいいでしょう。可換図式が書けるのです。
+参考にした論文では "A traversable functor is a functor 'T : C -> C' equipped
+with a distributive law 'd_F : TF -> FT' for T over the action of App on C by
+evaluation." と書かれていて action という言葉を使って定義されているのですが、
+よく分からなかったので直後に書いてある明示的な則を載せました。
 
 .. code-block:: text
 
