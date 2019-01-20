@@ -153,7 +153,8 @@ Traversable の定義
 必要な関数は ``traversal`` または ``sequenceA`` で、どっちにもいくつかの条件が
 必要になるという一般的な型クラスですね。条件を読み解くと ``Functor`` とは違い
 条件を記述するために新しい定義をしています——Applicative transformer と
-Identity と Compose です。これが必要なわけは圏論で考えることで分かります。
+Identity と Compose です。Traversable を圏論で表現するときは、これらの
+概念が重要になってきます。
 
 ******************
 Applicative と圏論
