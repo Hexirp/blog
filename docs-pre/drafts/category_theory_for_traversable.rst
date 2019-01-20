@@ -191,6 +191,13 @@ Applicative と圏論
  --  * @t (x '<*>' y) = t x '<*>' t y@
  -- ~~~
 
+ちなみに ``Functor f`` と ``Functor g`` の間の自然変換は ``t :: f a -> g a`` と
+いう型を持ちますが、このような型を持つ関数は、驚くべきことに必ず自然変換に
+なります。モノイダル関手ではそういうことはありません（リストから ``ZipList``
+への関数が反例になります）。
+
+----
+
 関手には、恒等関手があり関手の合成があります。ゆえに圏になります。それが圏と
 関手の圏と呼ばれるものです。Haskell では恒等関手と関手の合成はこのように
 書かれます。つまり ``Identity`` が恒等関手であり二つの関手 ``f`` と ``g`` を
@@ -235,11 +242,6 @@ Applicative と圏論
 
 ``Traversable`` は ``Functor`` のうち特殊な条件を満たすものでしたから、
 圏論でも特殊な関手として表現できるでしょう。
-
-Applicative transformer は Applicative の間の自然変換です。Functor では
-任意の ``f :: forall a. F a -> G a`` が自然変換になりましたが、Applicative では
-そうでありません。List から ZipList へそのまま変換するものが例外です。
-``a`` を Applicative transformation とします。
 
 .. code-block:: haskell
 
