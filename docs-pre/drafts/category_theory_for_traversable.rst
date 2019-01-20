@@ -190,6 +190,40 @@ Applicative と圏論
  --  * @t (x '<*>' y) = t x '<*>' t y@
  -- ~~~
 
+関手には、恒等関手があり関手の合成があります。ゆえに圏になります。それが圏と
+関手の圏と呼ばれるものです。Haskell では恒等関手と関手の合成はこのように
+書かれます。つまり ``Identity`` が恒等関手であり二つの関手 ``f`` と ``g`` を
+合成した関手が ``Compose f g`` です。
+
+.. code-block:: haskell
+
+ newtype Identity a = Identity a
+
+ newtype Compose f g a = Compose (f (g a))
+
+ instance Functor Identity where
+     fmap f (Identity a) = Identity (f a)
+
+ instance (Functor f, Functor g) => Functor (Compose f g) where
+     fmap f (Compose a) = Compose (fmap (fmap f) a)
+
+モノイダル関手には、恒等モノイダル関手がありモノイダル関手の合成があります。
+より分かりやすくいうと、恒等関手はモノイダルであり、二つのモノイダル関手の
+合成はモノイダル関手になります。
+
+.. code-block:: haskell
+
+ instance Applicative Identity where
+     pure x = Identity x
+     Identity f <*> Identity x = Identity (f x)
+
+ instance (Applicative f, Applicative g) => Applicative (Compose f g) where
+     pure x = Compose (pure (pure x))
+     Compose f <*> Compose x = Compose ((<*>) <$> f <*> x)
+
+ちなみに、モナドには合成がありません。モナド変換子は、もし合成があったのならば
+必要なかったでしょう。この話は本題と逸れますが、面白いので調べてみてください。
+
 **************************
 特殊な自然変換を持った関手
 **************************
