@@ -241,13 +241,68 @@ Applicative と圏論
 **************************
 
 ``Traversable`` は ``Functor`` のうち特殊な条件を満たすものでしたから、
-圏論でも特殊な関手として表現できるでしょう。
+圏論でも特殊な関手として表現できるでしょう。では、どのように特殊なのでしょう
+か。
 
-.. code-block:: haskell
+核になるのは ``sequenceA`` です。つまり、\ ``sequenceA`` が任意の
+applicative な関手に対しての自然変換として見れることを使います。
 
- a . sequenceA === sequenceA . fmap a
- fmap sequenceA . sequenceA === sequenceA
- sequenceA === fmap sequenceA
+関手 T が、traversable であるとは、
+ 任意の applicative な関手 F に対して d という TF から FT の自然変換が存在し、
+ ほにゃららという条件を満たすことである。
+
+この「ほにゃらら」は、上の Traversable のソースコードにあるコメントそのまま
+です。
+
+naturality
+ ``t . d = d . fmap t`` for every applicative transformation ``t``
+
+identity
+ ``d . fmap Identity = Identity``
+
+composition
+ ``d . fmap Compose = Compose . fmap d . d``
+
+本当にこれそのままなんです。そのままなんですが、風情がないので可換図式を
+載せます。
+
+.. code-block:: text
+
+ naturality:
+
+           d_F
+     TF ---------> FT
+
+     |             |
+     |             |
+  Ta |             | aT
+     |             |
+     v             v
+
+     TG ---------> GT
+           d_G
+
+            for every morphism 'a' in 'App'
+
+ composition:
+
+              d_(FG)
+   TFG -------------------> FGT
+
+   |                        ^
+   |                        |
+   +---------> FTG ---------+
+     (d_F)G         F(d_G)
+
+ identity:
+
+       d_I
+  TI ---------+
+              |
+  |           v
+  |
+  +---------> IT
+       id
 
 ****************
 ある圏の自己関手
