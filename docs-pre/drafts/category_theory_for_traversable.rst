@@ -349,3 +349,22 @@ evaluation." と書かれていて action という言葉を使って定義さ�
 
 ``Traversable`` は、この圏の自己関手です。これでうまくいくことの説明は読者への
 演習問題とします（めんどくさいだけ）。
+
+********
+終わりに
+********
+
+Traversable の圏論での形式化を二通り紹介しました。どっちにしても、楽しいです
+よね！
+
+ちなみに「ある圏の自己関手」での定義方法は自分の思いつきです。誰かが先に
+考えていると思いますが（と予防線を張る）。
+
+****
+出典
+****
+
+* Traversable の定義 - https://hackage.haskell.org/package/base-4.12.0.0/docs/src/Data.Traversable.html
+* 特殊な自然変換を持った関手 - `Categories of Optics`_ の Definition 4.6.2
+
+.. _Categories of Optics: https://arxiv.org/abs/1809.00738
