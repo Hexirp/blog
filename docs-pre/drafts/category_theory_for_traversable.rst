@@ -317,24 +317,35 @@ evaluation." と書かれていて action という言葉を使って定義さ�
 ある圏の自己関手
 ****************
 
-圏 ``C`` を考えましょう。
+`特殊な自然変換を持った関手`_ 節では ``sequenceA`` を使って形式化しました。
+では、\ ``traverse`` を使った形式化もあるのでしょうか？ あります。
 
-* 対象: カインドが ``*`` である型
-* 射: `a, b :: *`` に対して、任意の ``Applicative`` である ``F`` を取って、
-  ``a -> F a``
+とある圏を考えましょう。対象は Haskell の型です。\ ``A`` から ``B`` への射は
+任意の ``Applicative`` である ``F`` に対して ``A -> f B`` です。スライス圏と
+同じような感じだと思ってください。この定義はちょっと非直感的なので Haskell で
+書き下しましょう。
+
+.. code-block:: haskell
+
+ -- 対象は A :: * である。
+
+ -- 対象 A, B に対して、任意の F において Applicative F であるならば
+ -- f : A -> F B は射である。
+ data C :: * -> * -> * where
+  Mk_C :: forall f. Applicative f => (a -> f b) -> C a b
 
 恒等射と合成はこのように実装されます。
 
 .. code-block:: haskell
 
- id :: Applicative f => a -> f a
- id = pure
+ id :: C a a
+ id = Mk_C (pure :: a -> Identity a)
 
  (.)
-   :: (Applicative f, Applicative g)
-   => (b -> g c)
-   -> (a -> f b)
-   -> (a -> Compose f g c)
- g . f = Compose . fmap g . f
+   :: C b c
+   -> C a b
+   -> C a c
+ (Mk_C g) . (Mk_C f) = C (Compose . fmap g . f)
 
-``Traversable`` は、この圏の自己関手です。
+``Traversable`` は、この圏の自己関手です。これでうまくいくことの説明は読者への
+演習問題とします（めんどくさいだけ）。
