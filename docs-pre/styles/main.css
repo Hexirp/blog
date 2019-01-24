@@ -96,3 +96,8 @@ th, td {
 #nav > li {
   padding: 8px;
 }
+
+
+.strike {
+  text-decoration: line-through;
+}
