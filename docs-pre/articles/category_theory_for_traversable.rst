@@ -378,14 +378,10 @@ evaluation." と書かれていて action という言葉を使って定義さ�
 Traversable の圏論での形式化を二通り紹介しました。どっちにしても、楽しいです
 よね！
 
-ちなみに「ある圏の自己関手」での定義方法は自分の思いつきです。\ :strike:`誰かが
-先に考えていると思いますが（と予防線を張る）。`\ いました\ [1]_\ 。
+ちなみに「ある圏の自己関手」での定義方法は自分の思いつきです。誰かが先に考えて
+いると思いますが（と予防線を張る）。
 
-****
-脚注
-****
-
-.. _[1]: https://duplode.github.io/posts/traversable-a-remix.html
+追記 (2019/01/24): いました (https://duplode.github.io/posts/traversable-a-remix.html) 。
 
 ****
 出典
