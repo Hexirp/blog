@@ -14,6 +14,10 @@ Hexirp のブログ。
 マージされてほしい。for-windows ブランチは Windows 用で、独自にバグを
 直した Hakyll (さっきのプルリクのやつ) を使う。
 
+master ブランチは CI によるコミット以外は禁止。source にコミットすると CI が
+走って、コンパイル結果が master にデプロイされる。コミットは慎重に。develop は
+普段の開発用。
+
 ## 書き方
 
 以下のメタデータが必要である。Pandoc Markdown の `yaml_metadata_block` 拡張を
