@@ -1,3 +1,10 @@
+---
+title: Traversable のための圏論
+description: Haskell の Traversable を圏論で形式化する二通りの方法について。
+canonical: 'https://hexirp.github.io/blog/articles/category_theory_for_traversable.html'
+type: article
+...
+
 ########################
 Traversable のための圏論
 ########################
