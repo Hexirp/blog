@@ -378,8 +378,14 @@ evaluation." と書かれていて action という言葉を使って定義さ�
 Traversable の圏論での形式化を二通り紹介しました。どっちにしても、楽しいです
 よね！
 
-ちなみに「ある圏の自己関手」での定義方法は自分の思いつきです。誰かが先に
-考えていると思いますが（と予防線を張る）。
+ちなみに「ある圏の自己関手」での定義方法は自分の思いつきです。\ :strike:`誰かが
+先に考えていると思いますが（と予防線を張る）。`\ いました\ [1]_\ 。
+
+****
+脚注
+****
+
+.. _[1]: https://duplode.github.io/posts/traversable-a-remix.html
 
 ****
 出典
@@ -389,3 +395,6 @@ Traversable の圏論での形式化を二通り紹介しました。どっち�
 * 特殊な自然変換を持った関手 - `Categories of Optics`_ の Definition 4.6.2
 
 .. _Categories of Optics: https://arxiv.org/abs/1809.00738
+
+
+.. role:: strike
