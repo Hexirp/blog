@@ -381,7 +381,8 @@ Traversable の圏論での形式化を二通り紹介しました。どっち�
 ちなみに「ある圏の自己関手」での定義方法は自分の思いつきです。誰かが先に考えて
 いると思いますが（と予防線を張る）。
 
-追記 (2019/01/24): いました (https://duplode.github.io/posts/traversable-a-remix.html) 。
+追記 (2019/01/24): 先に考えている人がいました
+(https://duplode.github.io/posts/traversable-a-remix.html) 。
 
 ****
 出典
