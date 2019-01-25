@@ -23,3 +23,4 @@ Haskell を経由して数学へと吸われていった人です。
 * `モナドの意味 </blog/articles/meaning_of_monad.html>`_
 * `チャンパーノウン定数を作ってみた </blog/articles/champernowne.html>`_
 * `Mintty のフォントを変えた話 </blog/articles/improve_mintty_font.html>`_
+* `Traversable のための圏論 </blog/articles/category_theory_for_traversable>`_
