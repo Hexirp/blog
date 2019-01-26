@@ -324,6 +324,13 @@ evaluation." と書かれていて action という言葉を使って定義さ�
   +---------> IT
        id
 
+追記 (2019/01/26): action は、圏論的な意味を持たない、「なんかに働くよー」って
+いう意味で使われているというだけの単語みたいです。これを踏まえて訳してみると、
+「evaluation による圏 C (よくわからないけど Hask みたいなもの？) の上での
+App (applicative functor と applicative transformer の圏) の対象について渡る
+分配則 'd_F : TF -> FT' で特徴づけられる関手 'T : C -> C' が traversable
+functor である」って感じでしょうか？
+
 ****************
 ある圏の自己関手
 ****************
