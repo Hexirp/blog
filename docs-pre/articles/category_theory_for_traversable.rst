@@ -260,8 +260,9 @@ applicative な関手に対しての自然変換として見れることを使�
  任意の applicative な関手 F に対して d という TF から FT の自然変換が存在し、
  ほにゃららという条件を満たすことである。
 
-この「ほにゃらら」は、上の Traversable のソースコードにあるコメントを圏論的に
-書き表したものです。
+この「ほにゃらら」は、上の Traversable のソースコードにある Traversable 則を
+圏論的に書き表したものです。Traversable 則は以下の通りです。ただし ``d`` で
+``sequenceA`` を置き換えました。
 
 naturality
  ``t . d = d . fmap t`` for every applicative transformation ``t``
@@ -281,6 +282,9 @@ transfomation ではありません）。さらに言えば関手と自然変換
 with a distributive law 'd_F : TF -> FT' for T over the action of App on C by
 evaluation." と書かれていて action という言葉を使って定義されているのですが、
 よく分からなかったので直後に書いてある明示的な則を載せました。
+
+可換図式は下のようになります。ただし、\ ``d_F`` は F に対する d を表します
+（任意の applicative な関手に対する自然変換だったのでした）。
 
 .. code-block:: text
 
@@ -374,8 +378,11 @@ evaluation." と書かれていて action という言葉を使って定義さ�
 Traversable の圏論での形式化を二通り紹介しました。どっちにしても、楽しいです
 よね！
 
-ちなみに「ある圏の自己関手」での定義方法は自分の思いつきです。誰かが先に
-考えていると思いますが（と予防線を張る）。
+ちなみに「ある圏の自己関手」での定義方法は自分の思いつきです。誰かが先に考えて
+いると思いますが（と予防線を張る）。
+
+追記 (2019/01/24): 先に考えている人がいました
+(https://duplode.github.io/posts/traversable-a-remix.html) 。
 
 ****
 出典
@@ -385,3 +392,6 @@ Traversable の圏論での形式化を二通り紹介しました。どっち�
 * 特殊な自然変換を持った関手 - `Categories of Optics`_ の Definition 4.6.2
 
 .. _Categories of Optics: https://arxiv.org/abs/1809.00738
+
+
+.. role:: strike
