@@ -264,9 +264,10 @@ identity:
  |
  +---------&gt; IT
       id</code></pre>
+<p>追記 (2019/01/26): action は、圏論的な意味を持たない、「なんかに働くよー」って いう意味で使われているというだけの単語みたいです。これを踏まえて訳してみると、 「evaluation による圏 C (よくわからないけど Hask みたいなもの？) の上での App (applicative functor と applicative transformer の圏) の対象について渡る 分配則 ‘d_F : TF -&gt; FT’ で特徴づけられる関手 ‘T : C -&gt; C’ が traversable functor である」って感じでしょうか？</p>
 <h2 id="ある圏の自己関手">ある圏の自己関手</h2>
 <p><a href="#特殊な自然変換を持った関手">特殊な自然変換を持った関手</a> 節では <code>sequenceA</code> を使って形式化しました。 では、<code>traverse</code> を使った形式化もあるのでしょうか？ あります。</p>
-<p>とある圏を考えましょう。対象は Haskell の型です。<code>A</code> から <code>B</code> への射は 任意の <code>Applicative</code> である <code>F</code> に対して <code>A -&gt; f B</code> です。スライス圏と 同じような感じだと思ってください。この定義はちょっと非直感的なので Haskell で 書き下しましょう。</p>
+<p>とある圏を考えましょう。対象は Haskell の型です。<code>A</code> から <code>B</code> への射は 任意の <code>Applicative</code> である <code>F</code> に対して <code>A -&gt; F B</code> です。スライス圏と 同じような感じだと思ってください。この定義はちょっと非直感的なので Haskell で 書き下しましょう。</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb6-1" title="1"><span class="co">-- 対象は A :: * である。</span></a>
 <a class="sourceLine" id="cb6-2" title="2"></a>
 <a class="sourceLine" id="cb6-3" title="3"><span class="co">-- 対象 A, B に対して、任意の F において Applicative F であるならば</span></a>
