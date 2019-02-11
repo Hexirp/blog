@@ -4,9 +4,9 @@ Coq でのパターンマッチング
 
 .. highlight:: coq
 
-Coq は代数的データ型 (ADT / Algebraic data type) のようにして新しい型を定義
-でき、さらに一般化代数的データ型 (GADT / Generalized algebraic data type) や
-依存型もモリモリ使える、という言語です。たいへん良いですね。しかしながら、
+Coq は、代数的データ型 (ADT / Algebraic data type) を使えます。さらに、一般化
+代数的データ型 (GADT / Generalized algebraic data type) も使えます。さらに、
+さらに、依存型もモリモリ使えます。たいへん良い言語ですね。しかしながら、
 それが複雑化して、パターンマッチングをどうやればいいのか、それで何が起こるの
 か、どう型付けされるのか、素朴に理解できませんでした。この記事は、それらを理解
 したいがためのメモです。Haskell を知っているが Coq はよくわからない人
