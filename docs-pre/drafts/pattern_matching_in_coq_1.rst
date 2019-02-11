@@ -144,6 +144,97 @@ parameters) と同じような感じですね。この仕組みを使って型�
 パターンでの ``Just _ a`` の ``_`` も暗黙引数で省略できるので、実用上では困った
 ことはないです。
 
+::
+
+ Coq < Inductive prod (A : Type) (B : Type) : Type := pair : A -> B -> prod A B .
+ prod is defined
+ prod_rect is defined
+ prod_ind is defined
+ prod_rec is defined
+
+ Coq < Check pair .
+ pair
+      : forall A B : Type, A -> B -> prod A B
+
+ Coq < Definition swap : forall A B : Type, prod A B -> prod B A .
+ 1 subgoal
+
+   ============================
+   forall A B : Type, prod A B -> prod B A
+
+ swap < Proof.
+
+ swap < refine (fun A B => _) .
+ 1 subgoal
+
+   A : Type
+   B : Type
+   ============================
+   prod A B -> prod B A
+
+ swap < refine (fun x => _) .
+ 1 subgoal
+
+   A : Type
+   B : Type
+   x : prod A B
+   ============================
+   prod B A
+
+ swap < refine (match x with pair xA xB x1 x2 => _ end) .
+ Toplevel input, characters 26-28:
+ > refine (match x with pair xA xB x1 x2 => _ end) .
+ >                           ^^
+ Error: The parameters do not bind in patterns; they must be replaced by '_'.
+
+ swap < refine (match x with pair _ _ x1 x2 => _ end) .
+ 1 subgoal
+
+   A : Type
+   B : Type
+   x : prod A B
+   x1 : A
+   x2 : B
+   ============================
+   prod B A
+
+ swap < refine (pair x2 x1) .
+ Toplevel input, characters 13-15:
+ > refine (pair x2 x1) .
+ >              ^^
+ Error:
+ Ltac call to "refine (uconstr)" failed.
+ In environment
+ A : Type
+ B : Type
+ x : prod A B
+ x1 : A
+ x2 : B
+ The term "x2" has type "B" while it is expected to have type "Type".
+
+ swap < refine (pair A B x1 x2) .
+ Toplevel input, characters 8-22:
+ > refine (pair A B x1 x2) .
+ >         ^^^^^^^^^^^^^^
+ Error:
+ Ltac call to "refine (uconstr)" failed.
+ In environment
+ A : Type
+ B : Type
+ x : prod A B
+ x1 : A
+ x2 : B
+ The term "pair A B x1 x2" has type "prod A B"
+ while it is expected to have type "prod B A".
+
+ swap < refine (pair B A x2 x1) .
+ No more subgoals.
+
+ swap < Defined.
+ swap is defined
+
+ Coq < Quit.
+
 ****
 GADT
 ****
