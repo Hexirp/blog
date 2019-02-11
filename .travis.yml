@@ -35,3 +35,4 @@ deploy:
 cache:
   directories:
     - $HOME/.stack
+  timeout: 300
