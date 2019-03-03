@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <title>チャンパーノウン定数を作ってみた - Hexirp's Blog</title>
+
+    <meta name="keywords" content="" />
+    <meta name="description" content="題の通りチャンパーノウン定数の桁を無限リストで表現したものを Haskell で実装し、 その効率を測って直感と合うかどうか確かめてみるだけの記事です。" />
+    <meta name="author" content="Hexirp" />
+
+    <link rel="canonical" href="https://hexirp.github.io/blog/articles/champernowne.html" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Hexirp's Blog" />
+    <meta property="og:title" content="チャンパーノウン定数を作ってみた - Hexirp's Blog" />
+    <meta property="og:description" content="題の通りチャンパーノウン定数の桁を無限リストで表現したものを Haskell で実装し、 その効率を測って直感と合うかどうか確かめてみるだけの記事です。" />
+    <meta property="og:image" content="https://hexirp.github.io/blog/icon.png" />
+    <meta property="og:url" content="https://hexirp.github.io/blog/articles/champernowne.html" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@hexirp_prixeh" />
+    <meta name="twitter:title" content="チャンパーノウン定数を作ってみた - Hexirp's Blog" />
+    <meta name="twitter:description" content="題の通りチャンパーノウン定数の桁を無限リストで表現したものを Haskell で実装し、 その効率を測って直感と合うかどうか確かめてみるだけの記事です。" />
+    <meta name="twitter:image" content="https://hexirp.github.io/blog/icon.png" />
+
+    <link rel="icon" href="/blog/small_icon.png" />
+
+    <link rel="apple-touch-icon" href="/blog/icon.png" />
+
+    <link rel="stylesheet" href="/blog/styles/main.css" />
+  </head>
+
+  <body>
+    <header>
+      <div id="icon">
+        <img src="/blog/icon.png" alt="Hexirp's icon" width="64" height="64" />
+      </div>
+
+      <ul id="nav">
+        <li><a href="/blog/">Home</a></li>
+        <li><a href="https://twitter.com/hexirp_prixeh">Twitter</a></li>
+        <li><a href="https://github.com/Hexirp">GitHub</a></li>
+      </ul>
+    </header>
+
+    <main>
+<h1 id="チャンパーノウン定数を作ってみた">チャンパーノウン定数を作ってみた</h1>
+<p>題の通りチャンパーノウン定数の桁を無限リストで表現したものを Haskell で実装し、 その効率を測って直感と合うかどうか確かめてみるだけの記事です。</p>
+<h2 id="動機">動機</h2>
+<p>チャンパーノウン定数は疑似乱数としても使えるらしいので作ってみようかなーと。</p>
+<h2 id="プログラム">プログラム</h2>
+<p>基本的な発想はこんな感じです。</p>
+<pre class="sourceCode text"><code>[1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, ...]
+
+[1] ++ [1, 0, 1, 1] ++ [1, 0, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1] ++ ...
+
+concatMap (1 :) [[]] ++
+concatMap (1 :) [[0], [1]] ++
+concatMap (1 :) [[0, 0], [0, 1], [1, 0], [1, 1]] ++
+...</code></pre>
+<p>これをそのまま実装してみたのがこれ。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb2-1" title="1"><span class="ot">champernowne ::</span> [<span class="dt">Bool</span>]</a>
+<a class="sourceLine" id="cb2-2" title="2">champernowne <span class="fu">=</span> <span class="fu">concat</span> cham_sep</a>
+<a class="sourceLine" id="cb2-3" title="3"></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="co">-- champernowne + separated</span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="ot">cham_sep ::</span> [[<span class="dt">Bool</span>]]</a>
+<a class="sourceLine" id="cb2-6" title="6">cham_sep <span class="fu">=</span> <span class="fu">map</span> cham_piece [<span class="dv">0</span><span class="ot"> ::</span> <span class="dt">Integer</span> <span class="fu">..</span>]</a>
+<a class="sourceLine" id="cb2-7" title="7"></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="co">-- champernowne + piece</span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="ot">cham_piece ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [<span class="dt">Bool</span>]</a>
+<a class="sourceLine" id="cb2-10" title="10">cham_piece <span class="fu">=</span> <span class="fu">concat</span> <span class="fu">.</span> <span class="fu">map</span> (<span class="dt">True</span> <span class="fu">:</span>) <span class="fu">.</span> pows</a>
+<a class="sourceLine" id="cb2-11" title="11"></a>
+<a class="sourceLine" id="cb2-12" title="12"><span class="ot">pows ::</span> <span class="dt">Integer</span> <span class="ot">-&gt;</span> [[<span class="dt">Bool</span>]]</a>
+<a class="sourceLine" id="cb2-13" title="13">pows <span class="dv">0</span> <span class="fu">=</span> [[]]</a>
+<a class="sourceLine" id="cb2-14" title="14">pows n <span class="fu">=</span> (<span class="fu">:</span>) <span class="fu">&lt;$&gt;</span> [<span class="dt">False</span>, <span class="dt">True</span>] <span class="fu">&lt;*&gt;</span> pows (n <span class="fu">-</span> <span class="dv">1</span>)</a></code></pre></div>
+<p><code>pows</code> が非直感的かもしれませんが、n桁のビット列全てのリストを返します。</p>
+<h2 id="予測">予測</h2>
+<p>ざっくり考えるとこんな感じになると思います。</p>
+<dl>
+<dt>メリット</dt>
+<dd><ul>
+<li>繰り返しがない</li>
+<li>全てのパターンが必ず現れる</li>
+</ul>
+</dd>
+<dt>デメリット</dt>
+<dd><ul>
+<li>値を取り出し続けると計算量が増える（おそらく log n に比例して）</li>
+<li>繰り返し計算ではないため最適化が効きづらい？</li>
+</ul>
+</dd>
+</dl>
+<p>実際に GHCi で遊んでみます。<code>let f x = if x then '1' else '0'</code> を 入力してやって、その関数を <code>map</code> して無限リストを文字列に変換してから 表示してみます。遅延評価なので次々と次の桁が計算されてすぐさま表示されます。 眺めているとこんなデメリットがあるっぽいのを発見しました。</p>
+<dl>
+<dt>デメリット</dt>
+<dd><ul>
+<li>実用的に見ると結構規則性がある</li>
+</ul>
+</dd>
+</dl>
+<p>最初の数千桁を取り出したぐらいでは、連結されていくリストの最初の要素が 必ず1になるが故に、一定間隔で必ず1になってしまうようです。これを掻き消すには 数億桁取り出しても足りないかもしれません。（その間隔の増加速度が対数的なので）</p>
+<p>効率のほうは徐々に遅くなっているように見えますがはっきりしたことは分かりません。 特に Haskell では「実際に測ってみないことにはわからない」ので測ってみます。 取り出し続けると log n に比例して遅くなっていくことを確かめることが目的です。</p>
+<h2 id="実験">実験</h2>
+<p>あるn桁まで計算したとき、次の(n+1)桁を取り出すための計算量が log n であると 予測します。この予測に従うと、n桁までの計算量は積分で n log n になるはずです。 これを確認します。次の桁を取り出すのにかかる時間を直接測定しない理由は それぞれの断片 (<code>cham_piece</code>) を結合した境目などでむらがあると考えられるため です。</p>
+<p>Haskell の計測に関するデファクトスタンダードは criterion です。使いましょう。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode haskell"><code class="sourceCode haskell"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">import</span> <span class="dt">Criterion.Main</span></a>
+<a class="sourceLine" id="cb3-2" title="2"></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co">-- 上のコードスニペットをここに</span></a>
+<a class="sourceLine" id="cb3-4" title="4"></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="ot">main ::</span> <span class="dt">IO</span> ()</a>
+<a class="sourceLine" id="cb3-6" title="6">main <span class="fu">=</span> <span class="kw">do</span></a>
+<a class="sourceLine" id="cb3-7" title="7"> x <span class="ot">&lt;-</span> defaultMain [</a>
+<a class="sourceLine" id="cb3-8" title="8">  bgroup <span class="st">&quot;cham&quot;</span> [</a>
+<a class="sourceLine" id="cb3-9" title="9">   bench <span class="st">&quot;10000&quot;</span> <span class="fu">$</span> nf cham <span class="dv">10000</span>,</a>
+<a class="sourceLine" id="cb3-10" title="10">   bench <span class="st">&quot;100000&quot;</span> <span class="fu">$</span> nf cham <span class="dv">100000</span>,</a>
+<a class="sourceLine" id="cb3-11" title="11">   bench <span class="st">&quot;1000000&quot;</span> <span class="fu">$</span> nf cham <span class="dv">1000000</span>]</a>
+<a class="sourceLine" id="cb3-12" title="12">  ]</a>
+<a class="sourceLine" id="cb3-13" title="13"> <span class="fu">return</span> x</a>
+<a class="sourceLine" id="cb3-14" title="14"></a>
+<a class="sourceLine" id="cb3-15" title="15"><span class="ot">cham ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> [<span class="dt">Bool</span>]</a>
+<a class="sourceLine" id="cb3-16" title="16">cham x <span class="fu">=</span> <span class="fu">take</span> x champernowne</a></code></pre></div>
+<p>さて、他のプログラムをすべて終了させて計測してみます。</p>
+<pre class="sourceCode text"><code>benchmarking cham/10000
+time                 431.0 μs   (425.5 μs .. 436.3 μs)
+                     0.998 R²   (0.997 R² .. 0.999 R²)
+mean                 434.3 μs   (429.6 μs .. 442.4 μs)
+std dev              20.14 μs   (14.26 μs .. 32.38 μs)
+variance introduced by outliers: 41% (moderately inflated)
+
+benchmarking cham/100000
+time                 3.885 ms   (3.811 ms .. 3.972 ms)
+                     0.996 R²   (0.993 R² .. 0.998 R²)
+mean                 3.877 ms   (3.832 ms .. 3.931 ms)
+std dev              159.0 μs   (126.5 μs .. 196.8 μs)
+variance introduced by outliers: 23% (moderately inflated)
+
+benchmarking cham/1000000
+time                 41.30 ms   (40.05 ms .. 42.72 ms)
+                     0.995 R²   (0.985 R² .. 1.000 R²)
+mean                 40.50 ms   (40.01 ms .. 41.66 ms)
+std dev              1.394 ms   (656.2 μs .. 2.379 ms)</code></pre>
+<p>はい、何もわかりませんね。ただ、時間を測るのには100000がちょうど良さそうです。 解像度を上げてみます。100000から1000000まで10000刻みにして11のケースを作ります。 ついでに <code>--output FILE</code> オプションを使ってHTMLファイルで結果を出力させます。</p>
+<dl>
+<dt><a href="/blog/articles/champernowne/result_1.html">結果 (100000, 200000 .. 1000000)</a></dt>
+<dd><p>さらに調べる範囲を広げるとこのようになりました。</p>
+</dd>
+<dt><a href="/blog/articles/champernowne/result_2.html">結果 (100000, 200000 .. 1900000)</a></dt>
+<dd><p>線形時間であるように見えます。log n の増加率はとても小さいからかもしれません。 なんとか log n がはっきりわかるようなグラフが欲しいのでnを10倍にします。</p>
+</dd>
+<dt><a href="/blog/articles/champernowne/result_3.html">結果 (1000000, 2000000 .. 19000000)</a></dt>
+<dd><p>まっすぐにしか見えません。log n の影響は小さくてほぼ線形ということでしょうか？ ここで log n の影響は初めの方が大きくなることに気が付きました。 つまり、二階微分、曲率っぽいものが大きくなることです。</p>
+</dd>
+<dt><a href="/blog/articles/champernowne/result_4.html">結果 (10000, 20000, .. 190000)</a></dt>
+<dd><p>まだよくわかりません。もういっちょ小さくしてみましょう。</p>
+</dd>
+<dt><a href="/blog/articles/champernowne/result_5.html">結果 (1000, 2000, .. 19000)</a></dt>
+<dd><p>諦めます。ほぼ線形時間ということでいいと思います。</p>
+</dd>
+</dl>
+<p>次の(n+1)桁を取り出すための計算量を直接測ってみようと思ったのですが、 前に同じようなことを考えて、それぞれの断片に差し掛かったときに展開されて スパイク状に計算量が上がると考えられるため、無意味だと考えてやめたんでした。</p>
+<p>と、ここで気が付いてしまったのですが、このスパイク状に上がる計算量は、 log n に比例して高さが大きくなるはずで、それが計算量が n log n だと判断した 根拠なのですが、他の要素を取り出すときに必要な計算量を一時点に 集めているだけなので分配したらフラットになるのでは。</p>
+<p>これが正しければ、正真正銘の線形時間であることになります。</p>
+<h2 id="考察">考察</h2>
+<p>さっきの考えは整理するとこんな感じになります。</p>
+<table style="width:80%;">
+<colgroup>
+<col style="width: 43%" />
+<col style="width: 36%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>取り出そうとしているのが何個めか</th>
+<th>取り出すまでにかかるコスト</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>3</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>こんな感じでコストがあり、均すと定数時間になるという考え方です。</p>
+<p>最初は、それぞれの断片をリスト結合が節である木として考え、そのn番目の断片の 木としての高さが log n であるため、次の桁を取り出すのにかかる時間は 平均して log n だ！という考え方をしていました。なんて安直な。</p>
+<p>n番目の断片に含まれるリスト結合は(2^n-1)個であり、それらを(2^n)個の要素が 分散して負担するため、次の桁を取り出すのにかかる時間は平均して定数時間になると 考えられます。</p>
+<h2 id="終わりに">終わりに</h2>
+<p>結局、桁が進むとメモリや可変長整数の可算などが絡んで準線形時間になる気がします。</p>
+<p>余談ですが、OEISで検索してみるとリストの先頭に0を置くかどうかで二種類 あります。この記事の意図はチャンパーノウン定数の「小数部」の桁を表示する プログラムなので0を置かない方が正しい、ということにしておきました。 後で気が付いたんですが、こっちの方がプログラムが美しいので「まあいいや」って なりました。</p>
+    </main>
+  </body>
+</html>
