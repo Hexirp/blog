@@ -47,7 +47,7 @@ module Main where
  articlesRule = do
   match' ["articles", "*.rst"] $ do
    route $ setExtension "html"
-   compile $ pandocCompiler >>= loapplyTmp "default.html" defaultContext
+   compile $ customCompiler
   match' ["articles", "*", "*"] $ do
    route idRoute
    compile $ copyFileCompiler
@@ -55,7 +55,10 @@ module Main where
  indexRule :: Rules ()
  indexRule = match "index.rst" $ do
   route $ setExtension "html"
-  compile $ pandocCompiler >>= loapplyTmp "default.html" defaultContext
+  compile $ customCompiler
+
+ customCompiler :: Compiler (Item String)
+ customCompiler = pandocCompiler >>= loapplyTmp "default.html" defaultContext
 
  -------------------------------------------------------------------------------
 
