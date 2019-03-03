@@ -9,6 +9,7 @@ module Main where
 
  import System.FilePath (pathSeparator, (</>))
 
+ import Text.Pandoc
  import Hakyll
 
  main :: IO ()
@@ -47,7 +48,7 @@ module Main where
  articlesRule = do
   match' ["articles", "*.rst"] $ do
    route $ setExtension "html"
-   compile $ pandocCompiler >>= loapplyTmp "default.html" defaultContext
+   compile $ myCompiler
   match' ["articles", "*", "*"] $ do
    route idRoute
    compile $ copyFileCompiler
@@ -55,7 +56,35 @@ module Main where
  indexRule :: Rules ()
  indexRule = match "index.rst" $ do
   route $ setExtension "html"
-  compile $ pandocCompiler >>= loapplyTmp "default.html" defaultContext
+  compile $ myCompiler
+
+ -------------------------------------------------------------------------------
+
+ myCompiler :: Compiler (Item String)
+ myCompiler = myPandocCompiler >>= loapplyTmp "default.html" defaultContext
+
+ myPandocCompiler :: Compiler (Item String)
+ myPandocCompiler = pandocCompilerWith myReaderOptions myWriterOptions
+
+ myReaderOptions :: ReaderOptions
+ myReaderOptions =
+  defaultHakyllReaderOptions {
+   readerExtensions = myPandocExtensions }
+
+ myWriterOptions :: WriterOptions
+ myWriterOptions =
+  defaultHakyllWriterOptions {
+    writerExtensions = myPandocExtensions }
+
+ myPandocExtensions :: Extensions
+ myPandocExtensions =
+  enableExtension Ext_east_asian_line_breaks $
+   enableExtension Ext_smart $
+    pandocExtensions
+
+ -- | templatesフォルダからテンプレートを探して適用する
+ loapplyTmp :: String -> Context a -> Item a -> Compiler (Item String)
+ loapplyTmp x = loadAndApplyTemplate (fromFilePath $ "templates" </> x)
 
  -------------------------------------------------------------------------------
 
@@ -75,9 +104,3 @@ module Main where
  escapeGlob ('\\' : xs) = '\\' : '\\' : escapeGlob xs
  escapeGlob ('*' : xs) = '\\' : '*' : escapeGlob xs
  escapeGlob (x : xs) = x : escapeGlob xs
-
- -------------------------------------------------------------------------------
-
- -- | templatesフォルダからテンプレートを探して適用する
- loapplyTmp :: String -> Context a -> Item a -> Compiler (Item String)
- loapplyTmp x = loadAndApplyTemplate (fromFilePath $ "templates" </> x)
