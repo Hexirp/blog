@@ -21,8 +21,9 @@ description:         Please see the README on GitHub at <https://github.com/Hexi
 
 dependencies:
 - base >= 4.7 && < 5
-- hakyll
 - filepath
+- pandoc
+- hakyll
 
 library:
   source-dirs: src
