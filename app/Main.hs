@@ -80,7 +80,7 @@ module Main where
  myPandocExtensions =
   enableExtension Ext_east_asian_line_breaks $
    enableExtension Ext_smart $
-    pandocExtensons
+    pandocExtensions
 
  -- | templatesフォルダからテンプレートを探して適用する
  loapplyTmp :: String -> Context a -> Item a -> Compiler (Item String)
