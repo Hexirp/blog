@@ -67,16 +67,21 @@ module Main where
  myPandocCompiler :: Compiler (Item String)
  myPandocCompiler = pandocCompilerWith myReaderOptions myWriterOptions
 
+ myReaderOptions :: ReaderOptions
  myReaderOptions =
   defaultHakyllReaderOptions {
    readerExtensions = myPandocExtensions }
 
+ myWriterOptions :: WriterOptions
  myWriterOptions =
   defaultHakyllWriterOptions {
     writerExtensions = myPandocExtensions }
 
+ myPandocExtensions :: Extensions
  myPandocExtensions =
-  enableExtension Ext_east_asian_line_breaks pandocExtensons
+  enableExtension Ext_east_asian_line_breaks $
+   enableExtension Ext_smart $
+    pandocExtensons
 
  -- | templatesフォルダからテンプレートを探して適用する
  loapplyTmp :: String -> Context a -> Item a -> Compiler (Item String)
