@@ -9,8 +9,7 @@ module Main where
 
  import System.FilePath (pathSeparator, (</>))
 
- import Text.Pandoc ()
-
+ import Text.Pandoc
  import Hakyll
 
  main :: IO ()
