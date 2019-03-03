@@ -47,7 +47,7 @@ module Main where
  articlesRule = do
   match' ["articles", "*.rst"] $ do
    route $ setExtension "html"
-   compile $ customCompiler
+   compile $ myCompiler
   match' ["articles", "*", "*"] $ do
    route idRoute
    compile $ copyFileCompiler
@@ -55,10 +55,30 @@ module Main where
  indexRule :: Rules ()
  indexRule = match "index.rst" $ do
   route $ setExtension "html"
-  compile $ customCompiler
+  compile $ myCompiler
 
- customCompiler :: Compiler (Item String)
- customCompiler = pandocCompiler >>= loapplyTmp "default.html" defaultContext
+ -------------------------------------------------------------------------------
+
+ myCompiler :: Compiler (Item String)
+ myCompiler = myPandocCompiler >>= loapplyTmp "default.html" defaultContext
+
+ myPandocCompiler :: Compiler (Item String)
+ myPandocCompiler = pandocCompilerWith myReaderOptions myWriterOptions
+
+ myReaderOptions =
+  defaultHakyllReaderOptions {
+   readerExtensions = myPandocExtensions }
+
+ myWriterOptions =
+  defaultHakyllWriterOptions {
+    writerExtensions = myPandocExtensions }
+
+ myPandocExtensions =
+  enableExtension Ext_east_asian_line_breaks pandocExtensons
+
+ -- | templatesフォルダからテンプレートを探して適用する
+ loapplyTmp :: String -> Context a -> Item a -> Compiler (Item String)
+ loapplyTmp x = loadAndApplyTemplate (fromFilePath $ "templates" </> x)
 
  -------------------------------------------------------------------------------
 
@@ -78,9 +98,3 @@ module Main where
  escapeGlob ('\\' : xs) = '\\' : '\\' : escapeGlob xs
  escapeGlob ('*' : xs) = '\\' : '*' : escapeGlob xs
  escapeGlob (x : xs) = x : escapeGlob xs
-
- -------------------------------------------------------------------------------
-
- -- | templatesフォルダからテンプレートを探して適用する
- loapplyTmp :: String -> Context a -> Item a -> Compiler (Item String)
- loapplyTmp x = loadAndApplyTemplate (fromFilePath $ "templates" </> x)
