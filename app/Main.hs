@@ -60,6 +60,8 @@ module Main where
 
  -------------------------------------------------------------------------------
 
+ -- この部分はHakyll.Web.Pandocのソースコードを参考にした。
+
  myCompiler :: Compiler (Item String)
  myCompiler = myPandocCompiler >>= loapplyTmp "default.html" defaultContext
 
