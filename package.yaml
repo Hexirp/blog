@@ -23,7 +23,9 @@ dependencies:
 - base >= 4.7 && < 5
 - filepath
 - pandoc
-- hakyll
+- hexyll
+- hexyll-core
+- hexyll-pandoc
 
 library:
   source-dirs: src
