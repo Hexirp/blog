@@ -87,7 +87,7 @@ module Main where
 
  -- | templatesフォルダからテンプレートを探して適用する
  loapplyTmp :: String -> Context a -> Item a -> Compiler (Item String)
- loapplyTmp x = loadAndApplyTemplate (fromFilePath $ "templates" </> x)
+ loapplyTmp x = loadAndApplyTemplate (ufromFilePath $ "templates" </> x)
 
  -------------------------------------------------------------------------------
 
