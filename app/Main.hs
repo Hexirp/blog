@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TemplateHaskell #-}
 
 module Main where
  import Prelude
@@ -9,7 +10,10 @@ module Main where
 
  import System.FilePath (pathSeparator, (</>))
 
+ import Path
+
  import Text.Pandoc
+
  import Hexyll
  import Hexyll.Web.Pandoc
 
@@ -25,8 +29,8 @@ module Main where
 
  config :: Configuration
  config = defaultConfiguration {
-  providerDirectory = "docs-pre",
-  destinationDirectory = "docs"}
+  providerDirectory = $(mkRelDir "docs-pre"),
+  destinationDirectory = $(mkRelDir "docs")}
 
  iconRule :: Rules ()
  iconRule = do
