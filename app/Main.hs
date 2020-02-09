@@ -11,6 +11,7 @@ module Main where
 
  import Text.Pandoc
  import Hexyll
+ import Hakyll.Web.Pandoc
 
  main :: IO ()
  main = do
