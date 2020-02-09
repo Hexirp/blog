@@ -10,7 +10,7 @@ module Main where
  import System.FilePath (pathSeparator, (</>))
 
  import Text.Pandoc
- import Hakyll
+ import Hexyll
 
  main :: IO ()
  main = do
