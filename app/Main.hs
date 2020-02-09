@@ -71,12 +71,12 @@ module Main where
 
  myReaderOptions :: ReaderOptions
  myReaderOptions =
-  defaultHakyllReaderOptions {
+  defaultHexyllReaderOptions {
    readerExtensions = myPandocExtensions }
 
  myWriterOptions :: WriterOptions
  myWriterOptions =
-  defaultHakyllWriterOptions {
+  defaultHexyllWriterOptions {
     writerExtensions = myPandocExtensions }
 
  myPandocExtensions :: Extensions
