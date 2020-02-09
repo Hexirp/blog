@@ -10,7 +10,7 @@ module Main where
 
  import System.FilePath (pathSeparator, (</>))
 
- import Path
+ import Path (mkRelDir)
 
  import Text.Pandoc
 
