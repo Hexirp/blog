@@ -40,7 +40,7 @@ packages:
 # (e.g., acme-missiles-0.3)
 extra-deps:
 - github: Hexirp/hexirp-hakyll
-  commit: 00414c9f4a581bf5d7a5bb727e3bbfb10ae8da0d
+  commit: 4e5195e33558cee7b7acf97846fbe3ad76d38b47
   subdirs:
   - hexyll-core
   - hexyll
