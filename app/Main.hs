@@ -99,7 +99,7 @@ module Main where
  --
  -- WindowsとLinuxとの互換性に関して有用である。
  match' :: [String] -> Rules () -> Rules ()
- match' x rule = match (fromGlob $ joinGlob x) rule
+ match' x rule = match (Pattern $ fromPatternToDisj $ fromGlob $ joinGlob x) rule
 
  -- | 区切られたGlob記法をつなぎ合わせる
  joinGlob :: [String] -> String
