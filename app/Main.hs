@@ -103,11 +103,4 @@ module Main where
 
  -- | 区切られたGlob記法をつなぎ合わせる
  joinGlob :: [String] -> String
- joinGlob = intercalate (escapeGlob [pathSeparator])
-
- -- | fromGlobにおいての特殊文字をエスケープする
- escapeGlob :: String -> String
- escapeGlob [] = []
- escapeGlob ('\\' : xs) = '\\' : '\\' : escapeGlob xs
- escapeGlob ('*' : xs) = '\\' : '*' : escapeGlob xs
- escapeGlob (x : xs) = x : escapeGlob xs
+ joinGlob = intercalate [pathSeparator]
