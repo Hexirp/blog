@@ -5,53 +5,53 @@
 
 packages:
 - completed:
-    size: 120722
+    size: 126536
     subdir: hexyll-core
-    url: https://github.com/Hexirp/hexirp-hakyll/archive/c1b4b75ca9a4e01eca9b8144f947543ed6e9e1a1.tar.gz
+    url: https://github.com/Hexirp/hexirp-hakyll/archive/00414c9f4a581bf5d7a5bb727e3bbfb10ae8da0d.tar.gz
     cabal-file:
-      size: 8178
-      sha256: b3550d9cfc2e86c14bd821fe44b02b016bd26dec7501ac12ff388da8fb2e9e13
+      size: 8446
+      sha256: f4464a20b9c6c4647d1927684e89ff24d24a2e62f7f8ae8b30c7945e453c32ef
     name: hexyll-core
     version: 0.1.0.0
-    sha256: 507cfc4abad0c6cabb2465e5f5155e504ba73db07e9631575cc346397c900bab
+    sha256: 22b7ccd4515ee8a8858623dc6718368ec1d87e815cc43cccfc9e603a334b4a88
     pantry-tree:
-      size: 5273
-      sha256: 7bd76f7fe2994d2a629d20c14a8b1e76a7b18d3ff72ba9f66ec03388a191f8f2
+      size: 5272
+      sha256: aba7670fb4638f85a28a625a9c1ca3630c296f12d63af54a3c43d0c35639585f
   original:
     subdir: hexyll-core
-    url: https://github.com/Hexirp/hexirp-hakyll/archive/c1b4b75ca9a4e01eca9b8144f947543ed6e9e1a1.tar.gz
+    url: https://github.com/Hexirp/hexirp-hakyll/archive/00414c9f4a581bf5d7a5bb727e3bbfb10ae8da0d.tar.gz
 - completed:
-    size: 120722
+    size: 126536
     subdir: hexyll
-    url: https://github.com/Hexirp/hexirp-hakyll/archive/c1b4b75ca9a4e01eca9b8144f947543ed6e9e1a1.tar.gz
+    url: https://github.com/Hexirp/hexirp-hakyll/archive/00414c9f4a581bf5d7a5bb727e3bbfb10ae8da0d.tar.gz
     cabal-file:
       size: 4601
       sha256: 6807fd12879cc3cdae6c5be3b59a2b9f90f729adf4413cff0ab846accdb75ccb
     name: hexyll
     version: 0.1.0.0
-    sha256: 507cfc4abad0c6cabb2465e5f5155e504ba73db07e9631575cc346397c900bab
+    sha256: 22b7ccd4515ee8a8858623dc6718368ec1d87e815cc43cccfc9e603a334b4a88
     pantry-tree:
       size: 3448
-      sha256: 9a5af33acfde5ddbd80274c0ccda4e53571bb09ee99b2ad71fd27074d58189b1
+      sha256: 5b82da3267727de3b82b1d938ca033d528fb7487e043e907ece4592c6ad003dd
   original:
     subdir: hexyll
-    url: https://github.com/Hexirp/hexirp-hakyll/archive/c1b4b75ca9a4e01eca9b8144f947543ed6e9e1a1.tar.gz
+    url: https://github.com/Hexirp/hexirp-hakyll/archive/00414c9f4a581bf5d7a5bb727e3bbfb10ae8da0d.tar.gz
 - completed:
-    size: 120722
+    size: 126536
     subdir: hexyll-pandoc
-    url: https://github.com/Hexirp/hexirp-hakyll/archive/c1b4b75ca9a4e01eca9b8144f947543ed6e9e1a1.tar.gz
+    url: https://github.com/Hexirp/hexirp-hakyll/archive/00414c9f4a581bf5d7a5bb727e3bbfb10ae8da0d.tar.gz
     cabal-file:
       size: 2913
       sha256: 5b5be69228a99f2b638ea0a56e5a60218347ce0a02e784198c6c8dd4070655f3
     name: hexyll-pandoc
     version: 0.1.0.0
-    sha256: 507cfc4abad0c6cabb2465e5f5155e504ba73db07e9631575cc346397c900bab
+    sha256: 22b7ccd4515ee8a8858623dc6718368ec1d87e815cc43cccfc9e603a334b4a88
     pantry-tree:
       size: 1851
       sha256: 86b99d491b176afac599f24f005a43ddbfda25bfabcc524f589e8d5860b5549d
   original:
     subdir: hexyll-pandoc
-    url: https://github.com/Hexirp/hexirp-hakyll/archive/c1b4b75ca9a4e01eca9b8144f947543ed6e9e1a1.tar.gz
+    url: https://github.com/Hexirp/hexirp-hakyll/archive/00414c9f4a581bf5d7a5bb727e3bbfb10ae8da0d.tar.gz
 snapshots:
 - completed:
     size: 509471
