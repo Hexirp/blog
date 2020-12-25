@@ -6,9 +6,9 @@ Intheo というプログラミング言語を自作しています。自作プ�
 
 Coq における余帰納型についての信頼できる文献としては [https://coq.inria.fr/refman/language/core/coinductive.html Co-inductive types and co-recursive functions — Coq 8.12.2 documentation] ([https://web.archive.org/web/20201104192956/https://coq.inria.fr/refman/language/core/coinductive.html archive]) と [http://adam.chlipala.net/cpdt/html/Coinductive.html Chapter 5 Infinite Data and Proofs — Certified Programming with Dependent Types] ([https://web.archive.org/web/20200216183013/http://adam.chlipala.net/cpdt/html/Coinductive.html archive]) があります。両方とも英語で書かれており、日本語で解説したほうが読者には親切なのでしょうが、この記事の主題から外れますので、機会があったら別の記事として書きたいと思います。
 
-```coq
+<syntaxhighlight lang="coq">
 CoInductive CoNat : Type := coZero : CoNat | coSucc : CoNat -> CoNat.
-```
+</syntaxhighlight>
 
 余帰納型の定義の例を上記で示しました。この時点で、既に大きな問題があることが分かります。それは定義が「和」ベースになっていることです。どういうことかというと、帰納型はよく知られているようにコンストラクタが複数個あり直和型に似たものを作るのですが、余帰納型は直積型に似たものであるべきなのです。
 
@@ -29,10 +29,10 @@ CoInductive CoNat : Type := coZero : CoNat | coSucc : CoNat -> CoNat.
 
 美しくも圏論において帰納型と余帰納型は双対になりますが、その対応関係は上記のようになります。このことから分かるように余帰納型は分解子から構成されるべきなのですが、 Coq ではそうなっていません。
 
-```coq
+<syntaxhighlight lang="coq">
 CoInductive Stream (A : Type) : Type :=
   & head : Stream A -> A
   & tail : Stream A -> Stream A.
-```
+</syntaxhighlight>
 
 上記のように書かれるべきなのではないでしょうか？ Intheo はこのような構文を持つ言語が欲しくて制作し始めたものです。
