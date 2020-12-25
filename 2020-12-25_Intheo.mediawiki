@@ -6,3 +6,26 @@ Intheo というプログラミング言語を自作しています。自作プ�
 
 Coq における余帰納型についての信頼できる文献としては [https://coq.inria.fr/refman/language/core/coinductive.html Co-inductive types and co-recursive functions — Coq 8.12.2 documentation] ([https://web.archive.org/web/20201104192956/https://coq.inria.fr/refman/language/core/coinductive.html archive]) と [http://adam.chlipala.net/cpdt/html/Coinductive.html Coinductive — 
 Certified Programming with Dependent Types] ([https://web.archive.org/web/20200216183013/http://adam.chlipala.net/cpdt/html/Coinductive.html archive]) があります。両方とも英語で書かれており、日本語で解説したほうが読者には親切なのでしょうが、この記事の主題から外れますので、機会があったら別の記事として書きたいと思います。
+
+```coq
+CoInductive CoNat : Type := coZero : CoNat | coSucc : CoNat -> CoNat.
+```
+
+余帰納型の定義の例を上記で示しました。この時点で、既に大きな問題があることが分かります。それは定義が「和」ベースになっていることです。どういうことかというと、帰納型はよく知られているようにコンストラクタが複数個あり直和型に似たものを作るのですが、余帰納型は直積型に似たものであるべきなのです。
+
+{|
+|-
+| 帰納型 (inductive type)
+| 余帰納型 (coinductive type)
+|-
+| 構築子 (constructor)
+| 分解子 (destructor)
+|-
+| 帰納法の原理 (principle of induction)
+| 余帰納法の原理 (principle of coinduction)
+|-
+| 直和型 (sum type)
+| 直積型 (product type)
+|}
+
+美しくも圏論において帰納型と余帰納型は双対になりますが、その対応関係は上記のようになります。このことから分かるように余帰納型は分解子から構成されるべきなのですが、 Coq ではそうなっていません。
