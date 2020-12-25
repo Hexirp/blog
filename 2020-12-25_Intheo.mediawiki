@@ -2,4 +2,7 @@ Intheo というプログラミング言語を自作しています。自作プ�
 
 == Coq での余帰納型 ==
 
-余帰納型は英語では coinductive type と言います。 Haskell では余帰納型という言葉は意味を持ちません。 Coq や Agda のような停止性が保証されていなければならない言語において、その意味を持ち始めます。
+余帰納型は、英語では coinductive type と言います。 Haskell では余帰納型という言葉は意味を持ちません。 Coq や Agda のような停止性が保証されていなければならない言語において、その意味を持ち始めます。その名前の通り余帰納法に関係していますが、私の印象としては余帰納法を理解しなくても余帰納型を理解することが出来ます。
+
+Coq における余帰納型についての信頼できる文献としては [https://coq.inria.fr/refman/language/core/coinductive.html Co-inductive types and co-recursive functions — Coq 8.12.2 documentation] ([https://web.archive.org/web/20201104192956/https://coq.inria.fr/refman/language/core/coinductive.html archive]) と [http://adam.chlipala.net/cpdt/html/Coinductive.html Coinductive — 
+Certified Programming with Dependent Types] ([https://web.archive.org/web/20200216183013/http://adam.chlipala.net/cpdt/html/Coinductive.html archive]) があります。両方とも英語で書かれており、日本語で解説したほうが読者には親切なのでしょうが、この記事の主題から外れますので、機会があったら別の記事として書きたいと思います。
