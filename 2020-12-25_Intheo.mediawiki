@@ -29,3 +29,11 @@ CoInductive CoNat : Type := coZero : CoNat | coSucc : CoNat -> CoNat.
 |}
 
 美しくも圏論において帰納型と余帰納型は双対になりますが、その対応関係は上記のようになります。このことから分かるように余帰納型は分解子から構成されるべきなのですが、 Coq ではそうなっていません。
+
+```coq
+CoInductive Stream (A : Type) : Type :=
+  & head : Stream A -> A
+  & tail : Stream A -> Stream A.
+```
+
+上記のように書かれるべきなのではないでしょうか？ Intheo はこのような構文を持つ言語が欲しくて制作し始めたものです。
