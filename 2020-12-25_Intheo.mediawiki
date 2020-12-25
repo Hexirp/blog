@@ -10,7 +10,7 @@ Coq における余帰納型についての信頼できる文献としては [ht
 CoInductive CoNat : Type := coZero : CoNat | coSucc : CoNat -> CoNat.
 </syntaxhighlight>
 
-余帰納型の定義の例を上記で示しました。この時点で、既に大きな問題があることが分かります。それは定義が「和」ベースになっていることです。どういうことかというと、帰納型はよく知られているようにコンストラクタが複数個あり直和型に似たものを作るのですが、余帰納型は直積型に似たものであるべきなのです。
+余帰納型の定義の例を上記で示しました。この時点で、既に大きな問題があることが分かります。それは定義が「和」ベースになっていることです。どういうことかというと、帰納型はよく知られているようにコンストラクタにより直和型に似たものを作るのですが、余帰納型は直積型に似たものであるべきなのです。
 
 {|
 |-
@@ -20,8 +20,14 @@ CoInductive CoNat : Type := coZero : CoNat | coSucc : CoNat -> CoNat.
 | 構築子 (constructor)
 | 分解子 (destructor)
 |-
+| 場合分け (pattern matching)
+| 余場合分け (copattern matching)
+|-
 | 帰納法の原理 (principle of induction)
 | 余帰納法の原理 (principle of coinduction)
+|-
+| 再帰 (recursion)
+| 余再帰 (corecursion)
 |-
 | 直和型 (sum type)
 | 直積型 (product type)
@@ -36,3 +42,16 @@ CoInductive Stream (A : Type) : Type :=
 </syntaxhighlight>
 
 上記のように書かれるべきなのではないでしょうか？ Intheo はこのような構文を持つ言語が欲しくて制作し始めたものです。
+
+== 余場合分け ==
+
+当然のことながら、分解子だけでは余帰納型を扱うことは出来ません。項の組み立ての方法が必要になります。これには前記の表に乗せた余場合分けが必要になります。
+
+<syntaxhighlight lang="coq">
+comatch
+  & head := 0
+  & tail := mapStream (plus 1) natStream
+end
+</syntaxhighlight>
+
+仮想的に構文を設定すると上記のようになるでしょう。ただし、レコードの生成と同一の構文になるなどの選択の余地はあります。
