@@ -173,3 +173,44 @@ Record Prod (A : Type) (B : Type) : Type :=
 上記のように改変してみればどうでしょうか？ <code>()()(()</code> という文も受理されます。問題が起きるように見えますが、受理した後に三番目のルールを使う文法木を弾けばいいのです。
 
 これが失敗を許容する文法です。主なメリットとしてはエラーメッセージの改善が期待されます。これのために、失敗が存在しない専用のパーサーコンビネーターも実装する予定です。それは <code>RWST</code> と等しいものであり、 <code>onHold</code> という関数でバックトラッキングも出来るようになっています。
+
+== 道型 ==
+
+Homtopy Type Theory / Cubical Type Theory との親和性のために、道型はプリミティブであるべきでしょう。
+
+<syntaxhighlight lang="coq">
+Inductive Path (A : Type) (x : A) : A -> Type :=
+  | idpath : Path A x x.
+</syntaxhighlight>
+
+上記のように道型を再定義することも出来るのでプリミティブである必要はないと思われるかもしれませんが、そもそもこのように書くことが出来ないようにします。
+
+<syntaxhighlight lang="coq">
+Inductive Even : Nat -> Type :=
+  | even_zero : Even zero
+  | even_succ_succ_n : forall n : Nat, Even n -> Even (succ (succ n)).
+
+Inductive Even (n : Nat) : Type :=
+  | even_zero : n = zero -> Even n
+  | even_succ_succ_n : forall npp : Nat, n = succ (succ npp) -> Even npp -> Even n.
+</syntaxhighlight>
+
+つまり、上記の前者のように書くことを禁止し、後者のように書かなければならないと定めます。つまり、コンストラクタの返り値は定義する型と全く同じ形でなければなりません。
+
+これによるメリットは <code>match</code> 式の <code>in</code> 節が不要になることや、 <code>match</code> 式の形式的な扱いがシンプルになることや、帰納型の定義の形式的な取り扱いが簡単になることや、 <code>inversion</code> タクティックに類するテクニックが不要になることなどがあります。デメリットは、定義が冗長になることなどがあります。
+
+では、表現力はどうでしょうか。このような限定を行ったことで表現力が落ちる可能性もあります。
+
+<syntaxhighlight lang="coq">
+Inductive JMeq (A : Type) (x : A) : forall B : Type, B -> Type :=
+  | jMeq_refl : Path A x A x.
+</syntaxhighlight>
+
+上記のような John Major's Equality を表現する型が、表せなくなる可能性がある型として挙げられるでしょう。
+
+<syntaxhighlight lang="coq">
+Inductive JMeq (A : Type) (x : A) (B : Type) (y : B) : Type :=
+  | jMeq_refl : forall p : A = B, x = cast p y -> Path A x B y.
+</syntaxhighlight>
+
+しかし、上記のような <code>cast : A = B -> A -> B</code> という簡単に定義できる関数を使って、等価な型を定義することが出来ます。他の型でも同様にして解決できるはずです。
