@@ -213,7 +213,7 @@ Inductive JMeq (A : Type) (x : A) (B : Type) (y : B) : Type :=
   | jMeq_refl : forall p : A = B, x = cast p y -> Path A x B y.
 </syntaxhighlight>
 
-しかし、上記のような <code>cast : A = B -> A -> B</code> という簡単に定義できる関数を使って、等価な型を定義することが出来ます。他の型でも同様にして解決できるはずです。
+しかし、上記のような <code><nowiki>cast : A = B -> A -> B</nowiki></code> という簡単に定義できる関数を使って、等価な型を定義することが出来ます。他の型でも同様にして解決できるはずです。
 
 == モジュール ==
 
