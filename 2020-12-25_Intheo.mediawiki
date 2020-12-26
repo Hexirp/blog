@@ -26,9 +26,6 @@ CoInductive CoNat : Type := coZero : CoNat | coSucc : CoNat -> CoNat.
 | 帰納法の原理 (principle of induction)
 | 余帰納法の原理 (principle of coinduction)
 |-
-| 再帰 (recursion)
-| 余再帰 (corecursion)
-|-
 | 直和型 (sum type)
 | 直積型 (product type)
 |}
@@ -55,3 +52,23 @@ end
 </syntaxhighlight>
 
 仮想的に構文を設定すると上記のようになるでしょう。ただし、レコードの生成と同一の構文になるなどの選択の余地はあります。
+
+== 再帰的な型の定義 ==
+
+型の定義において、帰納型と余帰納型は、定義にその型自身が現れるのを許容します。これを「再帰的な型の定義」と呼びます。一方で、定義に自分自身が現れない型もあり、これらは特別な扱いを受けるべきです。
+
+{|
+!
+! 帰納的
+! 余帰納的
+|-
+! 非再帰的
+| バリアント型 (variant type)
+| 余バリアント型 (covariant type)
+|-
+! 再帰的
+| 帰納型 (inductive type)
+| 余帰納型 (coinductive type)
+|}
+
+上記のように型の定義を分類すべきだと考えます。これを組み入れた言語を作るのも面白いでしょう。
