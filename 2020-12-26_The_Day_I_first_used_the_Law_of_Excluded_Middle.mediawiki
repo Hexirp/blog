@@ -1,4 +1,4 @@
-私は論理を Coq で学びました。そのせいか、数学書の演習問題が解けなくて悩んでいた時に、解答を見てみれば関数の外延性を使っていたということがあります。私の中に排中律や関数の外延性などを使うという考えが全くなかったのです。これらは Coq の中の定理ではありません。
+私は論理を Coq で学びました。そのせいか、数学書の演習問題が解けなくて悩んでいた時に、解答を見てみれば関数の外延性を使っていたということがあります。私の中に排中律や関数の外延性などを使うという考えが全くなかったのです<ref group="note">関数の外延性は Coq の定理ではありません。</ref>。
 
 == 初めての排中律 ==
 
@@ -10,6 +10,16 @@
 
 ここからは \( \mathrm{ZFC} \) の上で \( ( \mathrm{ZF} \vdash \lnot \mathrm{Con} ( \mathrm{ZFC} ) ) \rightarrow \lnot \mathrm{Con} ( \mathrm{ZF} ) \) を証明します。
 
-まず、選択公理は独立命題です。この言明を数式にすると \( \mathrm{Con} ( \mathrm{ZF} ) \rightarrow \mathrm{Con} ( \mathrm{ZF} + \mathrm{AC} ) \land \mathrm{Con} ( \mathrm{ZF} + \lnot \mathrm{AC} ) ) \) となります。
+\( \mathrm{Con} ( \mathrm{ZF} ) \) を仮定すれば、 \( \mathrm{ZF} \) から \( \mathrm{Con} ( \mathrm{ZF} ) \) は独立である<ref group="note">ここが怪しい。</ref>、つまり \( \lnot ( \mathrm{ZF} \vdash \lnot \mathrm{Con} ( \mathrm{ZF} ) ) \) であるはずです。さらに \mathrm{ZF} の上で \( \mathrm{Con} ( \mathrm{ZFC} ) \rightarrow \mathrm{Con} ( \mathrm{ZF} ) \) なので \( \lnot ( \mathrm{ZF} \vdash \lnot \mathrm{Con} ( \mathrm{ZFC} ) ) \) です。よって前提を無条件に追加できて \( \mathrm{Con} ( \mathrm{ZF} ) \rightarrow \lnot ( \mathrm{ZF} \vdash \lnot \mathrm{Con} ( \mathrm{ZFC} ) ) \) となり、これの対偶を取ると \( \lnot \lnot ( \mathrm{ZF} \vdash \lnot \mathrm{Con} ( \mathrm{ZFC} ) ) \rightarrow \lnot \mathrm{Con} ( \mathrm{ZF} ) \) であり、これの二重否定を取り除く<ref group="note">二重否定の除去ではなく二重否定の導入を使っている。</ref>と \( ( \mathrm{ZF} \vdash \lnot \mathrm{Con} ( \mathrm{ZFC} ) ) \rightarrow \lnot \mathrm{Con} ( \mathrm{ZF} ) \) であり、これが目標に一致します。
 
-\( \mathrm{Con} ( \mathrm{ZF} ) \) を仮定すれば、 \( \mathrm{Con} ( \mathrm{ZF} + \mathrm{AC} ) \) が分かります。これを言い換えると \( \mathrm{Con} ( \mathrm{ZFC} ) \) となり、
+このように \( \mathrm{Con} ( \mathrm{ZF} ) \) を仮定した上で証明することが出来ました。そして、ここで気付きました。 \( \lnot \mathrm{Con} ( \mathrm{ZF} ) \) を仮定すれば自明に成り立ち、よって'''排中律により'''目標を証明することが出来ることに。
+
+これがまさしく排中律を初めて使った日でした<ref group="note">排中律からパースの法則を導くというような排中律を使うことが最初から明示されている問題や、実数の大小による場合分けのような排中律が陽に現れない論法は除く。</ref>。
+
+== 排中律の使い方 ==
+
+この経験から「排中律を使うには、取り敢えずは都合の良い仮定をしてみるという精神が大切である」と私は考察しています。本当かどうかは分かりません。
+
+== 注釈 ==
+
+<references group="note" />
