@@ -72,3 +72,56 @@ end
 |}
 
 上記のように型の定義を分類すべきだと考えます。これを組み入れた言語を作るのも面白いでしょう。
+
+== 評価戦略 ==
+
+Intheo は停止性を保証する言語であり、強正規化性 (strong normalization property, SN) を持たなければなりません。ここで、 SN は「どのようなルートを辿って簡約していっても簡約不能形／正規形に行き着く」という性質のことを指します。よって、 Intheo の簡約の順序には自由性が確保されています。
+
+では、どのように簡約していけばいいのでしょうか？ すぐわかることとしては、余帰納型の <code>cofix</code> 式を正格に簡約しては容易に無限ループになってしまうということです。よって、余帰納型の <code>cofix</code> 式の簡約は遅延しなければなりません。また、 <code>comatch</code> 式も同様に遅延すべきでしょう (lazy な型を定義する手段が欲しいため、あるいは <code>tail : forall (x : Stream A), P x</code> というような型のデストラクタに備えて) 。
+
+{|
+|-
+| 帰納型 (inductive type)
+| 余帰納型 (coinductive type)
+|-
+| 構築子 (constructor)
+| 分解子 (destructor)
+|-
+| 場合分け (pattern matching)
+| 余場合分け (copattern matching)
+|-
+| 帰納法の原理 (principle of induction)
+| 余帰納法の原理 (principle of coinduction)
+|-
+| 直和型 (sum type)
+| 直積型 (product type)
+|-
+| strict
+| lazy
+|-
+| call-by-value
+| call-by-name
+|}
+
+call-by-value と call-by-name は双対になっていることが知られています。当然、 call-by-value は strict であり call-by-name は lazy です。
+
+<syntaxhighlight lang="coq">
+CoVariant Prod (A : Type) (B : Type) : Type :=
+  & fst : Prod A B -> A
+  & snd : Prod A B -> B.
+
+Axiom A : Type.
+Axiom a : A.
+Axiom B : Type.
+Axiom b : B.
+
+Check fst A B (comatch fst := a & snd := b end) : A.
+(*
+  fst A B (comatch fst := a & snd := b end)
+  a
+*)
+</syntaxhighlight>
+
+上記のように簡約が行われます。ここで、 <code>cofix</code> 式と <code>comatch</code> 式は分解子により直接分解されない限り、簡約することは出来ません。ちょうど <code>match x with ... end</code> が <code>x</code> が何か分からないと簡約できないことの双対です。
+
+基本的に call-by-value では <code>f x</code> のような適用は <code>x</code> を完全に簡約してから <code>f</code> との β 簡約が行われます。しかし、 <code>x</code> が <code>cofix</code> 式または <code>comatch</code> 式になった時は <code>x</code> の簡約が停止し、そのまま <code>f</code> との β 簡約が行われます。その例外は <code>f</code> が分解子である時であり、 <code>cofix</code> 式または <code>comatch</code> 式の分解が行われます。
