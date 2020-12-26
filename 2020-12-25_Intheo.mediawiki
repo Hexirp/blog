@@ -26,8 +26,8 @@ CoInductive CoNat : Type := coZero : CoNat | coSucc : CoNat -> CoNat.
 | 帰納法の原理 (principle of induction)
 | 余帰納法の原理 (principle of coinduction)
 |-
-| 直和型 (sum type)
-| 直積型 (product type)
+| 直和 (sum)
+| 直積 (product)
 |}
 
 美しくも圏論において帰納型と余帰納型は双対になりますが、その対応関係は上記のようになります。このことから分かるように余帰納型は分解子から構成されるべきなのですが、 Coq ではそうなっていません。
@@ -93,14 +93,18 @@ Intheo は停止性を保証する言語であり、強正規化性 (strong norm
 | 帰納法の原理 (principle of induction)
 | 余帰納法の原理 (principle of coinduction)
 |-
-| 直和型 (sum type)
-| 直積型 (product type)
+| 直和 (sum)
+| 直積 (product)
 |-
 | strict
 | lazy
 |-
 | call-by-value
 | call-by-name
+|-
+| 依存和型 (dependent sum type) / 直積型 (product type)
+| 依存積型 (dependent product type) / 関数型 (function type)
+|-
 |}
 
 call-by-value と call-by-name は双対になっていることが知られています。当然、 call-by-value は strict であり call-by-name は lazy です。
@@ -125,6 +129,8 @@ Check fst A B (comatch fst := a & snd := b end) : A.
 上記のように簡約が行われます。ここで、 <code>cofix</code> 式と <code>comatch</code> 式は分解子により直接分解されない限り、簡約することは出来ません。ちょうど <code>match x with ... end</code> が <code>x</code> が何か分からないと簡約できないことの双対です。
 
 基本的に call-by-value では <code>f x</code> のような適用は <code>x</code> を完全に簡約してから <code>f</code> との β 簡約が行われます。しかし、 <code>x</code> が <code>cofix</code> 式または <code>comatch</code> 式になった時は <code>x</code> の簡約が停止し、そのまま <code>f</code> との β 簡約が行われます。その例外は <code>f</code> が分解子である時であり、 <code>cofix</code> 式または <code>comatch</code> 式の分解が行われます。
+
+なお、上記の表にあるように関数型も遅延して評価されます。直積型については表の左右どちらにも表れているように lazy サイドとも strict サイドとも解釈できます。
 
 == レコード型 ==
 
