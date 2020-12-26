@@ -1,0 +1,15 @@
+私は論理を Coq で学びました。そのせいか、数学書の演習問題が解けなくて悩んでいた時に、解答を見てみれば関数の外延性を使っていたということがあります。私の中に排中律や関数の外延性などを使うという考えが全くなかったのです。これらは Coq の中の定理ではありません。
+
+== 初めての排中律 ==
+
+ゲーデルの不完全性定理は理解するのが難しいです。知性の限界や無限の探求の保証などという言説を信じ込み、そこで詳細を追うのを止めてしまいがちです。実際は形式的に定義された \( \vdash \) と \( \mathrm{Con} \) という記法を使った定理です。
+
+独立命題というのも理解するのが難しいです。何が前提になっているのかを注意しなければなりません。[https://mathlog.info/articles/1332 独立命題とはなにか | Mathlog] ([https://web.archive.org/web/20201220161309/https://mathlog.info/articles/1332 archive]) が良い記事です。
+
+私が悩んでいたのは \( \mathrm{ZFC} \vdash ( ( \mathrm{ZF} \vdash \lnot \mathrm{Con} ( \mathrm{ZFC} ) ) \rightarrow \lnot \mathrm{Con} ( \mathrm{ZF} ) ) \) が証明できるかどうかです。独立命題や不完全性定理などが感覚に合わず、なかなか解くことが出来ません。その時に、ふと \( \mathrm{Con} ( \mathrm{ZF} ) \) を仮定してみればどうかと思い付いたのです。
+
+ここからは \( \mathrm{ZFC} \) の上で \( ( \mathrm{ZF} \vdash \lnot \mathrm{Con} ( \mathrm{ZFC} ) ) \rightarrow \lnot \mathrm{Con} ( \mathrm{ZF} ) \) を証明します。
+
+まず、選択公理は独立命題です。この言明を数式にすると \( \mathrm{Con} ( \mathrm{ZF} ) \rightarrow \mathrm{Con} ( \mathrm{ZF} + \mathrm{AC} ) \land \mathrm{Con} ( \mathrm{ZF} + \lnot \mathrm{AC} ) ) \) となります。
+
+\( \mathrm{Con} ( \mathrm{ZF} ) \) を仮定すれば、 \( \mathrm{Con} ( \mathrm{ZF} + \mathrm{AC} ) \) が分かります。これを言い換えると \( \mathrm{Con} ( \mathrm{ZFC} ) \) となり、
