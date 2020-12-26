@@ -236,3 +236,29 @@ End.
 Intheo は命令的にプログラムを書いたり宣言的にプログラムを書いたりすることが出来るようになっています。命令的に書く際のデメリットは順番が重要になることであり、宣言的に書く際のデメリットはタクティックが使えなくなることです。
 
 命令モードのソースの内部に宣言モードのソースを書くことは簡単です。しかし、宣言モードのソースの中に命令モードのソースを書くことは出来ません。ファイルとフォルダは宣言的に解釈されるため、命名モードのソースが宣言モードのソースに含まれるのは、ファイルよりも上の階層になる時です。
+
+== 線形型 ==
+
+線形型は現代の言語として、 Rust や Linear Haskell や Idris 2 などのムーブメントになっています。線形型としても、カインドベースやアローベースなどの種別がありますが、ここで採用したいのは Idris 2 の quantitative type theory です。
+
+Idris 2 は quantitative type theory を導入しており、それに関する信頼できる文献は [https://idris2.readthedocs.io/en/latest/tutorial/multiplicities.html Multiplicities — Idris2 0.0 documentation] ([https://web.archive.org/web/20201103163155/https://idris2.readthedocs.io/en/latest/tutorial/multiplicities.html archive]) があります。 quantitative type theory 自体については [https://bentnib.org/quantitative-type-theory.html The Syntax and Semantics of Quantitative Type Theory] ([https://web.archive.org/web/20201106165115/https://bentnib.org/quantitative-type-theory.html archive]) にある [https://bentnib.org/quantitative-type-theory.pdf PDF] ([https://web.archive.org/web/20201112024957/https://bentnib.org/quantitative-type-theory.pdf archive]) という論文を参照してください。どうやらこの論文が、 quantitative type theory を提案する物であり、完全な定義を与えるもののようです。私自身も興味があるので、機会があったら論文の紹介をしたいと思いますが、今は quantitative type theory の導入で何が出来るようになるかを紹介します。
+
+<syntaxhighlight lang="idris">
+(1 x : a) -> (a, a)
+</syntaxhighlight>
+
+上記のような関数を作ることは出来ません。その理由は <code>x</code> の型を定義する部分において linearity が <code>1</code> と決められているからです。そのため、一回しか使われないということが定められており、複製が不可能になっています。ここまでは Linear Haskell でも同様のことが出来ます。
+
+<syntaxhighlight lang="idris">
+(0 a : Type) -> (1 x : a) -> (a, a)
+</syntaxhighlight>
+
+上記のような表記は、 <code>a</code> が使われないことを表していると類推することが出来ます。この注釈の意味は、 <code>a</code> が値レベル（？）において使われないということを示しています。つまり、ここで実行時に <code>a</code> を消去しても問題ないはずです。型レベル長さ付きのベクトルにおいて、実行時に長さを保持する必要がないことを示すことで、効率的な実行ができるかもしれません。
+
+<syntaxhighlight lang="idris">
+badNot : (0 x : Bool) -> Bool
+badNot False = True
+badNot True = False
+</syntaxhighlight>
+
+上記のようなコードは認められません (Idris 2 のドキュメントより) 。線形型とイレイジャという二つの機能が一つの仕組みで実現されているということです。
