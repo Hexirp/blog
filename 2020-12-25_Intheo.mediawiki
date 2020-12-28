@@ -106,7 +106,6 @@ Intheo は停止性を保証する言語であり、強正規化性 (strong norm
 |-
 | 依存和型 (dependent sum type) / 直積型 (product type)
 | 依存積型 (dependent product type) / 関数型 (function type)
-|-
 |}
 
 call-by-value と call-by-name は双対になっていることが知られています。当然、 call-by-value は strict であり call-by-name は lazy です。
@@ -262,3 +261,46 @@ badNot True = False
 </syntaxhighlight>
 
 上記のようなコードは認められません (Idris 2 のドキュメントより) 。線形型とイレイジャという二つの機能が一つの仕組みで実現されているということです。
+
+== 入出力 ==
+
+入出力は、純粋な言語において大きな課題となります。 Haskell や Idris では IO モナドを使用しています。
+
+{|
+|-
+| 帰納型 (inductive type)
+| 余帰納型 (coinductive type)
+|-
+| 構築子 (constructor)
+| 分解子 (destructor)
+|-
+| 場合分け (pattern matching)
+| 余場合分け (copattern matching)
+|-
+| 帰納法の原理 (principle of induction)
+| 余帰納法の原理 (principle of coinduction)
+|-
+| 直和 (sum)
+| 直積 (product)
+|-
+| strict
+| lazy
+|-
+| call-by-value
+| call-by-name
+|-
+| 依存和型 (dependent sum type) / 直積型 (product type)
+| 依存積型 (dependent product type) / 関数型 (function type)
+|-
+| モナド
+| コモナド
+|}
+
+IO コモナドや IO アローなども選択肢になりますが、結局はモナドの方が便利であるため、この言語でも IO モナドを使うことにします。上記の表において、左の方が使いやすいという現象が見られます。これは、人間が小さい物を組み立てて大きな物を作るという考え方に慣れ親しんでいるからではないかと私は考えています。
+
+<syntaxhighlight lang="coq">
+CoInductive IO (A : Type) : Type :=
+  & runIO : IO A -> sigma B : Type, (A -> IO B) -> IO B.
+</syntaxhighlight>
+
+`IO` 型は、 lazy である、あるいは余帰納型だと考えます。これは、ある特定の入力が来ないと終わらないというような停止しないプログラムを表現するためです。上記のような内部表現を持つと考えてみるのもいいでしょう。実際にこのような内部表現を持たせることは不可能ですが。
