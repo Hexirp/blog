@@ -6,23 +6,13 @@
 
 独立命題というのも理解するのが難しいです。何が前提になっているのかを注意しなければなりません。[https://mathlog.info/articles/1332 独立命題とはなにか | Mathlog] ([https://web.archive.org/web/20201220161309/https://mathlog.info/articles/1332 archive]) が良い記事です。
 
-私が悩んでいたのは \( \mathrm{ZFC} \vdash ( ( \mathrm{ZF} \vdash \lnot \mathrm{Con} ( \mathrm{ZFC} ) ) \rightarrow \lnot \mathrm{Con} ( \mathrm{ZF} ) ) \) が証明できるかどうかです。独立命題や不完全性定理などが感覚に合わず、なかなか解くことが出来ません。その時に、ふと \( \mathrm{Con} ( \mathrm{ZF} ) \) を仮定してみればどうかと思い付いたのです。
-
-ここからは \( \mathrm{ZFC} \) の上で \( ( \mathrm{ZF} \vdash \lnot \mathrm{Con} ( \mathrm{ZFC} ) ) \rightarrow \lnot \mathrm{Con} ( \mathrm{ZF} ) \) を証明します。
-
-\( \mathrm{Con} ( \mathrm{ZF} + \mathrm{Con} ( \mathrm{ZF} ) ) \) を仮定すれば、 \( \mathrm{ZF} \) から \( \mathrm{Con} ( \mathrm{ZF} ) \) は独立である<ref group="note">Alwe さんに教えてもらった。</ref>、つまり \( \lnot ( \mathrm{ZF} \vdash \lnot \mathrm{Con} ( \mathrm{ZF} ) ) \) であるはずです。さらに \( \mathrm{ZF} \) の上で \( \mathrm{Con} ( \mathrm{ZFC} ) \rightarrow \mathrm{Con} ( \mathrm{ZF} ) \) なので \( \lnot ( \mathrm{ZF} \vdash \lnot \mathrm{Con} ( \mathrm{ZFC} ) ) \) です。よって前提を無条件に追加できて \( \mathrm{Con} ( \mathrm{ZF} ) \rightarrow \lnot ( \mathrm{ZF} \vdash \lnot \mathrm{Con} ( \mathrm{ZFC} ) ) \) となり、これの対偶を取ると \( \lnot \lnot ( \mathrm{ZF} \vdash \lnot \mathrm{Con} ( \mathrm{ZFC} ) ) \rightarrow \lnot \mathrm{Con} ( \mathrm{ZF} ) \) であり、これの二重否定を取り除く<ref group="note">二重否定の除去ではなく二重否定の導入を使っている。</ref>と \( ( \mathrm{ZF} \vdash \lnot \mathrm{Con} ( \mathrm{ZFC} ) ) \rightarrow \lnot \mathrm{Con} ( \mathrm{ZF} ) \) であり、これが目標に一致します。
-
-このように \( \mathrm{Con} ( \mathrm{ZF} ) \) を仮定した上で証明することが出来ました。そして、ここで気付きました。 \( \lnot \mathrm{Con} ( \mathrm{ZF} + \mathrm{Con} ( \mathrm{ZF} ) ) \) を仮定した時にも、 \( \mathrm{Con} ( \mathrm{ZF} ) \) から \( \mathrm{Con} ( \mathrm{ZF} + \mathrm{Con} ( \mathrm{ZF} ) ) \) を導出できることによって対偶を取って証明できることに。よって'''排中律により'''目標を証明することが出来ることに。
-
-これがまさしく排中律を初めて使った日でした<ref group="note">排中律からパースの法則を導くというような排中律を使うことが最初から明示されている問題や、実数の大小による場合分けのような排中律が陽に現れない論法は除く。</ref>。
-
-=== 古い内容 ===
-
-以下の内容は Alwe さんに間違いを指摘されました。
+私が悩んでいたのは \( \mathrm{ZFC} \vdash ( ( \mathrm{ZF} \vdash \lnot \mathrm{Con} ( \mathrm{ZFC} ) ) \rightarrow \lnot \mathrm{Con} ( \mathrm{ZF} ) ) \) が証明できるかどうかです。独立命題や不完全性定理などを感覚的に取り扱うことが出来ず、なかなか解くことが出来ません。その時に、ふと \( \mathrm{Con} ( \mathrm{ZF} ) \) を仮定してみればどうかと思い付いたのです。
 
 \( \mathrm{Con} ( \mathrm{ZF} ) \) を仮定すれば、 \( \mathrm{ZF} \) から \( \mathrm{Con} ( \mathrm{ZF} ) \) は独立である<ref group="note">ここが怪しい。</ref>、つまり \( \lnot ( \mathrm{ZF} \vdash \lnot \mathrm{Con} ( \mathrm{ZF} ) ) \) であるはずです。さらに \( \mathrm{ZF} \) の上で \( \mathrm{Con} ( \mathrm{ZFC} ) \rightarrow \mathrm{Con} ( \mathrm{ZF} ) \) なので \( \lnot ( \mathrm{ZF} \vdash \lnot \mathrm{Con} ( \mathrm{ZFC} ) ) \) です。よって前提を無条件に追加できて \( \mathrm{Con} ( \mathrm{ZF} ) \rightarrow \lnot ( \mathrm{ZF} \vdash \lnot \mathrm{Con} ( \mathrm{ZFC} ) ) \) となり、これの対偶を取ると \( \lnot \lnot ( \mathrm{ZF} \vdash \lnot \mathrm{Con} ( \mathrm{ZFC} ) ) \rightarrow \lnot \mathrm{Con} ( \mathrm{ZF} ) \) であり、これの二重否定を取り除く<ref group="note">二重否定の除去ではなく二重否定の導入を使っている。</ref>と \( ( \mathrm{ZF} \vdash \lnot \mathrm{Con} ( \mathrm{ZFC} ) ) \rightarrow \lnot \mathrm{Con} ( \mathrm{ZF} ) \) であり、これが目標に一致します。
 
 このように \( \mathrm{Con} ( \mathrm{ZF} ) \) を仮定した上で証明することが出来ました。そして、ここで気付きました。 \( \lnot \mathrm{Con} ( \mathrm{ZF} ) \) を仮定すれば自明に成り立ち、よって'''排中律により'''目標を証明することが出来ることに。
+
+これがまさしく排中律を初めて使った日でした<ref group="note">排中律からパースの法則を導くというような排中律を使うことが最初から明示されている問題や、実数の大小による場合分けのような排中律が陽に現れない論法は除く。</ref>。'''なお、現在では上記の証明は間違っていることが分かっています。'''
 
 == 排中律の使い方 ==
 
