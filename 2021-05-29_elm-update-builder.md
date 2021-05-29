@@ -84,6 +84,8 @@ baa
 -- foo と baa は等しい。
 ```
 
+このようなモノイド構造は、 `Update.batch` を `Update.with` などが利用していることによって、 elm-update-builder の全体に現れてきているように思います。
+
 ## まとめ
 
 [arrowM/elm-update-builder](https://package.elm-lang.org/packages/arowM/elm-update-builder/latest/) は、次の二つの点で面白そうなライブラリだと感じました。
