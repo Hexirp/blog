@@ -4,7 +4,7 @@
 
 ## 型
 
-`Update model msg` は、内部では `modek -> (model, Cmd msg)` となっています。
+`Update model msg` は、内部では `model -> (model, Cmd msg)` となっています。
 
 [elm/browser](https://package.elm-lang.org/packages/elm/browser/latest/) では `update : msg -> model -> (model, Cmd msg)` というフィールドを持ったレコード型が使われています。 `Update` 型は、 `msg -> model -> (model, Cmd msg)` の中の `model -> (model, Cmd msg)` を切り出したものです。 `Update` 型を使うと、 `update : msg -> Update model msg` になります。
 
