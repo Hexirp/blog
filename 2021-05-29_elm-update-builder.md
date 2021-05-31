@@ -1,6 +1,6 @@
 # elm-update-builder
 
-[arrowM/elm-update-builder](https://package.elm-lang.org/packages/arowM/elm-update-builder/latest/) とは何なのか、私からの視点で解釈したものをメモしておきます。これは、 elm-update-builder を分かりやすく解説するものではありません。あくまでも、私から見た elm-update-builder を記述しているだけです。
+[arowM/elm-update-builder](https://package.elm-lang.org/packages/arowM/elm-update-builder/latest/) とは何なのか、私からの視点で解釈したものをメモしておきます。これは、 elm-update-builder を分かりやすく解説するものではありません。あくまでも、私から見た elm-update-builder を記述しているだけです。
 
 ## 型
 
@@ -88,7 +88,7 @@ baa
 
 ## まとめ
 
-[arrowM/elm-update-builder](https://package.elm-lang.org/packages/arowM/elm-update-builder/latest/) は、次の二つの点で面白そうなライブラリだと感じました。
+[arowM/elm-update-builder](https://package.elm-lang.org/packages/arowM/elm-update-builder/latest/) は、次の二つの点で面白そうなライブラリだと感じました。
 
 * アイデアが単純である。アイデアが単純なものは、設計も単純になり、汎用性が高くなりやすいです。
 * モノイドとして解釈できる。モノイドは、コードの組み換えをしても処理の内容が変わらないという保証を与えてくれます。
