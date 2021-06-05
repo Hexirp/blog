@@ -8,7 +8,9 @@
 
 Hask 圏の対象は、 `Int`, `Maybe Int`, `[Bool]`, ... のような Haskell の型です。 `Maybe` などは Hask 圏の対象ではありません。
 
-Hask 圏の射は、 Haskell の関数です。具体的に、対象 `a` から対象の `b` への射は、 `a -> b` という型の関数です。たとえば、 `not : Bol -> Bool` は `Bool` から `Bool` への射です。
+Hask 圏の射は、 Haskell の関数です。具体的に、対象 `a` から対象の `b` への射は、 `a -> b` という型の関数です。たとえば、 `not : Bool -> Bool` は `Bool` から `Bool` への射です。
+
+`Int -> Bool` という**型**は Hask 圏の対象です。 `isEven :: Int -> Bool` という**関数** は対象 `Int` から対象 `Bool` への射です。
 
 ## Applicative の形式的な定義をする。
 
