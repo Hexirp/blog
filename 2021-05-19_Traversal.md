@@ -46,6 +46,8 @@ Hask 圏の射は、 Haskell の関数です。具体的に、対象 `a` から�
 
 Hask 圏は、 Haskell の複雑な内部構造を上手く要点だけ取り出して抽象化します。 Hask 圏は、実際の Haskell とは違います。しかし、余程のことがない限り、 Hask 圏の上だけ考えても上手く行きます。実際の Haskell では、 `undefined` 関数や `seq` 関数や `error` 関数や `unsafePerformIO` 関数などにおいて、 Hask 圏と違いが出てきます。この辺りの話題は深掘りしません。
 
+もう一度だけ念を押しますが、 Hask 圏は、実際の Haskell とは違います。でも、 Haskell のことについて考える時に、 Hask 圏という概念は、とても役に立ちます。
+
 ## Functor 型クラスの形式的な定義をする。
 
 ## Applicative 型クラスの形式的な定義をする。
