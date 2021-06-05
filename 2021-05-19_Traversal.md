@@ -1,6 +1,6 @@
 # Traversal 型クラスの二通りの形式化
 
-## Traversal とは？
+## Traversal 型クラスとは？
 
 私は、 Haskell の `Traversable` という型クラスが好きです。
 
@@ -36,8 +36,10 @@ Hask 圏の射は、 Haskell の関数です。具体的に、対象 `a` から�
 
 `Int -> Bool` という**型**は Hask 圏の対象です。 `isEven :: Int -> Bool` という**関数**は対象 `Int` から対象 `Bool` への射です。 `(==) :: Int -> (Int -> Bool)` という**関数**は対象 `Int` から対象 `Int -> Bool` への射です。
 
-## Applicative の形式的な定義をする。
+## Functor 型クラスの形式的な定義をする。
 
-## 1 番目の方法: Traversal を特別な自然変換を持つ関手として形式化する。
+## Applicative 型クラスの形式的な定義をする。
 
-## 2 番目の方法: Traversal を特別な圏の自己関手として形式化する。
+## 1 番目の方法: Traversal 型クラスを特別な自然変換を持つ関手として形式化する。
+
+## 2 番目の方法: Traversal 型クラスを特別な圏の自己関手として形式化する。
