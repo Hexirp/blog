@@ -2,11 +2,139 @@
 
 自分型を使って余帰納型をエンコーディングします。
 
+## エンコーディング
+
+帰納型は様々な方法でエンコーディングすることが出来ます。
+
+### チャーチ・エンコーディング
+
+チャーチ・エンコーディング (Church encoding) は、帰納型を**型無し**ラムダ計算にエンコーディングします。概略は [Wikipedia](https://en.wikipedia.org/wiki/Church_encoding) を見たら把握できると思います。
+
+具体的に自然数をエンコーディングしてみます。
+
+```
+zero = λ x. λ f. x
+successor = λ n. λ x. λ f. f (n x f)
+```
+
+### ベーム・ベラルドゥッチ・エンコーディング
+
+ベーム・ベラルドゥッチ・エンコーディング (Böhm–Berarducci encoding) は、帰納型を System F にエンコーディングします。
+
+System F は、次の特徴を持つラムダ計算の体系です。
+
+* ランク n の全称量化が使える。
+* 依存型はない。
+
+チャーチ・エンコーディングに型をつけたやつだと思っていれば良いです。 Haskell の表記で書くと `[a]` が `forall r. a -> (a -> r -> r) -> r` になるやつです。 Haskell では計算量を改善したりモナド変換子化したりするときに使われるやつです。
+
+具体的に自然数をエンコーディングしてみます。
+
+```
+Natural_Number = ∀ r. r -> (r -> r) -> r
+zero = Λ r. λ x. λ f. x
+successor = λ n. Λ r. λ x. λ f. f (n r x f)
+```
+
+「型が付いた！ これで勝ちだ！」という訳にはいきません。ベーム・ベラルドゥッチ・エンコーディングには次のような問題があります。
+
+* 後者関数の計算量が `O(n)` になる。
+  * 普通なら構築子を一枚だけ剥げばよいだけなので `O(1)` だよね。
+* 帰納原理が使えない。
+
+後者関数の計算量が `O(n)` になるのは、パリゴット・エンコーディングを使えば解決できます。
+
+帰納原理が使えないのは、これが例え System F に依存型を追加した体系 (System F<sub>ω</sub> など) においてベーム・ベラルドゥッチ・エンコーディングを使っても、ペアノ算術でおなじみの `∀ P. P 0 -> (∀ n. P n -> P (n + 1)) -> ∀ n. P n` という数学的帰納法を依存型に適応したやつを証明できないということです。このことは証明されているので、ベーム・ベラルドゥッチ・エンコーディングを使う限りはどうしようもありません。
+
+### パリゴット・エンコーディング
+
+パリゴット・エンコーディング (Parigot encoding) は、チャーチ・エンコーディング（またはベーム・ベラルドゥッチ・エンコーディング）を少しだけ捻ったやつです。
+
+具体的に自然数をエンコーディングしてみます。
+
+```
+Natural_Number = ∀ r. r -> (Natural_Number -> r -> r) -> r
+zero = Λ r. λ x. λ f. x
+successor = λ n. Λ r. λ x. λ f. f n (n r x f)
+-- Natural_Number should be the least fixed point.
+```
+
+パリゴット・エンコーディングを使った自然数においては後者関数が `O(1)` で実装できることは明かでしょう。
+
+パリゴット・エンコーディングは、そのままでは自然数 `n` のエンコーディングの結果の項の大きさのオーダーが `n` に関する指数関数になるという欠点を持っています。しかし、これは部分項を共有することが出来れば解決できます。部分項を共有したまま簡約できるような方法としては、最適簡約 (optimal reduction) などがあります。また、最近、私が注目している対称的相互作用計算 (symmetric interaction calculus) も使えるかもしれません。
+
+### 帰納原理
+
+帰納原理 (induction principle) は、それぞれの帰納型に対して存在する命題のことです。 Coq では、 `Inductive` コマンドを使って帰納型を定義するたびに Coq IDE の中で `***_ind is defined` というメッセージが出てくるのを見ることになります。この `***_ind is defined` が帰納原理というやつです。
+
+たとえば、自然数に対する帰納原理を書き下すと、次のようになります。
+
+```
+∀ P : Natural_Number -> Type,
+∀ construct_zero : P zero,
+∀ construct_successor : ∀ n_p : Natural_Number, P n_p -> P (successor n_p),
+(∀ x : Natural_Number, P x)
+```
+
+帰納原理は面白いことにパリゴット・エンコーディングを包摂しています。どういうことかというと、 `P _ = A` と定義した上で計算してみると、次のようになるのです。
+
+```
+∀ construct_zero : P zero,
+∀ construct_successor : ∀ n_p : Natural_Number, P n_p -> P (successor n_p),
+(∀ x : Natural_Number, P x)
+
+∀ construct_zero : A     ,
+∀ construct_successor : ∀ n_p : Natural_Number, A     -> A                ,
+(∀ x : Natural_Number, A  )
+
+∀ _              : A     ,
+∀ _                   : ∀ _   : Natural_Number, A     -> A                ,
+(∀ _ : Natural_Number, A  )
+
+∀ _ : A,
+∀ _ : ∀ _ : Natural_Number, A -> A,
+(∀ _ : Natural_Number, A)
+
+∀ _ : A,
+∀ _ : Natural_Number -> A -> A,
+(Natural_Number -> A)
+
+A ->
+(Natural_Number -> A -> A) ->
+(Natural_Number -> A)
+
+A -> (Natural_Number -> A -> A) -> (Natural_Number -> A)
+```
+
+このような帰納原理はベーム・ベラルドゥッチ・エンコーディングとも見た目が似ています。そのため、次のようにすればよいと思うかもしれません。
+
+```
+Natural_Number
+  =
+    ∀ P : Natural_Number -> Type,
+    ∀ construct_zero : P zero,
+    ∀ construct_successor : ∀ n_p : Natural_Number, P n_p -> P (successor n_p),
+    (∀ x : Natural_Number, P x)
+```
+
+しかし、これがいろいろとおかしいことは明らかです。まず、
+
 ## 自分型とは
+
+自分型 (self type) は、自分の型に自分自身が現れるような値を型付けします。
+
+たとえば、ある値 `x` に対して `x : P x` という型付けが成り立つとしましょう。また、別の値に対して `y : P y` という型付けが成り立つとします。 `x` と `y` の両方に対して自分型を使って `ι t. P t` という型を与えることが出来ます。
+
+自分型は `ι x. T` と書きます。 `T` の中では `x` を参照できます。
 
 ## なぜ自分型なのか
 
 ## 自分型で余帰納型をエンコーディングする
+
+## 参考文献
+
+1. [Self Types for Dependently Typed Lambda Encodings](https://dblp.org/rec/conf/rta/FuS14.html)
+  1. [PDF version](https://homepage.divms.uiowa.edu/~astump/papers/fu-stump-rta-tlca-14.pdf)
 
 ## 2021-08-18
 
