@@ -316,7 +316,7 @@ successor = λ n. λ P. λ x. λ f. f n (n P x f)
 
 `P : Natural_Number -> Type` での矢印を単純に逆にして `P : Type -> Stream A` にしてみたり、 [余帰納型には**余**依存型での余帰納法があるのではないかと考えてみたり](https://twitter.com/hexirp_prixeh/status/1033573680582807555)、具体的に余依存型を計算してみたら情報を余り持たないことが分かったり、依存積 `Π` の双対は依存和 `Σ` なので、 `Σ x : Stream A. P x` が正しいのではないかと考えてみたり、色々と頭を捻っていました。
 
-結局のところは `P -> Stream A` の `Stream A` が厳密に共変な (strictly positive) 位置にあるのがダメなのです。これを何とか出来れば……
+結局のところは `P -> Stream A` の `Stream A` が反変ではないため一番左側に括りだせないのがダメなのです。これを何とか出来れば……
 
 共変と反変を入れ替える…… 反変を共変にする…… そんな例があることに思い当たりました。
 
@@ -447,6 +447,19 @@ bind = λ A. λ B. λ p. λ q. λ y. Σ x : A. p x * q x y
 `Power` を取り除きます。ここで注意すべきなのは `Power A` を `Σ y : A. Path A (head x) y` に置き換えた所です。これは、さっきの冪モナド版の `coinduction` の計算で `Path (A -> Type) (destruct_head y x) (return (head y))` という結果になっていたからですね。
 
 以前に依存積を依存和に置き換えればいいのではと考えていたのと同じ結果になりました。ただし、以前は `Σ y : A. Path A (head x) y` の所に気付けていなかったため、妙な違和感があって先に進めなかったのです。
+
+さて、ここでの `y : Stream A` を自分型で閉じたいところですが、やっぱり不可能です。
+
+でも、せっかく `Power` で剥がせたのに、ここで諦めたくはないです。なので、無理矢理、非厳密な共変な形にしてみます。
+
+```
+Π P : Stream A -> Type.
+Π destruct_head : Π x : Stream A. P x -> Σ y : A. Path A (head x) y.
+Π destruct_tail : Π x : Stream A. P x -> P (tail x).
+(Π Q : (Σ y : Stream A. P y) -> Type. (Π y : Stream A. Π x : P y. Q (dependent_paring _ _ y x)) -> Π x : Σ y : Stream A. P y. Q x)
+```
+
+こうしてみます。
 
 ## 参考文献
 
