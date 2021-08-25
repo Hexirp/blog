@@ -18,7 +18,7 @@ P x
 
 このようにしてみたらどうだろうか？ _ -> _ と _ /\ _ は双対だから良いかもしれない。
 
-## 2021-08-25
+## 2021-08-24
 
 P : Stream A -> Type
 case_constructor : pi (x_p : A) (x_s : Stream A), P x_s /\ P (constructor A x_p x_s)
