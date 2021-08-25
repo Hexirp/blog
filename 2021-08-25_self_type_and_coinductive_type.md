@@ -2,7 +2,7 @@
 
 自分型を使って余帰納型をエンコーディングします。
 
-## エンコーディング
+## 前提知識
 
 帰納型は様々な方法でエンコーディングすることが出来ます。
 
@@ -70,33 +70,33 @@ successor = λ n. Λ r. λ x. λ f. f n (n r x f)
 たとえば、自然数に対する帰納原理を書き下すと、次のようになります。
 
 ```
-∀ P : Natural_Number -> Type,
-∀ construct_zero : P zero,
-∀ construct_successor : ∀ n_p : Natural_Number, P n_p -> P (successor n_p),
-(∀ x : Natural_Number, P x)
+Π P : Natural_Number -> Type.
+Π construct_zero : P zero.
+Π construct_successor : Π n_p : Natural_Number. P n_p -> P (successor n_p).
+(Π x : Natural_Number. P x)
 ```
 
-帰納原理は面白いことにパリゴット・エンコーディングを包摂しています。どういうことかというと、 `P _ = A` と定義した上で計算してみると、次のようになるのです。
+帰納原理は面白いことにパリゴット・エンコーディングを包摂しています。どういうことかというと、 `P _ := A` と定義した上で計算してみると、次のようになるのです。
 
 ```
-∀ construct_zero : P zero,
-∀ construct_successor : ∀ n_p : Natural_Number, P n_p -> P (successor n_p),
-(∀ x : Natural_Number, P x)
+Π construct_zero : P zero.
+Π construct_successor : Π n_p : Natural_Number. P n_p -> P (successor n_p).
+(Π x : Natural_Number. P x)
 
-∀ construct_zero : A     ,
-∀ construct_successor : ∀ n_p : Natural_Number, A     -> A                ,
-(∀ x : Natural_Number, A  )
+Π construct_zero : A     .
+Π construct_successor : Π n_p : Natural_Number. A     -> A                .
+(Π x : Natural_Number. A  )
 
-∀ _              : A     ,
-∀ _                   : ∀ _   : Natural_Number, A     -> A                ,
-(∀ _ : Natural_Number, A  )
+Π _              : A     .
+Π _                   : Π _   : Natural_Number. A     -> A                .
+(Π _ : Natural_Number. A  )
 
-∀ _ : A,
-∀ _ : ∀ _ : Natural_Number, A -> A,
-(∀ _ : Natural_Number, A)
+Π _ : A.
+Π _ : Π _ : Natural_Number. A -> A.
+(Π _ : Natural_Number. A)
 
-∀ _ : A,
-∀ _ : Natural_Number -> A -> A,
+Π _ : A.
+Π _ : Natural_Number -> A -> A.
 (Natural_Number -> A)
 
 A ->
@@ -111,13 +111,33 @@ A -> (Natural_Number -> A -> A) -> (Natural_Number -> A)
 ```
 Natural_Number
   =
-    ∀ P : Natural_Number -> Type,
-    ∀ construct_zero : P zero,
-    ∀ construct_successor : ∀ n_p : Natural_Number, P n_p -> P (successor n_p),
-    (∀ x : Natural_Number, P x)
+    Π P : Natural_Number -> Type.
+    Π construct_zero : P zero.
+    Π construct_successor : Π n_p : Natural_Number. P n_p -> P (successor n_p).
+    (Π x : Natural_Number. P x)
 ```
 
-しかし、これがいろいろとおかしいことは明らかです。まず、
+パリゴット・エンコーディングを含む上に帰納法の原理も直接的に導出できて良しです。しかし、これがいろいろとおかしいことは明らかです。 `Natural_Number` は ω 個の値を持たないといけませんが、（おそらくは）これでは 1 個の値だけになってしまいます。
+
+帰納型を帰納原理つきで実装するには、どうすればよいのか。 Coq や Agda では、あるいは帰納的構築計算 (Calculus of Inductive Constructions) では直接的に体系へ追加する方法を使っています。
+
+### 組み込みの帰納型
+
+体系へ帰納型を組み込むためには、次の用意がなければなりません。
+
+* 帰納型の定義の方法
+* 構築子の定義の方法
+* 帰納法を行う方法
+
+Coq では、これらが直接的に用意されていて分かりやすいです。 `Inductive` コマンドで帰納型と構築子の定義を行うことが出来ます。そして、帰納法を `fix` 式で行うことが出来ます。この `fix` 式を使って帰納原理は定義されます。
+
+しかし、この方法にはデメリットがあります。
+
+* 項の構成要素が増える。
+* 型付けの規則を上手く与えないと HoTT (Homotopy Type Theory) との非互換性を組み込んでしまったりする。
+* 簡約の規則を上手く与えないと型の保存性 (type preservation) が簡単に失われる。
+
+一方で、ベーム・ベラルドゥッチ・エンコーディングは、表現力には欠けるものの、全てを単純な構成要素で表現することが出来ます。これに自分型を組み合わせると、両方のメリットを取り入れることが出来るのです。
 
 ## 自分型とは
 
@@ -125,16 +145,144 @@ Natural_Number
 
 たとえば、ある値 `x` に対して `x : P x` という型付けが成り立つとしましょう。また、別の値に対して `y : P y` という型付けが成り立つとします。 `x` と `y` の両方に対して自分型を使って `ι t. P t` という型を与えることが出来ます。
 
-自分型は `ι x. T` と書きます。 `T` の中では `x` を参照できます。
+自分型は `ι x. T` と書きます。 `T` の中では `x` を参照できます。型付けの規則は次のようになります。
 
-## なぜ自分型なのか
+```
+Γ ⊢ t : T [ x := t ]
+Γ ⊢ (ι x : T) : Type
+ - - - - -             (SelfGen)
+Γ ⊢ t : ι x : T
+
+Γ ⊢ t : ι x : T
+ - - - - -            (SelfInst)
+Γ ⊢ t : T [ x := t ]
+```
+
+## 自分型で帰納型をエンコーディングする
+
+自分型で帰納型をエンコーディングすることが出来ます。
+
+```
+Natural_Number
+  =
+    Π P : Natural_Number -> Type.
+    Π construct_zero : P zero.
+    Π construct_successor : Π n_p : Natural_Number. P n_p -> P (successor n_p).
+    (Π x : Natural_Number. P x)
+```
+
+これは失敗したものです。
+
+```
+zero : Natural_Number
+zero = λ r. λ x. λ f. x
+```
+
+しかし、無理矢理当てはめてみればどうでしょうか？ この `zero` に対して無理矢理型を押し付けてみると、どんなことが起きるでしょうか？
+
+```
+r := P : Natural_Number -> Type
+x := construct_zero : P zero
+f := construct_successor : Π n_p : Natural_Number. P n_p -> P (successor n_p)
+```
+
+まず、当然ながら上記のような型になります。そして、次のような不整合が発生します。
+
+```
+x : P zero
+```
+
+本来は、ここで `Π x_ : Natural_Number. P x_` を返さなければなりません。ですが、最後の型は `P zero` になってしまっています。
+
+```
+one : Natural_Number
+one = λ r. λ x. λ f. f zero x
+```
+
+これにも同じようにしましょう。
+
+```
+r := P : Natural_Number -> Type
+x := construct_zero : P zero
+f := construct_successor : Π n_p : Natural_Number. P n_p -> P (successor n_p)
+```
+
+こうなります。そして、次のようになります。
+
+```
+f zero x : P (successor zero)
+```
+
+ここでも、本来は `Π x_ : Natural_Number. P x_` を返さなければなりません。しかし、 `P (successor zero)` になっている、つまり `P one` になってしまっています。
+
+まとめましょう。
+
+```
+zero
+  :
+    Π P : Natural_Number -> Type.
+    Π construct_zero : P zero.
+    Π construct_successor : Π n_p : Natural_Number. P n_p -> P (successor n_p).
+    P zero
+one
+  :
+    Π P : Natural_Number -> Type.
+    Π construct_zero : P zero.
+    Π construct_successor : Π n_p : Natural_Number. P n_p -> P (successor n_p).
+    P one
+```
+
+おや？ **自分自身**が型に現れていますね。
+
+そう、自然数 `n` は次のように型付けすることが出来ます。
+
+```
+n
+  :
+    Π P : Natural_Number -> Type.
+    Π construct_zero : P zero.
+    Π construct_successor : Π n_p : Natural_Number. P n_p -> P (successor n_p).
+    P n
+```
+
+これを自分型で閉じます。
+
+```
+x
+  :
+    ι n.
+    Π P : Natural_Number -> Type.
+    Π construct_zero : P zero.
+    Π construct_successor : Π n_p : Natural_Number. P n_p -> P (successor n_p).
+    P n
+```
+
+これが**自分型を使った自然数のエンコーディング**です。
+
+```
+Natural_Number
+  =
+    ι n.
+    Π P : Natural_Number -> Type.
+    Π construct_zero : P zero.
+    Π construct_successor : Π n_p : Natural_Number. P n_p -> P (successor n_p).
+    P n
+zero = λ P. λ x. λ f. x
+successor = λ n. λ P. λ x. λ f. f n (n P x f)
+```
+
+上記のようになります。
+
+他の帰納型についても同じようなエンコーディングが可能です。詳細は論文を読むか [Yatima 言語](https://github.com/yatima-inc/yatima)で遊んで把握するかしてください。
 
 ## 自分型で余帰納型をエンコーディングする
 
 ## 参考文献
 
 1. [Self Types for Dependently Typed Lambda Encodings](https://dblp.org/rec/conf/rta/FuS14.html)
-  1. [PDF version](https://homepage.divms.uiowa.edu/~astump/papers/fu-stump-rta-tlca-14.pdf)
+  1. [PDF link](https://homepage.divms.uiowa.edu/~astump/papers/fu-stump-rta-tlca-14.pdf)
+2. [Programming with Proofs: A Second Order Type Theory](https://dl.acm.org/doi/10.5555/645387.651559)
+  1. [PDF link](https://link.springer.com/content/pdf/10.1007%2F3-540-19027-9_10.pdf)
 
 ## 2021-08-18
 
