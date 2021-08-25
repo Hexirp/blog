@@ -450,17 +450,6 @@ bind = λ A. λ B. λ p. λ q. λ y. Σ x : A. p x * q x y
 
 さて、ここでの `y : Stream A` を自分型で閉じたいところですが、やっぱり不可能です。
 
-でも、せっかく `Power` で剥がせたのに、ここで諦めたくはないです。なので、無理矢理、非厳密な共変な形にしてみます。
-
-```
-Π P : Stream A -> Type.
-Π destruct_head : Π x : Stream A. P x -> Σ y : A. Path A (head x) y.
-Π destruct_tail : Π x : Stream A. P x -> P (tail x).
-(Π Q : (Σ y : Stream A. P y) -> Type. (Π y : Stream A. Π x : P y. Q (dependent_paring _ _ y x)) -> Π x : Σ y : Stream A. P y. Q x)
-```
-
-こうしてみます。
-
 ## 参考文献
 
 1. [Self Types for Dependently Typed Lambda Encodings](https://dblp.org/rec/conf/rta/FuS14.html)
