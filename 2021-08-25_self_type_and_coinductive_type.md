@@ -250,3 +250,17 @@ Stream.coinduction A P destruct_head destruct_tail y x = Path (A -> Type) (destr
 こうなるのかあ……
 
 つまり…… Stream.coinduction は…… (a : A) -> B a -> Type という関係で…… B a から A への関数を表現しているという……訳が分からないものを返すのか。
+
+## 2021-08-25
+
+あ、
+
+sigma y : Stream A, P y を展開して
+
+pi Q : Type, (pi (y : Stream A) (x : P y), Q) -> Q にして
+
+pi Q : Type, (P y -> Q) -> Q にすれば良かったのかな？
+
+いや、よくはないかな？
+
+でも、よさそう
