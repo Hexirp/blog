@@ -212,6 +212,68 @@ Definition
   end
 .
 
+Definition
+  Dependent_Path@{i j | }
+      (A : Type@{i})
+      (P : A -> Type@{j})
+      (a : A)
+      (e : A)
+      (p : Path@{i} A a e)
+      (b : P a)
+      (o : P e)
+    : Type@{j}
+:=
+  Path@{j}
+    (P e)
+    (
+      Path_induction@{i j}
+        A
+        a
+        (fun (e_ : A) (_ : Path@{i} A a e_) => P e_)
+        b
+        e
+        p
+    )
+    o
+.
+
+Definition
+  Dependent_Path_ap@{i j | }
+      (A : Type@{i})
+      (P : A -> Type@{j})
+      (a : A)
+      (e : A)
+      (f : forall x : A, P x)
+      (p : Path@{i} A a e)
+    :
+      Dependent_Path@{i j}
+        A
+        P
+        a
+        e
+        p
+        (f a)
+        (f e)
+:=
+  Path_induction@{i j}
+    A
+    a
+    (
+      fun (e_ : A) (p_ : Path@{i} A a e_) =>
+        Dependent_Path@{i j}
+          A
+          P
+          a
+          e_
+          p_
+          (f a)
+          (f e_)
+    )
+    (Path_id@{j} (P a) (f a))
+    e
+    p
+.
+
 Definition Universe@{i s_i | i < s_i} : Type@{s_i} := Type@{i}.
 
 Definition lift@{i s_i | i < s_i} (A : Type@{i}) : Type@{s_i} := A.
@@ -290,4 +352,413 @@ Definition
         Dependent_Sum_pair@{i i} A P (f x_0) (x_1)
     )
     x
+.
+
+(* 余依存型の定義に必要なので押し出しの定義をする。 *)
+
+Axiom
+  Push_out@{i | }
+    :
+      forall
+        (A : Type@{i})
+        (B : Type@{i})
+        (C : Type@{i})
+      ,
+        (A -> B) -> (A -> C) -> Type@{i}
+.
+
+Axiom
+  Push_out_left@{i | }
+    :
+      forall
+        (A : Type@{i})
+        (B : Type@{i})
+        (C : Type@{i})
+        (f : A -> B)
+        (g : A -> C)
+      ,
+        B -> Push_out@{i} A B C f g
+.
+
+Axiom
+  Push_out_right@{i | }
+    :
+      forall
+        (A : Type@{i})
+        (B : Type@{i})
+        (C : Type@{i})
+        (f : A -> B)
+        (g : A -> C)
+      ,
+        C -> Push_out@{i} A B C f g
+.
+
+Axiom
+  Push_out_path@{i | }
+    :
+      forall
+        (A : Type@{i})
+        (B : Type@{i})
+        (C : Type@{i})
+        (f : A -> B)
+        (g : A -> C)
+        (x_a : A)
+      ,
+        Path@{i}
+          (Push_out@{i} A B C f g)
+          (Push_out_left@{i} A B C f g (f x_a))
+          (Push_out_right@{i} A B C f g (g x_a))
+.
+
+Axiom
+  Push_out_induction@{i j | }
+    :
+      forall
+        (A : Type@{i})
+        (B : Type@{i})
+        (C : Type@{i})
+        (f : A -> B)
+        (g : A -> C)
+        (P : Push_out@{i} A B C f g -> Type@{j})
+        (
+          constructor_left
+            :
+              forall x_b : B, P (Push_out_left@{i} A B C f g x_b)
+        )
+        (
+          constructor_right
+            :
+              forall x_c : C, P (Push_out_right@{i} A B C f g x_c)
+        )
+        (
+          constructor_path
+            :
+              forall x_a : A,
+                Dependent_Path@{i j}
+                  (Push_out@{i} A B C f g)
+                  P
+                  (Push_out_left@{i} A B C f g (f x_a))
+                  (Push_out_right@{i} A B C f g (g x_a))
+                  (Push_out_path@{i} A B C f g x_a)
+                  (constructor_left (f x_a))
+                  (constructor_right (g x_a))
+        )
+        (x : Push_out@{i} A B C f g)
+      ,
+        P x
+.
+
+Axiom
+  Push_out_induction_beta_left@{i j | }
+    :
+      forall
+        (A : Type@{i})
+        (B : Type@{i})
+        (C : Type@{i})
+        (f : A -> B)
+        (g : A -> C)
+        (P : Push_out@{i} A B C f g -> Type@{j})
+        (
+          constructor_left
+            :
+              forall x_b : B, P (Push_out_left@{i} A B C f g x_b)
+        )
+        (
+          constructor_right
+            :
+              forall x_c : C, P (Push_out_right@{i} A B C f g x_c)
+        )
+        (
+          constructor_path
+            :
+              forall x_a : A,
+                Dependent_Path@{i j}
+                  (Push_out@{i} A B C f g)
+                  P
+                  (Push_out_left@{i} A B C f g (f x_a))
+                  (Push_out_right@{i} A B C f g (g x_a))
+                  (Push_out_path@{i} A B C f g x_a)
+                  (constructor_left (f x_a))
+                  (constructor_right (g x_a))
+        )
+        (x_b : B)
+      ,
+        Path@{j}
+          (P (Push_out_left@{i} A B C f g x_b))
+          (
+            Push_out_induction@{i j}
+              A
+              B
+              C
+              f
+              g
+              P
+              constructor_left
+              constructor_right
+              constructor_path
+              (Push_out_left@{i} A B C f g x_b)
+          )
+          (constructor_left x_b)
+.
+
+Axiom
+  Push_out_induction_beta_right@{i j | }
+    :
+      forall
+        (A : Type@{i})
+        (B : Type@{i})
+        (C : Type@{i})
+        (f : A -> B)
+        (g : A -> C)
+        (P : Push_out@{i} A B C f g -> Type@{j})
+        (
+          constructor_left
+            :
+              forall x_b : B, P (Push_out_left@{i} A B C f g x_b)
+        )
+        (
+          constructor_right
+            :
+              forall x_c : C, P (Push_out_right@{i} A B C f g x_c)
+        )
+        (
+          constructor_path
+            :
+              forall x_a : A,
+                Dependent_Path@{i j}
+                  (Push_out@{i} A B C f g)
+                  P
+                  (Push_out_left@{i} A B C f g (f x_a))
+                  (Push_out_right@{i} A B C f g (g x_a))
+                  (Push_out_path@{i} A B C f g x_a)
+                  (constructor_left (f x_a))
+                  (constructor_right (g x_a))
+        )
+        (x_c : C)
+      ,
+        Path@{j}
+          (P (Push_out_right@{i} A B C f g x_c))
+          (
+            Push_out_induction@{i j}
+              A
+              B
+              C
+              f
+              g
+              P
+              constructor_left
+              constructor_right
+              constructor_path
+              (Push_out_right@{i} A B C f g x_c)
+          )
+          (constructor_right x_c)
+.
+
+Axiom
+  Push_out_induction_beta_path@{i j | }
+    :
+      forall
+        (A : Type@{i})
+        (B : Type@{i})
+        (C : Type@{i})
+        (f : A -> B)
+        (g : A -> C)
+        (P : Push_out@{i} A B C f g -> Type@{j})
+        (
+          constructor_left
+            :
+              forall x_b : B, P (Push_out_left@{i} A B C f g x_b)
+        )
+        (
+          constructor_right
+            :
+              forall x_c : C, P (Push_out_right@{i} A B C f g x_c)
+        )
+        (
+          constructor_path
+            :
+              forall x_a : A,
+                Dependent_Path@{i j}
+                  (Push_out@{i} A B C f g)
+                  P
+                  (Push_out_left@{i} A B C f g (f x_a))
+                  (Push_out_right@{i} A B C f g (g x_a))
+                  (Push_out_path@{i} A B C f g x_a)
+                  (constructor_left (f x_a))
+                  (constructor_right (g x_a))
+        )
+        (x_a : A)
+      ,
+        Path@{j}
+          (
+            Dependent_Path@{i j}
+              (Push_out@{i} A B C f g)
+              P
+              (Push_out_left@{i} A B C f g (f x_a))
+              (Push_out_right@{i} A B C f g (g x_a))
+              (Push_out_path@{i} A B C f g x_a)
+              (constructor_left (f x_a))
+              (constructor_right (g x_a))
+          )
+          (
+            Path_induction@{j j}
+              (P (Push_out_left@{i} A B C f g (f x_a)))
+              (
+                Push_out_induction@{i j}
+                  A
+                  B
+                  C
+                  f
+                  g
+                  P
+                  constructor_left
+                  constructor_right
+                  constructor_path
+                  (Push_out_left@{i} A B C f g (f x_a))
+              )
+              (
+                fun
+                  (e_ : P (Push_out_left@{i} A B C f g (f x_a)))
+                  (
+                    _
+                      :
+                        Path@{j}
+                          (P (Push_out_left@{i} A B C f g (f x_a)))
+                          (
+                            Push_out_induction@{i j}
+                              A
+                              B
+                              C
+                              f
+                              g
+                              P
+                              constructor_left
+                              constructor_right
+                              constructor_path
+                              (Push_out_left@{i} A B C f g (f x_a))
+                          )
+                          e_
+                  )
+                =>
+                  Dependent_Path@{i j}
+                    (Push_out@{i} A B C f g)
+                    P
+                    (Push_out_left@{i} A B C f g (f x_a))
+                    (Push_out_right@{i} A B C f g (g x_a))
+                    (Push_out_path@{i} A B C f g x_a)
+                    e_
+                    (constructor_right (g x_a))
+              )
+              (
+                Path_induction@{j j}
+                  (P (Push_out_right@{i} A B C f g (g x_a)))
+                  (
+                    Push_out_induction@{i j}
+                      A
+                      B
+                      C
+                      f
+                      g
+                      P
+                      constructor_left
+                      constructor_right
+                      constructor_path
+                      (Push_out_right@{i} A B C f g (g x_a))
+                  )
+                  (
+                    fun
+                      (e_ : P (Push_out_right@{i} A B C f g (g x_a)))
+                      (
+                        _
+                          :
+                            Path@{j}
+                              (P (Push_out_right@{i} A B C f g (g x_a)))
+                              (
+                                Push_out_induction@{i j}
+                                  A
+                                  B
+                                  C
+                                  f
+                                  g
+                                  P
+                                  constructor_left
+                                  constructor_right
+                                  constructor_path
+                                  (Push_out_right@{i} A B C f g (g x_a))
+                              )
+                              e_
+                      )
+                    =>
+                      Dependent_Path@{i j}
+                        (Push_out@{i} A B C f g)
+                        P
+                        (Push_out_left@{i} A B C f g (f x_a))
+                        (Push_out_right@{i} A B C f g (g x_a))
+                        (Push_out_path@{i} A B C f g x_a)
+                        (
+                          Push_out_induction@{i j}
+                            A
+                            B
+                            C
+                            f
+                            g
+                            P
+                            constructor_left
+                            constructor_right
+                            constructor_path
+                            (Push_out_left@{i} A B C f g (f x_a))
+                        )
+                        e_
+                  )
+                  (
+                    Dependent_Path_ap@{i j}
+                      (Push_out@{i} A B C f g)
+                      P
+                      (Push_out_left@{i} A B C f g (f x_a))
+                      (Push_out_right@{i} A B C f g (g x_a))
+                      (
+                        Push_out_induction@{i j}
+                          A
+                          B
+                          C
+                          f
+                          g
+                          P
+                          constructor_left
+                          constructor_right
+                          constructor_path
+                      )
+                      (Push_out_path@{i} A B C f g x_a)
+                  )
+                  (constructor_right (g x_a))
+                  (
+                    Push_out_induction_beta_right@{i j}
+                      A
+                      B
+                      C
+                      f
+                      g
+                      P
+                      constructor_left
+                      constructor_right
+                      constructor_path
+                      (g x_a)
+                  )
+              )
+              (constructor_left (f x_a))
+              (
+                Push_out_induction_beta_left@{i j}
+                  A
+                  B
+                  C
+                  f
+                  g
+                  P
+                  constructor_left
+                  constructor_right
+                  constructor_path
+                  (f x_a)
+              )
+          )
+          (constructor_path x_a)
 .
