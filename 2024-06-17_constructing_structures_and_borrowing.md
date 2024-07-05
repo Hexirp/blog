@@ -56,9 +56,9 @@ fn baz<'a,T>(x: &'a T) -> &'a Option<T> {
 
 私は、自分の力で解決できなさそうだと感じて、公開の場で質問することにしました。そこで Stack Overflow で "Convert a reference to a reference to a value wrapped in a structure with the value of the reference" ([LINK](https://stackoverflow.com/questions/78613964/convert-a-reference-to-a-reference-to-a-value-wrapped-in-a-structure-with-the-va)) を投稿しました。しかし、これは私の聞き方が悪かったせいで、私が意図したものとは異なる別の問題として解釈されてしまいました。
 
-また、 Twitter で「わからないことがある」という呟き [LINK](https://x.com/hexirp_prixeh/status/1800165271023624546) をしたところ、 KawamoYurase さんが「関数の内部で作成した参照を、関数の外側へ出すことは出来ない」ということを教えてくれました。このため、 `foo` 関数と `bar` 関数と `baz` 関数を実装することは出来ないということです。しかし、これらの関数を正しく書くことが出来ない理由にはなっても、最初に説明した処理を書くことが出来ない理由にはなりません。私の一般化が誤っていたということです。
+また、 Twitter で「わからないことがある」という呟き '[LINK](https://x.com/hexirp_prixeh/status/1800165271023624546)) をしたところ、 KawamoYurase さんが「関数の内部で作成した参照を、関数の外側へ出すことは出来ない」ということを教えてくれました。このため、 `foo` 関数と `bar` 関数と `baz` 関数を実装することは出来ないということです。しかし、これらの関数を正しく書くことが出来ない理由にはなっても、最初に説明した処理を書くことが出来ない理由にはなりません。私の一般化が誤っていたということです。
 
-しかし、既に `String` ではなく `VariableName` を保持するという方法で `Clone::clone` 関数も再帰も使わない実装をすることが出来ています。そのため、「 `x: &String` と `set: HashSet<VariableName>` があり、それらを使って `set` は `VariableName { string: *x }` と同じ値を含んでいるのかどうか、それを判定したい時に、 `Clone::clone` 関数を使わずにすることが出来るのかどうか」という問題を棚上げすることにしました。
+しかし、既に `String` ではなく `VariableName` を保持するという方法で `Clone::clone` 関数も再帰も使わない実装をすることが出来ています。そのため、ここで考察を打ち切り、「 `x: &String` と `set: HashSet<VariableName>` があり、それらを使って `set` は `VariableName { string: *x }` と同じ値を含んでいるのかどうか、それを判定したい時に、 `Clone::clone` 関数を使わずにすることが出来るのかどうか」という問題を棚上げすることにしました。
 
 ## 解決
 
